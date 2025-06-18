@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EL AFTO - Ремонт автоэлектрики и диагностика в Челябинске</title>
+    <link rel="icon" type="image/x-icon" href="./img/logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Глобальные стили */
+        :root {
+            --primary: #1a6fc4;
+            --primary-dark: #145da0;
+            --secondary: #CB2229;
+            --secondary-dark: #FFBABA;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Стили для выравнивания контейнеров */
+        .content-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .centered-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Эффектные кнопки */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(26, 111, 196, 0.3);
+            font-size: 0.9rem;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(26, 111, 196, 0.4);
+        }
+        
+        .cta-btn {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            box-shadow: 0 4px 10px rgba(255, 122, 0, 0.3);
+        }
+        
+        section {
+            padding: 60px 0;
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+            color: var(--dark);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        /* Шапка */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+        
+        .logo {
+            font-family: 'Oswald', 'Arial Black', sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .logo i {
+            margin-right: 8px;
+            color: var(--secondary);
+            font-size: 1.4rem;
+        }
+        
+        .nav-links {
+            display: flex;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--dark);
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .burger {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background-color: var(--dark);
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Герой секция */
+        .hero {
+            height: 90vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            color: white;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding-top: 70px;
+        }
+        
+        .hero .container {
+            max-width: 800px;
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+        }
+        
+        .contact-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        /* Услуги */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards;
+        }
+        
+        .service-card:nth-child(1) { animation-delay: 0.1s; }
+        .service-card:nth-child(2) { animation-delay: 0.2s; }
+        .service-card:nth-child(3) { animation-delay: 0.3s; }
+        .service-card:nth-child(4) { animation-delay: 0.4s; }
+        .service-card:nth-child(5) { animation-delay: 0.5s; }
+        .service-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+        
+        .service-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .service-card h3 {
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+            color: var(--dark);
+        }
+        
+        /* Галерея работ */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            height: 250px;
+            transform: scale(0.95);
+            opacity: 0;
+            animation: fadeScale 0.6s ease forwards;
+        }
+        
+        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
+        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
+        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+        
+        .gallery-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .overlay {
+            transform: translateY(0);
+        }
+        
+        /* О нас */
+        .about-content {
+            background: white;
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards;
+        }
+        
+        .about-content p {
+            margin-bottom: 18px;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        
+        /* Прайс-лист */
+        .price-table {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            overflow-x: auto;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        table th, table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table th {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        /* Контакты и соцсети */
+        .contacts-section {
+            background: linear-gradient(to right, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        .contacts-section h2 {
+            color: white;
+        }
+        
+        .contacts-section h2::after {
+            background-color: var(--secondary);
+        }
+        
+        .social-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .social-block {
+            text-align: center;
+            padding: 25px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards;
+        }
+        
+        .social-block:nth-child(1) { animation-delay: 0.1s; }
+        .social-block:nth-child(2) { animation-delay: 0.2s; }
+        
+        .social-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .social-title i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 8px rgba(26, 111, 196, 0.3);
+        }
+        
+        .social-links a:hover {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(255, 122, 0, 0.3);
+        }
+        
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        
+        .contact-item i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-right: 15px;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .contact-details h3 {
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .contact-details p {
+            color: var(--gray);
+        }
+        
+        /* Карта */
+        .map-container {
+            margin-top: 40px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .map-title {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .map-title i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        #yandex-map {
+            width: 100%;
+            height: 400px;
+            border: none;
+            border-radius: 10px;
+        }
+        
+        /* Футер */
+        footer {
+            background: linear-gradient(to right, var(--dark), #1a2a3a);
+            color: white;
+            padding: 40px 0 15px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .footer-logo {
+            font-family: 'Oswald', 'Arial Black', sans-serif;
+            font-size: 1.6rem;
+        }
+        
+        .footer-logo span {
+            color: var(--secondary);
+        }
+        
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .footer-links a {
+            transition: all 0.3s ease;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .footer-copy {
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        
+        /* Анимации */
+        @keyframes fadeUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeScale {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 992px) {
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                right: 0;
+                top: 60px;
+                background-color: white;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+                padding: 25px 0;
+                box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+                transform: translateY(-150%);
+                transition: transform 0.4s ease-in;
+                border-radius: 0 0 8px 8px;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+            }
+            
+            .nav-links li {
+                margin: 18px 0;
+            }
+            
+            .nav-links a {
+                font-size: 1.1rem;
+            }
+            
+            .burger {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 12px 22px;
+                font-size: 0.9rem;
+            }
+
+            /* Анимация бургер-меню */
+            .burger.active .line1 {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+            
+            .burger.active .line2 {
+                opacity: 0;
+            }
+            
+            .burger.active .line3 {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            section {
+                padding: 50px 0;
+            }
+            
+            h2 {
+                font-size: 1.9rem;
+                margin-bottom: 30px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .footer-links {
+                align-items: center;
+            }
+            
+            .service-card, .social-block {
+                padding: 20px;
+            }
+            
+            .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .services-grid, .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Адаптация для экранов 375px */
+        @media (max-width: 375px) {
+            section {
+                padding: 40px 0;
+            }
+            
+            h2 {
+                font-size: 1.7rem;
+                margin-bottom: 25px;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 0.95rem;
+            }
+            
+            .btn {
+                padding: 10px 18px;
+                font-size: 0.8rem;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .contact-buttons {
+                gap: 10px;
+            }
+            
+            .service-card, .social-block {
+                padding: 15px;
+            }
+            
+            .service-card i {
+                font-size: 2.5rem;
+            }
+            
+            .service-card h3 {
+                font-size: 1.1rem;
+            }
+            
+            .gallery-item {
+                height: 200px;
+            }
+            
+            .about-content {
+                padding: 20px;
+            }
+            
+            .price-table {
+                padding: 15px;
+            }
+            
+            table th, table td {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .social-links a {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+            
+            .contact-item {
+                padding: 12px;
+            }
+            
+            .contact-item i {
+                font-size: 1.5rem;
+            }
+            
+            .contact-details h3 {
+                font-size: 1rem;
+            }
+            
+            .contact-details p {
+                font-size: 0.9rem;
+            }
+            
+            .logo {
+                font-size: 1.3rem;
+            }
+            
+            .footer-logo {
+                font-size: 1.4rem;
+            }
+            
+            /* Адаптация карты */
+            .map-container {
+                margin-top: 30px;
+            }
+            
+            .map-title {
+                font-size: 1.3rem;
+            }
+            
+            #yandex-map {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка с бургер-меню -->
+    <header>
+        <div class="container">
+            <a href="#leader" class="logo"><i class="fas"><img style="max-width: 30px; max-height: 30px;" src="./img/logo.png" alt=""></i> <span>EL&nbsp;</span>AFTO</a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#leader">Главная</a></li>
+                    <li><a href="#services">Услуги</a></li>
+                    <li><a href="#price">Цены</a></li>
+                    <li><a href="#gallery">Наши работы</a></li>
+                    <li><a href="#about">О нас</a></li>
+                    <li><a href="#contacts">Контакты</a></li>
+                </ul>
+                <div class="burger">
+                    <div class="line1"></div>
+                    <div class="line2"></div>
+                    <div class="line3"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Герой-секция -->
+    <section id="leader" class="hero">
+        <div class="container">
+            <h1>Ремонт автоэлектрики и диагностика в Челябинске</h1>
+            <p>Быстрая диагностика и качественный ремонт электрики вашего автомобиля</p>
+            
+            <div class="contact-buttons">
+                <a href="tel:+79954604828" class="btn cta-btn">
+                    <i class="fas fa-phone"></i> Позвонить по телефону
+                </a>
+                <a href="https://wa.me/79954604828" class="btn" style="background: #25D366;">
+                    <i class="fab fa-whatsapp"></i> Написать в WhatsApp
+                </a>
+                <a href="https://t.me/autodiag_chel" class="btn" style="background: #0088cc;">
+                    <i class="fab fa-telegram"></i> Написать в Telegram
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Услуги -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Наши услуги</h2>
+            <div class="content-container">
+                <div class="services-grid">
+                    <div class="service-card">
+                        <i class="fas fa-microchip"  style="color: #A42127;"></i>
+                        <h3>Диагностика ЭБУ</h3>
+                        <p>Компьютерное сканирование ошибок, расшифровка кодов, выявление неисправностей</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-bolt"  style="color: #A42127;"></i>
+                        <h3>Ремонт проводки</h3>
+                        <p>Поиск обрывов и замыканий, замена поврежденных участков проводки</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-car-battery"  style="color: #A42127;"></i>
+                        <h3>Ремонт генераторов</h3>
+                        <p>Замена щеток, подшипников, диодных мостов</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-lightbulb"  style="color: #A42127;"></i>
+                        <h3>Ремонт освещения</h3>
+                        <p>Устранение проблем с фарами, габаритами, стоп-сигналами, указателями поворотов</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-key"  style="color: #A42127;"></i>
+                        <h3>Отключение сигнализаций</h3>
+                        <p>Поможем с отключением охранных систем, так же на выезде</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-music" style="color: #A42127;"></i>
+                        <h3>Установка дополнительного оборудования</h3>
+                        <p>Установим магнитолы, колоноки, камеры, видеоригистраторы и тд.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Галерея работ -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <h2>Наши работы</h2>
+            <div class="content-container">
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1549399542-7e845fec9ff2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Ремонт генератора">
+                        <div class="overlay">
+                            <h3>Ремонт генератора</h3>
+                            <p>BMW X5</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Диагностика ЭБУ">
+                        <div class="overlay">
+                            <h3>Диагностика ЭБУ</h3>
+                            <p>Audi A6</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Установка аудиосистемы">
+                        <div class="overlay">
+                            <h3>Установка аудиосистемы</h3>
+                            <p>Mercedes-Benz</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Ремонт проводки">
+                        <div class="overlay">
+                            <h3>Ремонт проводки</h3>
+                            <p>Toyota Camry</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Установка сигнализации">
+                        <div class="overlay">
+                            <h3>Установка сигнализации</h3>
+                            <p>Volkswagen Golf</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1550355291-bbee04a92027?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Диагностика освещения">
+                        <div class="overlay">
+                            <h3>Диагностика освещения</h3>
+                            <p>Hyundai Solaris</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- О нас -->
+    <section id="about" class="about">
+        <div class="content-container">
+            <h2>О нас</h2>
+            <div class="content-content">
+                <div class="about-content">
+                    <p>Мы - команда профессиональных автоэлектриков с опытом работы более 10 лет. Специализируемся на ремонте электронных систем автомобилей европейских, азиатских и отечественных марок.</p>
+                    <p>Наша мастерская оснащена современным диагностическим оборудованием: осциллографами, мультиметрами, профессиональными сканерами Autel и Launch. Это позволяет нам точно и быстро определять любые неисправности в электрических системах автомобилей.</p>
+                    <p>Мы гордимся тем, что 90% наших клиентов обращаются к нам по рекомендациям. Для нас важно не просто выполнить работу, а обеспечить долгосрочную надежность ремонта. Поэтому на все виды работ мы предоставляем гарантию до 1 года.</p>
+                    <div style="text-align: center; margin-top: 25px;">
+                        <a href="#contacts" class="btn" style="background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));">Связаться с нами</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Прайс-лист -->
+    <section id="price" class="price">
+        <div class="content-container">
+            <h2>Наши цены</h2>
+            <div class="content-content">
+                <div class="price-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));">Услуга</th>
+                                <th style="background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));">Стоимость</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Компьютерная диагностика</td>
+                                <td>от 1500 руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Диагностика электрооборудования</td>
+                                <td>от 1000 руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Ремонт генератора</td>
+                                <td>от 2500 руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Ремонт стартера</td>
+                                <td>от 2000 руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Замена проводки</td>
+                                <td>от 3000 руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Установка сигнализации</td>
+                                <td>от 4000 руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Ремонт системы зажигания</td>
+                                <td>от 1800 руб.</td>
+                            </tr>
+                            <tr>
+                                <td>Установка дополнительного оборудования</td>
+                                <td>от 2000 руб.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="note" style="margin-top: 20px; text-align: center; font-style: italic; color: var(--gray);">
+                        *Точная стоимость определяется после диагностики автомобиля
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты и соцсети -->
+    <section id="contacts" class="contacts-section">
+        <div class="container">
+            <h2>Свяжитесь с нами</h2>
+            <div class="content-container">
+                <div class="social-container">
+                    <div class="social-grid">
+                        <!-- Популярные соцсети -->
+                        <div class="social-block">
+                            <h3 class="social-title">
+                                <i class="fas fa-hashtag"></i> Мы в соцсетях
+                            </h3>
+                            <div class="social-links">
+                                <a href="https://vk.com/avtoelektrik_pro" target="_blank">
+                                    <i class="fab fa-vk"></i>
+                                </a>
+                                <a href="https://t.me/autodiag_chel" target="_blank">
+                                    <i class="fab fa-telegram"></i>
+                                </a>
+                                <a href="https://www.youtube.com/@avtoelektrik_pro" target="_blank">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </div>
+                            <p style="margin-top: 20px; color: var(--gray);">
+                                Подписывайтесь, чтобы быть в курсе акций и полезных советов!
+                            </p>
+                        </div>
+                        
+                        <!-- Контакты -->
+                        <div class="social-block">
+                            <h3 class="social-title">
+                                <i class="fas fa-phone-alt"></i> Контакты
+                            </h3>
+                            <div class="contact-methods">
+                                <div class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <div class="contact-details">
+                                        <h3>Телефон</h3>
+                                        <p>+7 (995) 460-48-28</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-item">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <div class="contact-details">
+                                        <h3>WhatsApp</h3>
+                                        <p>+7 (995) 460-48-28</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <div class="contact-details">
+                                        <h3>Email</h3>
+                                        <p>kartaly_auto@vk.com</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div class="contact-details">
+                                        <h3>Адрес</h3>
+                                        <p>г. Челябинск, ул. Автодорожная 12А/2</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопки для связи -->
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 30px; justify-content: center;">
+                        <a href="tel:+79954604828" class="btn cta-btn">
+                            <i class="fas fa-phone"></i> Позвонить
+                        </a>
+                        <a href="https://wa.me/79954604828" class="btn" style="background: #25D366;">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="https://t.me/autodiag_chel" class="btn" style="background: #0088cc;">
+                            <i class="fab fa-telegram"></i> Telegram
+                        </a>
+                        <a href="mailto:kartaly_auto@vk.com" class="btn" style="background: #D44638;">
+                            <i class="fas fa-envelope"></i> Email
+                        </a>
+                    </div>
+                    
+                    <!-- Карта расположения -->
+                    <div class="map-container">
+                        <h3 class="map-title">
+                            <i class="fas fa-map-marked-alt"></i> Как нас найти
+                        </h3>
+                        <div id="yandex-map"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas"></i><img style="max-width: 40px; max-height: 40px;" src="./img/logo.png" alt="Лого"></i> <span>EL&nbsp;</span>AFTO - Ремонт автоэлектрики и диагностика
+                </div>
+                <div class="footer-links">
+                    <a href="#services">Услуги</a>
+                    <a href="#price">Цены</a>
+                    <a href="#gallery">Наши работы</a>
+                    <a href="#about">О нас</a>
+                    <a href="#contacts">Контакты</a>
+                </div>
+            </div>
+            <div class="footer-copy">
+                <p>&copy; 2025 EL AFTO. Все права защищены.</p>
+                <p></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Скрипт Яндекс.Карт -->
+<script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_api_ключ&lang=ru_RU" type="text/javascript"></script>
+
+<script>
+    // Инициализация карты
+    ymaps.ready(init);
+    
+    function init() {
+        // Координаты для Москвы, ул. Автозаводская, д. 12
+        const myMap = new ymaps.Map("yandex-map", {
+            center: [55.21143579742641,61.34979939748226],
+            zoom: 17,
+            controls: ['zoomControl', 'fullscreenControl']
+        });
+        
+        // Создаем красивую метку
+        const myPlacemark = new ymaps.Placemark([55.21143579742641,61.34979939748226], {
+            // Убираем балун при клике
+            balloonContent: '',
+            
+            // Красивый хинт при наведении
+            hintContent: `
+                <div style="
+                    background: white;
+                    border-radius: 8px;
+                    padding: 12px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    font-family: Arial, sans-serif;
+                    min-width: 220px;
+                ">
+                    <div style="
+                        font-size: 18px;
+                        font-weight: bold;
+                        color: #1a6fc4;
+                        margin-bottom: 8px;
+                        display: flex;
+                        align-items: center;
+                    ">
+                        <i class="fas" style="margin-right: 8px;"><img style="max-width: 30px; max-height: 30px;" src="./img/logo.png" alt=""></i>
+                        EL AFTO
+                    </div>
+                    <div style="
+                        font-size: 14px;
+                        color: #333;
+                        display: flex;
+                        align-items: flex-start;
+                    ">
+                        <i class="fas fa-map-marker-alt" style="color: #ff7a00; margin-right: 8px; margin-top: 2px;"></i>
+                        <span>г. Челябинск, ул. Автодорожная, д. 12А/2</span>
+                    </div>
+                </div>
+            `
+        }, {
+            // Стиль метки - яркая и заметная
+            iconLayout: 'default#image',
+            iconImageHref: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+            iconImageSize: [40, 40],
+            iconImageOffset: [-20, -40],
+            iconShape: {
+                type: 'Circle',
+                coordinates: [0, 0],
+                radius: 25
+            },
+            
+            // Отключаем балун
+            hasBalloon: false,
+            
+            // Настраиваем хинт
+            hideIconOnBalloonOpen: false,
+            hintLayout: "default#imageWithContent",
+            hintImageHref: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,10" fill="white"/></svg>',
+            hintImageSize: [10, 10],
+            hintImageOffset: [0, -10],
+            hintContentSize: [240, 'auto'],
+            hintOffset: [0, -50],
+            hintPane: 'places'
+        });
+        
+        myMap.geoObjects.add(myPlacemark);
+        
+        // Убираем лишние элементы управления
+        myMap.controls.remove('typeSelector');
+        myMap.controls.remove('searchControl');
+        
+        // Добавляем кастомный логотип
+        const logo = new ymaps.control.Logo({
+            options: {
+                position: { top: 10, right: 10 },
+                image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="24" viewBox="0 0 100 24"><rect width="100" height="24" rx="3" fill="rgba(255,255,255,0.9)"/><text x="50" y="16" font-family="Arial" font-size="11" fill="%231a6fc4" text-anchor="middle">АВТОЭЛЕКТРИК</text></svg>'
+            }
+        });
+        myMap.controls.add(logo);
+    }
+
+    // Плавная прокрутка для якорных ссылок
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            if (this.getAttribute('href') === '#') return;
+            
+            e.preventDefault();
+            
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                window.scrollTo({
+                    top: target.offsetTop - 70,
+                    behavior: 'smooth'
+                });
+                
+                // Закрываем мобильное меню после клика
+                document.querySelector('.nav-links').classList.remove('active');
+                document.querySelector('.burger').classList.remove('active');
+            }
+        });
+    });
+    
+    // Бургер-меню
+    document.querySelector('.burger').addEventListener('click', function() {
+        this.classList.toggle('active');
+        document.querySelector('.nav-links').classList.toggle('active');
+    });
+    
+    // Анимация элементов при прокрутке
+    function animateOnScroll() {
+        const elements = document.querySelectorAll('.service-card, .gallery-item, .about-content, .price-table, .social-block');
+        
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.3;
+            
+            if (elementPosition < screenPosition) {
+                element.style.animationPlayState = 'running';
+            }
+        });
+    }
+    
+    // Запуск анимации при загрузке и прокрутке
+    window.addEventListener('load', animateOnScroll);
+    window.addEventListener('scroll', animateOnScroll);
+</script>
+</body>
+</html>
