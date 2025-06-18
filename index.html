@@ -577,6 +577,8 @@
         @media (max-width: 992px) {
             .social-grid {
                 grid-template-columns: 1fr;
+                display: grid;
+                justify-content: center;
             }
         }
         
@@ -594,6 +596,11 @@
                 transform: translateY(-150%);
                 transition: transform 0.4s ease-in;
                 border-radius: 0 0 8px 8px;
+            }
+
+                        .social-grid {
+                display: grid;
+                justify-content: center;
             }
             
             .nav-links.active {
@@ -642,6 +649,11 @@
         @media (max-width: 576px) {
             section {
                 padding: 50px 0;
+            }
+
+            .social-grid {
+                display: grid;
+                justify-content: center;
             }
             
             h2 {
@@ -781,6 +793,12 @@
             
             #yandex-map {
                 height: 300px;
+            }
+
+            .social-grid {
+                grid-template-columns: 1fr;
+                display: grid;
+                justify-content: center;
             }
         }
     </style>
