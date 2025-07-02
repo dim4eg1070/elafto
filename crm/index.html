@@ -1002,8 +1002,8 @@
         <!-- Прайс-лист -->
         <section id="pricelist" class="content-section">
             <div class="card">
-                <div class="price-list-header">
-                    <h2 class="section-title"><i class="fas fa-tags fa-users1"></i> Прайс-лист услуг</h2>
+                <div class="card-header">
+                    <h2 class="card-title"><i class="fas fa-tags"></i> Прайс-лист услуг</h2>
                     <div class="price-list-actions">
                         <button class="btn btn-secondary" id="importPriceListBtn"><i class="fas fa-file-import"></i> Импорт Excel</button>
                         <button class="btn btn-primary" id="addPriceItemBtn"><i class="fas fa-plus"></i> Добавить услугу</button>
@@ -1079,7 +1079,7 @@
         <section id="expenses" class="content-section">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title"><i class="fas fa-money-bill-wave fa-users1"></i> Управление расходами</h2>
+                    <h2 class="card-title"><i class="fas fa-money-bill-wave"></i> Управление расходами</h2>
                     <button class="btn btn-primary" id="addExpenseBtn"><i class="fas fa-plus"></i> Добавить расход</button>
                 </div>
                 
@@ -1125,7 +1125,7 @@
                     <button class="btn btn-secondary" id="cancelExpenseBtn">Отмена</button>
                 </div>
                 
-                <div class="expense-form-grid">
+                <div class="form-grid">
                     <div class="form-group">
                         <label for="expenseDate">Дата</label>
                         <input type="date" id="expenseDate">
@@ -1448,7 +1448,6 @@
                 weekdayElement.className = 'calendar-weekday';
                 weekdayElement.innerHTML = `
                     <div class="weekday-name">${weekdaysRu[i % 7]}</div>
-
                 `;
                 calendarGrid.appendChild(weekdayElement);
             }
@@ -1904,11 +1903,6 @@
             
             // Услуги калькулятора
             document.getElementById('saveServiceBtn').addEventListener('click', saveService);
-            document.getElementById('addServiceBtn').addEventListener('click', () => {
-                document.getElementById('serviceName').value = '';
-                document.getElementById('serviceCost').value = '1000';
-                currentServiceId = null;
-            });
             
             // Расходы
             document.getElementById('addExpenseBtn').addEventListener('click', () => {
@@ -2690,38 +2684,6 @@
                 notification.classList.remove(type);
             }, 3000);
         }
-
-        // Добавьте этот блок кода после функции renderCalendar (в конец скрипта)
-document.addEventListener('DOMContentLoaded', function() {
-    // Обработчики навигации
-    document.getElementById('calendarPrevYear').addEventListener('click', () => {
-        calendarDate.setFullYear(calendarDate.getFullYear() - 1);
-        renderCalendar();
-    });
-
-    document.getElementById('calendarPrevMonth').addEventListener('click', () => {
-        calendarDate.setMonth(calendarDate.getMonth() - 1);
-        renderCalendar();
-    });
-
-    document.getElementById('calendarToday').addEventListener('click', () => {
-        calendarDate = new Date();
-        renderCalendar();
-    });
-
-    document.getElementById('calendarNextMonth').addEventListener('click', () => {
-        calendarDate.setMonth(calendarDate.getMonth() + 1);
-        renderCalendar();
-    });
-
-    document.getElementById('calendarNextYear').addEventListener('click', () => {
-        calendarDate.setFullYear(calendarDate.getFullYear() + 1);
-        renderCalendar();
-    });
-
-    // Инициализация календаря
-    renderCalendar();
-});
     </script>
 </body>
 </html>
