@@ -1,0 +1,2877 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Мобильное приложение для создания отчётов предпокупной диагностики автомобилей">
+  <title>ELAFTO - Отчёт диагностики</title>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #1a237e;
+      --secondary-color: #6a1b9a;
+      --accent-color: #ff6f00;
+      --bg-color: #f5f5f5;
+      --text-color: #212121;
+      --text-secondary: #757575;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --error: #f44336;
+      --border-color: #e0e0e0;
+    }
+
+    html {
+      font-size: 14px;
+    }
+
+    body {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding-bottom: 140px;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: 2px;
+    }
+
+    .header h2 {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      opacity: 0.95;
+    }
+
+    .header p {
+      font-size: 13px;
+      opacity: 0.9;
+      margin: 0.25rem 0;
+    }
+
+    .btn-archive {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 0.75rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-archive:active {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(0.98);
+    }
+
+    /* MAIN CONTENT */
+    main {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0;
+    }
+
+    /* SECTIONS */
+    .section {
+      background: white;
+      margin: 0.75rem;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-left: 4px solid var(--primary-color);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: var(--bg-color);
+      cursor: pointer;
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+
+    .section-header:active {
+      background: #e8e8e8;
+    }
+
+    .section-header h3 {
+      font-size: 15px;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .section-toggle {
+      font-size: 20px;
+      transition: transform 0.3s ease;
+      margin-left: 0.5rem;
+    }
+
+    .section-toggle.open {
+      transform: rotate(180deg);
+    }
+
+    .section-indicator {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      margin-left: 0.5rem;
+    }
+
+    .section-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .section-content.open {
+      max-height: 5000px;
+      padding: 1rem;
+    }
+
+    /* FORM ELEMENTS */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      font-size: 13px;
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="date"],
+    textarea,
+    select {
+      font-size: 16px;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      width: 100%;
+      font-family: inherit;
+      color: var(--text-color);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23212121' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      padding-right: 2.5rem;
+      background-color: white;
+    }
+
+    /* RADIO BUTTONS */
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .radio-option:active {
+      background: var(--bg-color);
+      transform: scale(0.98);
+    }
+
+    .radio-option input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.75rem;
+      cursor: pointer;
+      accent-color: var(--secondary-color);
+    }
+
+    .radio-option label {
+      margin: 0;
+      font-weight: 500;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    /* CHECKBOXES */
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: white;
+      transition: all 0.3s ease;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.75rem;
+      cursor: pointer;
+      accent-color: var(--secondary-color);
+    }
+
+    .checkbox-item label {
+      margin: 0;
+      font-weight: 500;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    /* SUBSECTION FOR CHECKED ITEMS */
+    .sub-details {
+      display: none;
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+      background: var(--bg-color);
+      border-radius: 8px;
+    }
+
+    .sub-details.visible {
+      display: block;
+    }
+
+    /* FOOTER */
+    .footer {
+      background: white;
+      padding: 1.5rem;
+      margin: 0.75rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-top: 4px solid var(--primary-color);
+    }
+
+    .footer h3 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+      letter-spacing: 1px;
+    }
+
+    .footer p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin: 0.25rem 0;
+    }
+
+    /* ACTION BUTTONS */
+    .action-buttons {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+      padding: 0.75rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.5rem;
+      z-index: 999;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      min-height: 44px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .btn-action:active {
+      transform: scale(0.95);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .btn-action-large {
+      grid-column: 1 / 4;
+      background: var(--accent-color);
+      padding: 1rem;
+      font-size: 14px;
+    }
+
+    .btn-action-large:active {
+      background: #e65100;
+    }
+
+    /* NOTIFICATION */
+    .notification {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120px);
+      background: var(--success);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 10000;
+      transition: transform 0.3s ease;
+      font-weight: 600;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .notification.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .notification.error {
+      background: var(--error);
+    }
+
+    .notification.warning {
+      background: var(--warning);
+    }
+
+    /* MODAL */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: flex-end;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px 16px 0 0;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      max-width: 480px;
+      margin: 0 auto;
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.3);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .modal-header h2 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      background: var(--bg-color);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:active {
+      background: var(--border-color);
+    }
+
+    /* ARCHIVE ITEMS */
+    .archive-item {
+      background: var(--bg-color);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--secondary-color);
+    }
+
+    .archive-info {
+      margin-bottom: 0.75rem;
+    }
+
+    .archive-info h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .archive-info p {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .archive-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .archive-actions button {
+      background: white;
+      border: 1px solid var(--border-color);
+      padding: 0.5rem;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-height: 36px;
+    }
+
+    .archive-actions button:active {
+      background: var(--bg-color);
+      transform: scale(0.95);
+    }
+
+    .archive-delete {
+      background: rgba(244, 67, 54, 0.1);
+      color: var(--error);
+      border-color: var(--error);
+    }
+
+    .archive-empty {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    /* CONFIRMATION MODAL */
+    .confirmation-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10001;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .confirmation-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .confirmation-box {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      max-width: 85%;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .confirmation-box h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+    }
+
+    .confirmation-box p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .confirmation-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .confirmation-buttons button {
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-height: 44px;
+    }
+
+    .btn-confirm {
+      background: var(--error);
+      color: white;
+    }
+
+    .btn-confirm:active {
+      background: #d32f2f;
+      transform: scale(0.98);
+    }
+
+    .btn-cancel {
+      background: var(--bg-color);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-cancel:active {
+      background: #e0e0e0;
+      transform: scale(0.98);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 480px) {
+      body {
+        padding-bottom: 140px;
+      }
+
+      .action-buttons {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 12px 12px 0 0;
+      }
+
+      .modal-content {
+        max-width: 100%;
+      }
+    }
+
+    /* PRINT STYLES */
+    @media print {
+      .header,
+      .action-buttons,
+      .btn-archive,
+      .footer {
+        display: none !important;
+      }
+
+      html,
+      body {
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+        color: black !important;
+      }
+
+      * {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      main {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+
+      .section {
+        page-break-inside: avoid;
+        margin: 0 0 10px 0 !important;
+        padding: 0 !important;
+        border: 1px solid #ccc;
+        box-shadow: none;
+        border-radius: 0;
+        display: block !important;
+        width: 100% !important;
+        overflow: visible !important;
+      }
+
+      .section:first-of-type {
+        margin-top: 0 !important;
+      }
+
+      .section-header {
+        background: var(--primary-color);
+        color: white;
+        padding: 8px !important;
+        margin: 0 !important;
+        cursor: default;
+        page-break-after: avoid;
+        display: block !important;
+      }
+
+      .section-header h3 {
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 14px !important;
+      }
+
+      .section-toggle,
+      .section-indicator {
+        display: none !important;
+      }
+
+      .section-content {
+        max-height: none !important;
+        height: auto !important;
+        padding: 8px !important;
+        margin: 0 !important;
+        display: block !important;
+        overflow: visible !important;
+      }
+
+      .form-group {
+        page-break-inside: avoid;
+        margin-bottom: 8px !important;
+        display: block !important;
+      }
+
+      label {
+        display: block !important;
+        margin: 0 0 4px 0 !important;
+        padding: 0 !important;
+        font-size: 12px !important;
+      }
+
+      input,
+      textarea,
+      select {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 4px !important;
+        font-size: 11px !important;
+        border: 1px solid #ccc !important;
+      }
+
+      .sub-details {
+        display: block !important;
+        margin: 8px 0 !important;
+        padding: 8px !important;
+        background: #f5f5f5;
+        border-radius: 0;
+      }
+
+      .radio-group,
+      .checkbox-group {
+        display: block !important;
+        margin: 4px 0 !important;
+      }
+
+      .radio-option,
+      .checkbox-item {
+        display: block !important;
+        margin: 2px 0 !important;
+        padding: 4px !important;
+        border: none !important;
+        page-break-inside: avoid;
+      }
+
+      .modal,
+      .notification,
+      .confirmation-overlay {
+        display: none !important;
+      }
+
+      h4 {
+        margin: 8px 0 4px 0 !important;
+        padding: 0 !important;
+        font-size: 13px !important;
+        page-break-after: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <h1>ELAFTO</h1>
+    <h2>Отчёт предпокупной диагностики</h2>
+    <p>📞 +7 (952) 408-40-43</p>
+    <p>📍 Челябинск, Автодорожная 12А/2</p>
+    <button class="btn-archive" onclick="openArchive()">📚 Архив отчётов</button>
+  </header>
+
+  <!-- MAIN FORM -->
+  <main id="report-content">
+
+    <!-- РАЗДЕЛ 2: ИНФОРМАЦИЯ ОБ АВТОМОБИЛЕ -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>🚗 Информация об автомобиле</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="form-group">
+          <label>Марка и модель</label>
+          <input type="text" name="carMarka" placeholder="Toyota Camry">
+        </div>
+        <div class="form-group">
+          <label>Год выпуска</label>
+          <input type="number" name="carYear" min="1950" max="2025" placeholder="2018">
+        </div>
+        <div class="form-group">
+          <label>VIN номер</label>
+          <input type="text" name="carVIN" maxlength="17" placeholder="JTNBE46K403...">
+        </div>
+        <div class="form-group">
+          <label>Гос. номер (опционально)</label>
+          <input type="text" name="carGosNumber" placeholder="А123БВ174">
+        </div>
+        <div class="form-group">
+          <label>Цвет кузова</label>
+          <input type="text" name="carColor" placeholder="Белый">
+        </div>
+        <div class="form-group">
+          <label>Объём двигателя (л)</label>
+          <input type="number" name="carEngineVolume" step="0.1" placeholder="2.5">
+        </div>
+        <div class="form-group">
+          <label>Тип двигателя</label>
+          <select name="carEngineType">
+            <option value="">Выберите</option>
+            <option value="Бензин">Бензин</option>
+            <option value="Дизель">Дизель</option>
+            <option value="Гибрид">Гибрид</option>
+            <option value="Электро">Электро</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Тип КПП</label>
+          <select name="carTransmissionType">
+            <option value="">Выберите</option>
+            <option value="МКПП">МКПП</option>
+            <option value="АКПП">АКПП</option>
+            <option value="Вариатор">Вариатор</option>
+            <option value="Робот">Робот</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Пробег по приборке (км)</label>
+          <input type="number" name="carMileage" placeholder="85000">
+        </div>
+        <div class="form-group">
+          <label>Дата осмотра</label>
+          <input type="date" name="inspectionDate">
+        </div>
+        <div class="form-group">
+          <label>Место осмотра</label>
+          <textarea name="inspectionLocation" placeholder="Челябинск, ул. Ленина 10"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 3: ПРОВЕРКА РЕАЛЬНОГО ПРОБЕГА -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>📊 Проверка реального пробега</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="form-group">
+          <label>Пробег по приборке (км)</label>
+          <input type="number" name="mileageDashboard" placeholder="85000">
+        </div>
+        <div class="form-group">
+          <label>Реальный пробег (км)</label>
+          <input type="number" name="mileageReal" placeholder="110000">
+        </div>
+        <div class="form-group">
+          <label>Блоки считывания</label>
+          <textarea name="mileageBlocks" placeholder="ЭБУ двигателя, АКПП, ABS, подушки безопасности"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Вывод</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="mileageConclusion" value="not_screwed">
+              <span>✅ Не скручен</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="mileageConclusion" value="possible">
+              <span>⚠️ Возможна скрутка</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="mileageConclusion" value="screwed">
+              <span>❌ Пробег скручен</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Комментарий/пояснение</label>
+          <textarea name="mileageComment" placeholder="Явные признаки скрутки..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 4: ТОЛЩИНОМЕТРИЯ КУЗОВА -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>🎨 Толщинометрия кузова</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_hood" onchange="toggleSubDetails(this)">
+            <span>Капот</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="hood_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="hood_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="hood_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_roof" onchange="toggleSubDetails(this)">
+            <span>Крыша</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="roof_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="roof_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="roof_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_frontLeftFender" onchange="toggleSubDetails(this)">
+            <span>Левое переднее крыло</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="frontLeftFender_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="frontLeftFender_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="frontLeftFender_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_frontRightFender" onchange="toggleSubDetails(this)">
+            <span>Правое переднее крыло</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="frontRightFender_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="frontRightFender_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="frontRightFender_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_frontLeftDoor" onchange="toggleSubDetails(this)">
+            <span>Левая передняя дверь</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="frontLeftDoor_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="frontLeftDoor_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="frontLeftDoor_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_frontRightDoor" onchange="toggleSubDetails(this)">
+            <span>Правая передняя дверь</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="frontRightDoor_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="frontRightDoor_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="frontRightDoor_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_rearLeftDoor" onchange="toggleSubDetails(this)">
+            <span>Левая задняя дверь</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="rearLeftDoor_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="rearLeftDoor_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="rearLeftDoor_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_rearRightDoor" onchange="toggleSubDetails(this)">
+            <span>Правая задняя дверь</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="rearRightDoor_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="rearRightDoor_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="rearRightDoor_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_rearLeftFender" onchange="toggleSubDetails(this)">
+            <span>Левое заднее крыло</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="rearLeftFender_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="rearLeftFender_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="rearLeftFender_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_rearRightFender" onchange="toggleSubDetails(this)">
+            <span>Правое заднее крыло</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="rearRightFender_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="rearRightFender_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="rearRightFender_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_trunkLid" onchange="toggleSubDetails(this)">
+            <span>Крышка багажника</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="trunkLid_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="trunkLid_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="trunkLid_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_frontBumper" onchange="toggleSubDetails(this)">
+            <span>Передний бампер</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="frontBumper_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="frontBumper_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="frontBumper_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_rearBumper" onchange="toggleSubDetails(this)">
+            <span>Задний бампер</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="rearBumper_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="rearBumper_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="rearBumper_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_leftSill" onchange="toggleSubDetails(this)">
+            <span>Пороги левые</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="leftSill_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="leftSill_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="leftSill_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+
+          <label class="checkbox-item">
+            <input type="checkbox" name="bodyPart_rightSill" onchange="toggleSubDetails(this)">
+            <span>Пороги правые</span>
+          </label>
+          <div class="sub-details">
+            <input type="number" name="rightSill_factory" placeholder="Заводская (мкм)" style="margin-bottom: 0.5rem;">
+            <input type="number" name="rightSill_actual" placeholder="Фактическая (мкм)" style="margin-bottom: 0.5rem;">
+            <select name="rightSill_status">
+              <option value="">Статус</option>
+              <option value="original">Родная</option>
+              <option value="repainted">Перекрашена</option>
+              <option value="putty">Шпаклёвана</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label>Общий вывод по кузову</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="bodyConclusion" value="not_damaged">
+              <span>✅ Не бит, не крашен</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="bodyConclusion" value="minor_repair">
+              <span>⚠️ Незначительный ремонт (1-2 детали)</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="bodyConclusion" value="major_accident">
+              <span>❌ Крупное ДТП, перекрас</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea name="bodyComment" placeholder="Перекрашен капот..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 5: ДИАГНОСТИКА ДВИГАТЕЛЯ -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>⚙️ Диагностика двигателя</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <h4 style="margin: 0.75rem 0 0.5rem 0; font-weight: 600;">Визуальный осмотр</h4>
+        
+        <div class="form-group">
+          <label>Состояние моторного отсека</label>
+          <select name="engineBayCondition">
+            <option value="">Выберите</option>
+            <option value="clean">Чистый</option>
+            <option value="dirty">Грязный</option>
+            <option value="freshly_washed">Свежевымытый</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="oilLeaksPresent" onchange="toggleSubDetails(this)">
+            <span>Утечки масла</span>
+          </label>
+          <div class="sub-details">
+            <textarea name="oilLeaksLocation" placeholder="Где именно..." style="margin: 0;"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="coolantLeaksPresent" onchange="toggleSubDetails(this)">
+            <span>Утечки антифриза</span>
+          </label>
+          <div class="sub-details">
+            <textarea name="coolantLeaksLocation" placeholder="Где именно..." style="margin: 0;"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Состояние ремня ГРМ/цепи</label>
+          <textarea name="timingBeltCondition" placeholder="Хорошее, замена не требуется"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Состояние навесного оборудования</label>
+          <textarea name="attachmentsCondition" placeholder="Генератор шумит"></textarea>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.5rem 0; font-weight: 600;">Замер компрессии</h4>
+
+        <div class="form-group">
+          <label>Количество цилиндров</label>
+          <select name="cylinderCount" onchange="updateCompressionFields()">
+            <option value="">Выберите</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+            <option value="12">12</option>
+          </select>
+        </div>
+
+        <div id="compression-fields"></div>
+
+        <div class="form-group">
+          <label>Норма для данного двигателя (атм)</label>
+          <input type="number" name="compressionNorm" placeholder="12" step="0.1">
+        </div>
+
+        <div class="form-group">
+          <label>Вывод</label>
+          <select name="compressionConclusion">
+            <option value="">Выберите</option>
+            <option value="normal">В норме</option>
+            <option value="spread">Разброс</option>
+            <option value="low">Низкая</option>
+          </select>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.5rem 0; font-weight: 600;">Эндоскопия двигателя</h4>
+
+        <div class="form-group">
+          <label>Состояние цилиндров</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="cylindersCondition" value="clean">
+              <span>✅ Чистые, без задиров</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="cylindersCondition" value="carbon">
+              <span>⚠️ Нагар, требуется чистка</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="cylindersCondition" value="damaged">
+              <span>❌ Задиры, трещины, износ</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Состояние поршней</label>
+          <textarea name="pistonsCondition" placeholder="Без задиров"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Состояние клапанов</label>
+          <textarea name="valvesCondition" placeholder="Норма"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea name="endoscopyComment" placeholder="..."></textarea>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.5rem 0; font-weight: 600;">Работа двигателя</h4>
+
+        <div class="form-group">
+          <label>Запуск</label>
+          <select name="engineStart">
+            <option value="">Выберите</option>
+            <option value="easy">Лёгкий</option>
+            <option value="difficult">Затруднённый</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Холостой ход</label>
+          <select name="engineIdle">
+            <option value="">Выберите</option>
+            <option value="smooth">Ровный</option>
+            <option value="floating">Плавающий</option>
+            <option value="vibrations">Вибрации</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Посторонние звуки</label>
+          <textarea name="engineNoises" placeholder="Лёгкий стук клапанов"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Цвет выхлопа</label>
+          <select name="exhaustColor">
+            <option value="">Выберите</option>
+            <option value="transparent">Прозрачный</option>
+            <option value="blue">Сизый</option>
+            <option value="black">Чёрный</option>
+            <option value="white">Белый</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea name="engineComment" placeholder="..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 6: КОМПЬЮТЕРНАЯ ДИАГНОСТИКА -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>🖥️ Компьютерная диагностика</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="form-group">
+          <label>Количество найденных ошибок</label>
+          <input type="number" name="errorsCount" placeholder="3">
+        </div>
+
+        <div class="form-group">
+          <label>Список ошибок (код + расшифровка)</label>
+          <textarea name="errorsList" placeholder="P0300 — Множественные пропуски зажигания&#10;P0171 — Бедная смесь"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Критичность ошибок</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="errorsCriticality" value="none">
+              <span>✅ Нет критичных ошибок</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="errorsCriticality" value="warning">
+              <span>⚠️ Есть, но не срочные</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="errorsCriticality" value="critical">
+              <span>❌ Есть критичные (требуют немедленного устранения)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea name="diagnosticsComment" placeholder="..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 7: КОРОБКА ПЕРЕДАЧ -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>⚡ Коробка передач</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <h4 style="margin: 0 0 0.75rem 0; font-weight: 600;">Механическая КПП</h4>
+
+        <div class="form-group">
+          <label>Переключение передач</label>
+          <select name="manualShifting">
+            <option value="">Выберите</option>
+            <option value="clear">Чёткое</option>
+            <option value="unclear">Нечёткое</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Посторонние звуки</label>
+          <textarea name="manualNoises" placeholder="Нет"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Сцепление</label>
+          <select name="clutchCondition">
+            <option value="">Выберите</option>
+            <option value="normal">Схватывает нормально</option>
+            <option value="slipping">Пробуксовывает</option>
+            <option value="dragging">Ведёт</option>
+          </select>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.75rem 0; font-weight: 600;">АКПП/Вариатор/Робот</h4>
+
+        <div class="form-group">
+          <label>Переключения</label>
+          <select name="automaticShifting">
+            <option value="">Выберите</option>
+            <option value="smooth">Плавные</option>
+            <option value="jerky">Рывки</option>
+            <option value="kicks">Толчки</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="shiftDelays">
+            <span>Задержки при переключении</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="slippage">
+            <span>Пробуксовки</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Цвет масла АКПП</label>
+          <select name="atfColor">
+            <option value="">Выберите</option>
+            <option value="normal">Нормальное</option>
+            <option value="dark">Тёмное</option>
+            <option value="burnt">Горелое</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Уровень масла АКПП</label>
+          <select name="atfLevel">
+            <option value="">Выберите</option>
+            <option value="normal">Норма</option>
+            <option value="low">Низкий</option>
+            <option value="high">Высокий</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Запах масла</label>
+          <select name="atfSmell">
+            <option value="">Выберите</option>
+            <option value="normal">Нормальное</option>
+            <option value="burnt">Горелое</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Вывод</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="transmissionConclusion" value="good">
+              <span>✅ Отличное состояние</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="transmissionConclusion" value="service_needed">
+              <span>⚠️ Требуется обслуживание</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="transmissionConclusion" value="repair_needed">
+              <span>❌ Требуется ремонт</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea name="transmissionComment" placeholder="..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 8: ХОДОВАЯ ЧАСТЬ И ПОДВЕСКА -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>🔧 Ходовая часть и подвеска</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <h4 style="margin: 0 0 0.75rem 0; font-weight: 600;">Передняя подвеска</h4>
+
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_shockAbsorbers">
+            <span>Стойки амортизаторов (левая/правая)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_springs">
+            <span>Пружины</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_bearingSupports">
+            <span>Опорные подшипники</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_controlArms">
+            <span>Рычаги передние</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_silentBlocks">
+            <span>Сайлентблоки рычагов</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_ballJoints">
+            <span>Шаровые опоры</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_tieRodEnds">
+            <span>Рулевые наконечники</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_tieRods">
+            <span>Рулевые тяги</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_innerCVJoints">
+            <span>ШРУСы внутренние</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_outerCVJoints">
+            <span>ШРУСы наружные</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_stabilizer">
+            <span>Стабилизатор и втулки</span>
+          </label>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.75rem 0; font-weight: 600;">Задняя подвеска</h4>
+
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_rearShocks">
+            <span>Амортизаторы (левый/правый)</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_rearSprings">
+            <span>Пружины</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_rearControlArms">
+            <span>Рычаги задние</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_rearSilentBlocks">
+            <span>Сайлентблоки</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="suspension_hubBearings">
+            <span>Ступичные подшипники</span>
+          </label>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label>Общий вывод</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="suspensionConclusion" value="excellent">
+              <span>✅ Отличное состояние</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="suspensionConclusion" value="consumables_needed">
+              <span>⚠️ Требуется замена расходников</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="suspensionConclusion" value="major_repair">
+              <span>❌ Убита, требует серьёзного ремонта</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Что требует замены в первую очередь</label>
+          <textarea name="suspensionPriority" placeholder="Замена передних стоек"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea name="suspensionComment" placeholder="..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 9: ТОРМОЗНАЯ СИСТЕМА -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>🛑 Тормозная система</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="form-group">
+          <label>Передние тормозные колодки (остаток %, мм)</label>
+          <input type="text" name="frontBrakePads" placeholder="40%, 5мм">
+        </div>
+
+        <div class="form-group">
+          <label>Задние тормозные колодки (остаток %, мм)</label>
+          <input type="text" name="rearBrakePads" placeholder="60%, 7мм">
+        </div>
+
+        <div class="form-group">
+          <label>Передние тормозные диски (состояние, толщина)</label>
+          <input type="text" name="frontBrakeDiscs" placeholder="Норма, 24мм">
+        </div>
+
+        <div class="form-group">
+          <label>Задние тормозные диски (состояние)</label>
+          <input type="text" name="rearBrakeDiscs" placeholder="Изношены">
+        </div>
+
+        <div class="form-group">
+          <label>Тормозные шланги</label>
+          <select name="brakeHoses">
+            <option value="">Выберите</option>
+            <option value="intact">Целые</option>
+            <option value="cracked">Трещины</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="brakeFluidLeaks">
+            <span>Утечки тормозной жидкости</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Уровень тормозной жидкости</label>
+          <select name="brakeFluidLevel">
+            <option value="">Выберите</option>
+            <option value="normal">Норма</option>
+            <option value="low">Низкий</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Работа ручного тормоза</label>
+          <select name="parkingBrake">
+            <option value="">Выберите</option>
+            <option value="works">Работает</option>
+            <option value="weak">Не держит</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Вывод</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="brakesConclusion" value="normal">
+              <span>✅ В норме</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="brakesConclusion" value="warning">
+              <span>⚠️ Скоро потребуется замена</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="brakesConclusion" value="urgent">
+              <span>❌ Требует немедленной замены</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea name="brakesComment" placeholder="..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 10: РУЛЕВОЕ УПРАВЛЕНИЕ -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>🎯 Рулевое управление</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="steeringPlay">
+            <span>Люфт руля</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Посторонние звуки при повороте</label>
+          <textarea name="steeringNoises" placeholder="Нет"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>ГУР / ЭУР</label>
+          <select name="powerSteering">
+            <option value="">Выберите</option>
+            <option value="normal">Работает нормально</option>
+            <option value="noisy">Шумит</option>
+            <option value="heavy">Тяжёлый</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Уровень жидкости ГУР</label>
+          <select name="powerSteeringFluidLevel">
+            <option value="">Выберите</option>
+            <option value="normal">Норма</option>
+            <option value="low">Низкий</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Рулевая рейка (люфты, стуки, течи)</label>
+          <textarea name="steeringRack" placeholder="Течь справа"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Вывод</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="steeringConclusion" value="excellent">
+              <span>✅ Отличное</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="steeringConclusion" value="attention">
+              <span>⚠️ Требует внимания</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="steeringConclusion" value="repair">
+              <span>❌ Требует ремонта</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea name="steeringComment" placeholder="..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 11: ШИНЫ И ДИСКИ -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>🛞 Шины и диски</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <h4 style="margin: 0 0 0.75rem 0; font-weight: 600;">Передние шины</h4>
+
+        <div class="form-group">
+          <label>Марка и размер</label>
+          <input type="text" name="frontTiresBrand" placeholder="Michelin 215/55 R17">
+        </div>
+
+        <div class="form-group">
+          <label>Остаток протектора (мм)</label>
+          <input type="number" name="frontTiresTread" placeholder="6">
+        </div>
+
+        <div class="form-group">
+          <label>Год выпуска</label>
+          <input type="text" name="frontTiresYear" placeholder="2020">
+        </div>
+
+        <div class="form-group">
+          <label>Равномерность износа</label>
+          <select name="frontTiresWear">
+            <option value="">Выберите</option>
+            <option value="uniform">Равномерный</option>
+            <option value="uneven">Неравномерный</option>
+          </select>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.75rem 0; font-weight: 600;">Задние шины</h4>
+
+        <div class="form-group">
+          <label>Марка и размер</label>
+          <input type="text" name="rearTiresBrand" placeholder="Michelin 215/55 R17">
+        </div>
+
+        <div class="form-group">
+          <label>Остаток протектора (мм)</label>
+          <input type="number" name="rearTiresTread" placeholder="5">
+        </div>
+
+        <div class="form-group">
+          <label>Год выпуска</label>
+          <input type="text" name="rearTiresYear" placeholder="2019">
+        </div>
+
+        <div class="form-group">
+          <label>Равномерность износа</label>
+          <select name="rearTiresWear">
+            <option value="">Выберите</option>
+            <option value="uniform">Равномерный</option>
+            <option value="uneven">Неравномерный</option>
+          </select>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.75rem 0; font-weight: 600;">Диски</h4>
+
+        <div class="form-group">
+          <label>Состояние дисков</label>
+          <select name="wheelsCondition">
+            <option value="">Выберите</option>
+            <option value="intact">Целые</option>
+            <option value="damaged">Битые</option>
+            <option value="restored">Восстановленные</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="wheelHernias">
+            <span>Грыжи на шинах</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Балансировка</label>
+          <select name="wheelBalancing">
+            <option value="">Выберите</option>
+            <option value="good">Хорошая</option>
+            <option value="needed">Требуется</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Вывод</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="tiresConclusion" value="good">
+              <span>✅ Хорошее состояние</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="tiresConclusion" value="warning">
+              <span>⚠️ Требуется замена в ближайшее время</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="tiresConclusion" value="urgent">
+              <span>❌ Требуется немедленная замена</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 12: ЭЛЕКТРООБОРУДОВАНИЕ И ЭЛЕКТРОНИКА -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>⚡ Электрооборудование и электроника</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="form-group">
+          <label>АКБ (год выпуска, напряжение, состояние)</label>
+          <input type="text" name="battery" placeholder="2022, 12.6В, Хорошее">
+        </div>
+
+        <div class="form-group">
+          <label>Генератор (напряжение заряда, В)</label>
+          <input type="text" name="alternator" placeholder="14.2">
+        </div>
+
+        <div class="form-group">
+          <label>Стартер</label>
+          <select name="starter">
+            <option value="">Выберите</option>
+            <option value="normal">Работает нормально</option>
+            <option value="tight">Туго</option>
+          </select>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.75rem 0; font-weight: 600;">Рабочие элементы</h4>
+
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" name="headlights">
+            <span>Все фары и габариты</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="turnSignals">
+            <span>Поворотники</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="brakeLights">
+            <span>Стоп-сигналы</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="mirrorHeating">
+            <span>Обогрев зеркал</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="windowHeating">
+            <span>Обогрев стёкол</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="steeringWheelHeating">
+            <span>Обогрев руля</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="windowLifters">
+            <span>Стеклоподъёмники</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="centralLock">
+            <span>Центральный замок</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="parkingSensors">
+            <span>Датчики парковки</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="rearCamera">
+            <span>Камера заднего вида</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="multimedia">
+            <span>Мультимедиа система</span>
+          </label>
+        </div>
+
+        <div class="form-group" style="margin-top: 1rem;">
+          <label>Кондиционер</label>
+          <select name="airConditioning">
+            <option value="">Выберите</option>
+            <option value="works">Работает</option>
+            <option value="not_working">Не работает</option>
+            <option value="needs_refill">Требует заправки</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Печка</label>
+          <select name="heater">
+            <option value="">Выберите</option>
+            <option value="works">Работает</option>
+            <option value="not_working">Не работает</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Вывод</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="electricsConclusion" value="all_works">
+              <span>✅ Всё работает</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="electricsConclusion" value="some_issues">
+              <span>⚠️ Есть неработающие элементы</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="electricsConclusion" value="multiple_problems">
+              <span>❌ Множественные проблемы</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea name="electricsComment" placeholder="Не работает обогрев правого зеркала"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 13: САЛОН -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>🪑 Салон</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="form-group">
+          <label>Состояние сидений</label>
+          <select name="seatsCondition">
+            <option value="">Выберите</option>
+            <option value="excellent">Отлично</option>
+            <option value="wear">Потёртости</option>
+            <option value="holes">Дыры</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Состояние руля</label>
+          <select name="steeringWheelCondition">
+            <option value="">Выберите</option>
+            <option value="excellent">Отлично</option>
+            <option value="wear">Потёрт</option>
+            <option value="damage">Повреждён</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Состояние КПП/селектора</label>
+          <select name="shifterCondition">
+            <option value="">Выберите</option>
+            <option value="excellent">Отлично</option>
+            <option value="wear">Потёрт</option>
+            <option value="damage">Повреждён</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Состояние потолка</label>
+          <select name="ceilingCondition">
+            <option value="">Выберите</option>
+            <option value="excellent">Отлично</option>
+            <option value="wear">Потёрт</option>
+            <option value="sagging">Провисает</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Состояние ковролина</label>
+          <select name="carpetCondition">
+            <option value="">Выберите</option>
+            <option value="excellent">Отлично</option>
+            <option value="wear">Потёрт</option>
+            <option value="damage">Повреждён</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Запах в салоне</label>
+          <select name="interiorSmell">
+            <option value="">Выберите</option>
+            <option value="normal">Нормальный</option>
+            <option value="musty">Затхлый</option>
+            <option value="damp">Сырость</option>
+            <option value="burnt">Гарь</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="interiorRepairTraces">
+            <span>Следы ремонта салона</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="seatAdjustments">
+            <span>Работа регулировок сидений</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="seatbelts">
+            <span>Ремни безопасности</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Вывод</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="interiorConclusion" value="excellent">
+              <span>✅ Отличное</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="interiorConclusion" value="wear">
+              <span>⚠️ Есть износ</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="interiorConclusion" value="restoration">
+              <span>❌ Требует восстановления</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 14: КУЗОВ И ЛКП -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>🎨 Кузов и ЛКП</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="form-group">
+          <label>Сколы на капоте</label>
+          <textarea name="hoodChips" placeholder="Мелкие сколы от камней"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Царапины</label>
+          <textarea name="scratches" placeholder="Царапина на правой двери"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Вмятины</label>
+          <textarea name="dents" placeholder="Нет"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Коррозия (где именно)</label>
+          <textarea name="corrosion" placeholder="Очаги на порогах"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Состояние порогов</label>
+          <textarea name="sillsCondition" placeholder="Начальная коррозия"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Состояние днища (если смотровая яма)</label>
+          <textarea name="underbodyCondition" placeholder="Не осматривалось"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Состояние арок</label>
+          <textarea name="wheelArchsCondition" placeholder="Норма"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Лобовое стекло (сколы, трещины)</label>
+          <textarea name="windshield" placeholder="Скол в центре 2см"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Остальные стёкла</label>
+          <textarea name="otherWindows" placeholder="Без дефектов"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Вывод</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="bodyPaintConclusion" value="excellent">
+              <span>✅ Отличное</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="bodyPaintConclusion" value="defects">
+              <span>⚠️ Есть дефекты</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="bodyPaintConclusion" value="repair_needed">
+              <span>❌ Требует кузовного ремонта</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 15: ПРОВЕРКА ДОКУМЕНТОВ -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>📋 Проверка документов</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <h4 style="margin: 0 0 0.75rem 0; font-weight: 600;">ПТС</h4>
+
+        <div class="form-group">
+          <label>Тип</label>
+          <select name="ptsType">
+            <option value="">Выберите</option>
+            <option value="original">Оригинал</option>
+            <option value="duplicate">Дубликат</option>
+            <option value="electronic">Электронный</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Проверка УФ-фонарём</label>
+          <select name="ptsUVCheck">
+            <option value="">Выберите</option>
+            <option value="authentic">Подлинный</option>
+            <option value="suspicious">Подозрение</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Количество владельцев</label>
+          <input type="number" name="ownersCount" placeholder="2">
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="restrictions">
+            <span>Наличие ограничений</span>
+          </label>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.75rem 0; font-weight: 600;">СТС</h4>
+
+        <div class="form-group">
+          <label>Подлинность</label>
+          <select name="stsAuthenticity">
+            <option value="">Выберите</option>
+            <option value="authentic">Подлинный</option>
+            <option value="suspicious">Подозрение</option>
+          </select>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.75rem 0; font-weight: 600;">Дополнительно</h4>
+
+        <div class="form-group">
+          <label class="checkbox-item" style="border: none; padding: 0;">
+            <input type="checkbox" name="serviceBook">
+            <span>Сервисная книжка</span>
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>История обслуживания</label>
+          <textarea name="serviceHistory" placeholder="Обслуживание у дилера до 50тыс.км"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Проверка по базам (розыск, залог, ограничения)</label>
+          <textarea name="databaseCheck" placeholder="Чисто по базам"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Вывод</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="documentsConclusion" value="clean">
+              <span>✅ Всё чисто</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="documentsConclusion" value="warnings">
+              <span>⚠️ Дубликат ПТС / Несколько владельцев</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="documentsConclusion" value="problems">
+              <span>❌ Подозрение на проблемы</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea name="documentsComment" placeholder="..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 16: ТЕСТ-ДРАЙВ -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>🚙 Тест-драйв</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="form-group">
+          <label>Разгон</label>
+          <select name="acceleration">
+            <option value="">Выберите</option>
+            <option value="normal">Нормальный</option>
+            <option value="sluggish">Вялый</option>
+            <option value="jerky">Рывки</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Торможение</label>
+          <select name="braking">
+            <option value="">Выберите</option>
+            <option value="effective">Эффективное</option>
+            <option value="pulls_aside">Увод в сторону</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Управляемость</label>
+          <textarea name="handling" placeholder="Отличная"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Посторонние звуки при движении</label>
+          <textarea name="drivingNoises" placeholder="Нет посторонних звуков"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Вибрации</label>
+          <textarea name="vibrations" placeholder="Нет"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Работа коробки на ходу</label>
+          <textarea name="transmissionOnMove" placeholder="Переключения плавные"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Работа тормозов</label>
+          <textarea name="brakingOnMove" placeholder="Эффективное"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea name="testDriveComment" placeholder="..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 17: ДОПОЛНИТЕЛЬНЫЕ ПРОВЕРКИ -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>🔬 Дополнительные проверки</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="form-group">
+          <label>Проведённые проверки и результаты</label>
+          <textarea name="additionalComment" placeholder="Дымогенератор, геометрия кузова, UV-лампа..."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 18: СМЕТА НА УСТРАНЕНИЕ ДЕФЕКТОВ -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>💰 Смета на устранение дефектов</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div id="repair-items"></div>
+        <button onclick="addRepairItem()" style="width: 100%; padding: 0.75rem; background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; font-weight: 600; color: var(--text-color); cursor: pointer; margin-bottom: 1rem; transition: all 0.3s ease;" onmouseover="this.style.background='#e0e0e0'" onmouseout="this.style.background='var(--bg-color)'">+ Добавить работу</button>
+        <div style="padding: 1rem; background: var(--bg-color); border-radius: 8px; font-weight: 600; font-size: 15px;">
+          ИТОГО: <span id="repair-total">0</span> ₽
+        </div>
+      </div>
+    </section>
+
+    <!-- РАЗДЕЛ 19: ИТОГОВОЕ ЗАКЛЮЧЕНИЕ -->
+    <section class="section">
+      <div class="section-header" onclick="toggleSection(this)">
+        <h3>📊 Итоговое заключение</h3>
+        <span class="section-toggle">▼</span>
+        <span class="section-indicator">○</span>
+      </div>
+      <div class="section-content">
+        <div class="form-group">
+          <label>Общая оценка автомобиля</label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="overallRating" value="recommend">
+              <span>✅ Рекомендую к покупке (хорошее состояние)</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="overallRating" value="bargain">
+              <span>⚠️ Можно брать, но торговаться (есть дефекты)</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="overallRating" value="not_recommend">
+              <span>❌ НЕ рекомендую к покупке (слишком много проблем)</span>
+            </label>
+          </div>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.75rem 0; font-weight: 600;">Рекомендуемая цена</h4>
+
+        <div class="form-group">
+          <label>Цена в объявлении (₽)</label>
+          <input type="number" name="advertPrice" placeholder="1500000">
+        </div>
+
+        <div class="form-group">
+          <label>Стоимость устранения дефектов (₽)</label>
+          <input type="number" name="repairTotalPrice" placeholder="12500" readonly style="background: var(--bg-color);">
+        </div>
+
+        <div class="form-group">
+          <label>Рекомендуемая цена покупки (от)</label>
+          <input type="number" name="recommendedPriceFrom" placeholder="1400000">
+        </div>
+
+        <div class="form-group">
+          <label>Рекомендуемая цена покупки (до)</label>
+          <input type="number" name="recommendedPriceTo" placeholder="1450000">
+        </div>
+
+        <div class="form-group">
+          <label>Итоговый комментарий</label>
+          <textarea name="finalComment" placeholder="Общее впечатление, основные проблемы, рекомендации"></textarea>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <h3>ELAFTO</h3>
+    <p>📍 Челябинск, Автодорожная 12А/2</p>
+    <p>📞 +7 (952) 408-40-43</p>
+    <p>💬 WhatsApp / Telegram</p>
+  </footer>
+
+  <!-- ACTION BUTTONS -->
+  <div class="action-buttons">
+    <button class="btn-action" onclick="saveCurrentReport()">💾 Сохранить</button>
+    <button class="btn-action" onclick="loadCurrentReport()">📂 Загрузить</button>
+    <button class="btn-action" onclick="resetForm()">🗑️ Сбросить</button>
+    <button class="btn-action btn-action-large" onclick="createPDF()">📄 Создать отчёт PDF</button>
+  </div>
+
+  <!-- MODAL: ARCHIVE -->
+  <div class="modal" id="archive-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📚 Архив отчётов</h2>
+        <button class="modal-close" onclick="closeArchive()">✕</button>
+      </div>
+      <div id="archive-list"></div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATION -->
+  <div class="notification" id="notification"></div>
+
+  <!-- CONFIRMATION MODAL -->
+  <div class="confirmation-overlay" id="confirmation-overlay">
+    <div class="confirmation-box">
+      <h3 id="confirmation-title">Подтверждение</h3>
+      <p id="confirmation-message">Вы уверены?</p>
+      <div class="confirmation-buttons">
+        <button class="btn-confirm" id="btn-confirm-yes" onclick="confirmAction()">Да, подтвердить</button>
+        <button class="btn-cancel" onclick="cancelAction()">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let pendingAction = null;
+
+    // ИНИЦИАЛИЗАЦИЯ
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCurrentReport();
+      setupAutoSave();
+      setupSectionIndicators();
+      renderRepairTable();
+      updateRepairTotal();
+    });
+
+    // TOGGLE SECTION
+    function toggleSection(header) {
+      const content = header.nextElementSibling;
+      const toggle = header.querySelector('.section-toggle');
+      content.classList.toggle('open');
+      toggle.classList.toggle('open');
+    }
+
+    // TOGGLE SUB-DETAILS
+    function toggleSubDetails(checkbox) {
+      const detailsBox = checkbox.nextElementSibling?.nextElementSibling;
+      if (detailsBox && detailsBox.classList.contains('sub-details')) {
+        detailsBox.classList.toggle('visible');
+      }
+    }
+
+    // COMPRESSION FIELDS
+    function updateCompressionFields() {
+      const count = document.querySelector('select[name="cylinderCount"]').value;
+      const container = document.getElementById('compression-fields');
+      container.innerHTML = '';
+      
+      if (count) {
+        for (let i = 1; i <= parseInt(count); i++) {
+          const html = `
+            <div class="form-group">
+              <label>Цилиндр ${i} (атм)</label>
+              <input type="number" name="cylinder${i}" step="0.1" placeholder="12">
+            </div>
+          `;
+          container.innerHTML += html;
+        }
+      }
+    }
+
+    // REPAIR TABLE
+    let repairItems = [];
+
+    function renderRepairTable() {
+      const container = document.getElementById('repair-items');
+      container.innerHTML = '';
+      
+      repairItems.forEach((item, index) => {
+        const html = `
+          <div style="display: grid; grid-template-columns: 1fr 1fr 40px; gap: 0.5rem; margin-bottom: 0.75rem; align-items: end;">
+            <input type="text" placeholder="Работа/деталь" value="${item.work}" onchange="updateRepairItem(${index}, 'work', this.value)" style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px;">
+            <input type="number" placeholder="Стоимость" value="${item.cost}" onchange="updateRepairItem(${index}, 'cost', this.value)" style="padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px;">
+            <button onclick="deleteRepairItem(${index})" style="padding: 0.75rem; background: rgba(244, 67, 54, 0.1); color: var(--error); border: 1px solid var(--error); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(244, 67, 54, 0.2)'" onmouseout="this.style.background='rgba(244, 67, 54, 0.1)'">🗑️</button>
+          </div>
+        `;
+        container.innerHTML += html;
+      });
+    }
+
+    function addRepairItem() {
+      repairItems.push({ work: '', cost: '' });
+      renderRepairTable();
+    }
+
+    function updateRepairItem(index, field, value) {
+      repairItems[index][field] = value;
+      updateRepairTotal();
+    }
+
+    function deleteRepairItem(index) {
+      repairItems.splice(index, 1);
+      renderRepairTable();
+      updateRepairTotal();
+    }
+
+    function updateRepairTotal() {
+      let total = 0;
+      repairItems.forEach(item => {
+        total += parseInt(item.cost) || 0;
+      });
+      document.getElementById('repair-total').textContent = total.toLocaleString('ru-RU') + ' ₽';
+      document.querySelector('input[name="repairTotalPrice"]').value = total;
+    }
+
+    // COLLECT FORM DATA
+    function collectFormData() {
+      const formData = {};
+      
+      document.querySelectorAll('input, textarea, select').forEach(field => {
+        if (field.type === 'checkbox') {
+          formData[field.name] = field.checked;
+        } else if (field.type === 'radio') {
+          const radios = document.querySelectorAll(`input[name="${field.name}"]`);
+          radios.forEach(radio => {
+            if (radio.checked) formData[field.name] = radio.value;
+          });
+        } else if (field.name) {
+          // Очищаем значение от пробелов в начале/конце для корректного сохранения
+          formData[field.name] = (field.value || '').trim() ? field.value.trim() : field.value;
+        }
+      });
+
+      formData.repairItems = repairItems;
+      return formData;
+    }
+
+    // FILL FORM DATA
+    function fillFormData(data) {
+      Object.keys(data).forEach(key => {
+        if (key === 'repairItems') {
+          repairItems = data[key] || [];
+          renderRepairTable();
+          updateRepairTotal();
+          return;
+        }
+
+        const field = document.querySelector(`[name="${key}"]`);
+        if (field) {
+          if (field.type === 'checkbox') {
+            field.checked = data[key] === true;
+            const detailsBox = field.nextElementSibling?.nextElementSibling;
+            if (detailsBox && detailsBox.classList.contains('sub-details')) {
+              if (field.checked) {
+                detailsBox.classList.add('visible');
+              } else {
+                detailsBox.classList.remove('visible');
+              }
+            }
+          } else if (field.type === 'radio') {
+            const radios = document.querySelectorAll(`input[name="${key}"]`);
+            radios.forEach(radio => {
+              radio.checked = radio.value === data[key];
+            });
+          } else {
+            field.value = data[key] || '';
+          }
+        }
+      });
+
+      updateSectionIndicators();
+    }
+
+    // SAVE CURRENT REPORT
+    function saveCurrentReport() {
+      const formData = collectFormData();
+      const report = {
+        lastSaved: new Date().toISOString(),
+        formData: formData
+      };
+      localStorage.setItem('currentReport', JSON.stringify(report));
+      
+      // Добавляем в архив при сохранении (если есть хотя бы марка авто)
+      const marka = (formData.carMarka || '').trim();
+      const model = (formData.carModel || '').trim();
+      
+      if (marka) {
+        addToArchive(formData);
+        showNotification('✅ Данные сохранены и добавлены в архив', 'success');
+      } else {
+        showNotification('✅ Данные сохранены (укажите марку для архива)', 'success');
+      }
+    }
+
+    // LOAD CURRENT REPORT
+    function loadCurrentReport() {
+      const saved = localStorage.getItem('currentReport');
+      if (saved) {
+        try {
+          const report = JSON.parse(saved);
+          fillFormData(report.formData);
+          showNotification('✅ Данные загружены', 'success');
+        } catch (e) {
+          console.error('Error loading report:', e);
+        }
+      } else {
+        showNotification('⚠️ Нет сохранённых данных', 'warning');
+      }
+    }
+
+    // RESET FORM
+    function resetForm() {
+      showConfirmation(
+        'Очистить форму?',
+        'Все несохранённые данные будут потеряны.',
+        () => {
+          document.querySelectorAll('input, textarea, select').forEach(field => {
+            if (field.type === 'checkbox' || field.type === 'radio') {
+              field.checked = false;
+            } else {
+              field.value = '';
+            }
+          });
+          localStorage.removeItem('currentReport');
+          repairItems = [];
+          renderRepairTable();
+          updateRepairTotal();
+          updateSectionIndicators();
+          showNotification('✅ Форма очищена', 'success');
+        }
+      );
+    }
+
+    // PREPARE PDF CONTENT - раскрытие всех секций и очистка плейсхолдеров
+    function preparePDFContent() {
+      const original = document.getElementById('report-content');
+      const clone = original.cloneNode(true);
+      
+      // Раскрываем все секции для PDF
+      clone.querySelectorAll('.section-content').forEach(content => {
+        content.classList.add('open');
+        content.style.maxHeight = 'none';
+        content.style.display = 'block';
+      });
+
+      clone.querySelectorAll('.section-toggle').forEach(toggle => {
+        toggle.classList.add('open');
+      });
+      
+      // Удаляем все плейсхолдеры
+      clone.querySelectorAll('[placeholder]').forEach(field => {
+        field.removeAttribute('placeholder');
+        
+        // Если поле пусто, добавляем "не заполнено" в светло-сером цвете
+        if (!field.value.trim()) {
+          field.style.color = '#999';
+          field.value = '(не заполнено)';
+        }
+      });
+      
+      // Очищаем пустые textarea
+      clone.querySelectorAll('textarea').forEach(field => {
+        if (!field.value.trim()) {
+          field.style.color = '#999';
+          field.value = '(не заполнено)';
+        }
+      });
+      
+      return clone;
+    }
+
+    // CREATE PDF
+    async function createPDF() {
+      const formData = collectFormData();
+      
+      showNotification('⏳ Создание PDF...', 'success');
+
+      try {
+        const marka = (formData.carMarka || 'Auto').trim();
+        const model = (formData.carModel || 'Model').trim();
+        const filename = `Otchet_${marka}_${model}_${new Date().toLocaleDateString('ru-RU').replace(/\./g, '-')}.pdf`;
+        
+        const pdfContent = preparePDFContent();
+        const opt = {
+          margin: 8,
+          filename: filename,
+          image: { type: 'jpeg', quality: 0.95 },
+          html2canvas: { scale: 2, letterRendering: true, useCORS: true },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true }
+        };
+
+        await html2pdf().from(pdfContent).set(opt).save();
+
+        addToArchive(formData);
+        showNotification('✅ PDF создан успешно!', 'success');
+      } catch (error) {
+        console.error('PDF Error:', error);
+        showNotification('❌ Ошибка создания PDF', 'error');
+      }
+    }
+
+    // ADD TO ARCHIVE
+    function addToArchive(reportData) {
+      const archive = JSON.parse(localStorage.getItem('reportsArchive') || '[]');
+      const marka = (reportData.carMarka || '').trim() || 'Авто';
+      const model = (reportData.carModel || '').trim() || '';
+      
+      const newReport = {
+        id: Date.now().toString(),
+        carMarka: marka,
+        carModel: model,
+        dateCreated: new Date().toLocaleDateString('ru-RU'),
+        timeCreated: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }),
+        reportData: reportData
+      };
+      archive.unshift(newReport);
+      localStorage.setItem('reportsArchive', JSON.stringify(archive));
+    }
+
+    // OPEN ARCHIVE
+    function openArchive() {
+      const modal = document.getElementById('archive-modal');
+      modal.classList.add('show');
+      renderArchive();
+    }
+
+    // CLOSE ARCHIVE
+    function closeArchive() {
+      document.getElementById('archive-modal').classList.remove('show');
+    }
+
+    // RENDER ARCHIVE
+    function renderArchive() {
+      const archive = JSON.parse(localStorage.getItem('reportsArchive') || '[]');
+      const container = document.getElementById('archive-list');
+
+      if (archive.length === 0) {
+        container.innerHTML = '<div class="archive-empty">Архив пуст</div>';
+        return;
+      }
+
+      container.innerHTML = archive.map(report => `
+        <div class="archive-item">
+          <div class="archive-info">
+            <h4>🚗 ${report.carMarka} ${report.carModel}</h4>
+            <p>📅 ${report.dateCreated} 🕐 ${report.timeCreated}</p>
+          </div>
+          <div class="archive-actions">
+            <button onclick="loadReport('${report.id}')" style="flex: 1; background: white; border: 1px solid var(--secondary-color); color: var(--secondary-color); padding: 0.5rem; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(106, 27, 154, 0.1)'" onmouseout="this.style.background='white'">📄 Открыть</button>
+            <button onclick="deleteFromArchive('${report.id}')" class="archive-delete" style="flex: 1;">🗑️ Удалить</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // LOAD REPORT FROM ARCHIVE
+    function loadReport(reportId) {
+      const archive = JSON.parse(localStorage.getItem('reportsArchive') || '[]');
+      const report = archive.find(r => r.id === reportId);
+      if (report) {
+        fillFormData(report.reportData);
+        closeArchive();
+        showNotification('✅ Отчёт загружен', 'success');
+      }
+    }
+
+    // DELETE FROM ARCHIVE
+    function deleteFromArchive(reportId) {
+      showConfirmation(
+        'Удалить отчёт?',
+        'Это действие невозможно отменить.',
+        () => {
+          let archive = JSON.parse(localStorage.getItem('reportsArchive') || '[]');
+          archive = archive.filter(r => r.id !== reportId);
+          localStorage.setItem('reportsArchive', JSON.stringify(archive));
+          renderArchive();
+          showNotification('✅ Отчёт удалён', 'success');
+        }
+      );
+    }
+
+    // SECTION INDICATORS
+    function setupSectionIndicators() {
+      document.querySelectorAll('.section').forEach(section => {
+        section.addEventListener('input', () => {
+          updateSectionIndicator(section);
+        });
+        section.addEventListener('change', () => {
+          updateSectionIndicator(section);
+        });
+      });
+    }
+
+    function updateSectionIndicators() {
+      document.querySelectorAll('.section').forEach(section => {
+        updateSectionIndicator(section);
+      });
+    }
+
+    function updateSectionIndicator(section) {
+      const fields = section.querySelectorAll('input, textarea, select');
+      let filledCount = 0;
+
+      fields.forEach(f => {
+        if (f.type === 'checkbox') {
+          if (f.checked) filledCount++;
+        } else if (f.type === 'radio') {
+          // Count unique radio groups
+        } else if (f.value.trim() !== '') {
+          filledCount++;
+        }
+      });
+
+      const indicator = section.querySelector('.section-indicator');
+      if (filledCount === 0) {
+        indicator.textContent = '○';
+      } else if (filledCount >= fields.length * 0.5) {
+        indicator.textContent = '◉';
+      } else {
+        indicator.textContent = '◐';
+      }
+    }
+
+    // AUTO-SAVE
+    function setupAutoSave() {
+      setInterval(() => {
+        const formData = collectFormData();
+        localStorage.setItem('currentReport', JSON.stringify({
+          lastSaved: new Date().toISOString(),
+          formData: formData
+        }));
+      }, 30000);
+    }
+
+    // NOTIFICATIONS
+    function showNotification(message, type = 'success') {
+      const notif = document.getElementById('notification');
+      notif.textContent = message;
+      notif.className = 'notification show ' + type;
+      setTimeout(() => {
+        notif.classList.remove('show');
+      }, 3000);
+    }
+
+    // CONFIRMATION
+    function showConfirmation(title, message, onConfirm) {
+      const overlay = document.getElementById('confirmation-overlay');
+      document.getElementById('confirmation-title').textContent = title;
+      document.getElementById('confirmation-message').textContent = message;
+      pendingAction = onConfirm;
+      overlay.classList.add('show');
+    }
+
+    function confirmAction() {
+      if (pendingAction) {
+        pendingAction();
+        pendingAction = null;
+      }
+      document.getElementById('confirmation-overlay').classList.remove('show');
+    }
+
+    function cancelAction() {
+      pendingAction = null;
+      document.getElementById('confirmation-overlay').classList.remove('show');
+    }
+  </script>
+</body>
+</html>
