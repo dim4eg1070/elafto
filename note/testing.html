@@ -567,34 +567,20 @@
             margin: 20px 0;
         }
 
-        .reset-btn, .export-btn, .import-btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
         .reset-btn {
+            width: 100%;
+            padding: 12px;
             background: var(--warning);
             color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .export-btn {
-            background: var(--success);
-            color: #000;
-        }
-
-        .import-btn {
-            background: var(--accent);
-            color: #000;
-        }
-
-        .reset-btn:active, .export-btn:active, .import-btn:active {
+        .reset-btn:active {
             transform: scale(0.95);
         }
 
@@ -634,7 +620,7 @@
             flex: 1;
             padding: 10px;
             background: rgba(255, 255, 255, 0.05);
-            border: none;
+            border: 2px solid transparent;
             border-radius: 10px;
             color: var(--text-dim);
             cursor: pointer;
@@ -644,9 +630,9 @@
         }
 
         .period-btn.active {
+            border-color: var(--accent);
             color: var(--accent);
             background: rgba(0, 212, 255, 0.1);
-            border: 2px solid var(--accent);
         }
 
         .period-btn:active {
@@ -690,6 +676,32 @@
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 5px;
+        }
+
+        .export-btn, .import-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .export-btn {
+            background: var(--success);
+            color: #000;
+        }
+
+        .import-btn {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .export-btn:active, .import-btn:active {
+            transform: scale(0.95);
         }
 
         input[type="file"] {
@@ -740,6 +752,106 @@
         input:checked + .toggle-slider:before {
             transform: translateX(22px);
         }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 8px;
+            border: 2px solid transparent;
+        }
+
+        .calendar-day.header {
+            cursor: default;
+            background: transparent;
+            color: var(--text-dim);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.3;
+        }
+
+        .calendar-day.today {
+            border-color: var(--accent);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .calendar-day.selected {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .calendar-day.has-data {
+            position: relative;
+        }
+
+        .calendar-day.has-data::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 4px;
+            height: 4px;
+            background: var(--success);
+            border-radius: 50%;
+        }
+
+        .calendar-day:not(.header):active {
+            transform: scale(0.9);
+        }
+
+        .calendar-day-number {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .calendar-month {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .calendar-nav button {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-nav button:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -757,13 +869,18 @@
         <div class="quick-days" id="quickDays"></div>
     </div>
 
-    <div id="mainScreen" class="container"></div>
+    <!-- Главный экран -->
+    <div id="mainScreen" class="container">
+        <!-- Слоты будут отображаться динамически -->
+    </div>
 
+    <!-- Лист ожидания -->
     <div id="waitlistScreen" class="container" style="display: none;">
         <div class="section-title">⏳ Лист ожидания</div>
         <div id="waitlistContainer"></div>
     </div>
 
+    <!-- Статистика -->
     <div id="statsScreen" class="container" style="display: none;">
         <div class="section-title">📊 Статистика</div>
         
@@ -790,6 +907,7 @@
         </div>
     </div>
 
+    <!-- История -->
     <div id="historyScreen" class="container" style="display: none;">
         <div class="section-title">🔍 История клиентов</div>
         
@@ -800,9 +918,11 @@
         <div id="historyContainer"></div>
     </div>
 
+    <!-- Настройки -->
     <div id="settingsScreen" class="container" style="display: none;">
         <div class="section-title">⚙️ Настройки окон</div>
         
+        <!-- Окно 1 -->
         <div class="settings-group" id="slot1Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 1</span>
@@ -821,6 +941,7 @@
             </div>
         </div>
 
+        <!-- Окно 2 -->
         <div class="settings-group" id="slot2Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 2</span>
@@ -839,6 +960,7 @@
             </div>
         </div>
 
+        <!-- Пробки -->
         <div class="settings-group" id="trafficGroup">
             <div class="settings-group-title">
                 <span>⛔ Пробки</span>
@@ -857,6 +979,7 @@
             </div>
         </div>
 
+        <!-- Окно 3 -->
         <div class="settings-group" id="slot3Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 3</span>
@@ -875,6 +998,7 @@
             </div>
         </div>
 
+        <!-- Окно 4 (НОВОЕ) -->
         <div class="settings-group disabled" id="slot4Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 4</span>
@@ -893,6 +1017,7 @@
             </div>
         </div>
 
+        <!-- Окно 5 (НОВОЕ) -->
         <div class="settings-group disabled" id="slot5Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 5</span>
@@ -911,6 +1036,7 @@
             </div>
         </div>
 
+        <!-- Окно 6 (НОВОЕ) -->
         <div class="settings-group disabled" id="slot6Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 6</span>
@@ -929,6 +1055,7 @@
             </div>
         </div>
 
+        <!-- Экстренно -->
         <div class="settings-group" id="emergencyGroup">
             <div class="settings-group-title">
                 <span>🧯 Экстренно</span>
@@ -963,8 +1090,10 @@
         </button>
     </div>
 
+    <!-- FAB кнопка -->
     <button class="fab" onclick="openAddModal()">+</button>
 
+    <!-- Нижнее меню -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showScreen('main')">
             <div class="icon">📅</div>
@@ -988,6 +1117,7 @@
         </div>
     </div>
 
+    <!-- Модалка добавления -->
     <div id="addModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">➕ Новая запись</div>
@@ -1029,6 +1159,7 @@
         </div>
     </div>
 
+    <!-- Модалка завершения работы -->
     <div id="completeModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">✅ Завершить работу</div>
@@ -1049,31 +1180,56 @@
         </div>
     </div>
 
+    <!-- Модалка выбора даты с календарем -->
     <div id="dateModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">📅 Выбрать дату</div>
-            <div class="form-group">
-                <input type="date" id="datePicker" style="width: 100%;">
+            
+            <div class="calendar-header">
+                <button class="calendar-nav" onclick="changeCalendarMonth(-1)" style="width: auto; padding: 0 15px;">◀</button>
+                <div class="calendar-month" id="calendarMonth"></div>
+                <button class="calendar-nav" onclick="changeCalendarMonth(1)" style="width: auto; padding: 0 15px;">▶</button>
             </div>
-            <div class="modal-actions">
+            
+            <div class="calendar-grid" id="calendarGrid"></div>
+            
+            <div class="modal-actions" style="margin-top: 20px;">
                 <button class="btn btn-secondary" onclick="closeDatePicker()">Отмена</button>
-                <button class="btn btn-primary" onclick="applyDate()">Выбрать</button>
+                <button class="btn btn-primary" onclick="applyCalendarDate()">Выбрать</button>
             </div>
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
+        // Настройки по умолчанию (ДОБАВЛЕНЫ slot4, slot5, slot6)
         const defaultSettings = {
-            slot1Start: '12:00', slot1End: '14:30', slot1Enabled: true,
-            slot2Start: '14:30', slot2End: '16:30', slot2Enabled: true,
-            trafficStart: '16:30', trafficEnd: '18:30', trafficEnabled: true,
-            slot3Start: '18:30', slot3End: '21:30', slot3Enabled: true,
-            slot4Start: '21:30', slot4End: '23:30', slot4Enabled: false,
-            slot5Start: '09:00', slot5End: '11:00', slot5Enabled: false,
-            slot6Start: '11:00', slot6End: '12:00', slot6Enabled: false,
-            emergencyStart: '21:30', emergencyEnabled: true
+            slot1Start: '12:00',
+            slot1End: '14:30',
+            slot1Enabled: true,
+            slot2Start: '14:30',
+            slot2End: '16:30',
+            slot2Enabled: true,
+            trafficStart: '16:30',
+            trafficEnd: '18:30',
+            trafficEnabled: true,
+            slot3Start: '18:30',
+            slot3End: '21:30',
+            slot3Enabled: true,
+            slot4Start: '21:30',
+            slot4End: '23:30',
+            slot4Enabled: false,
+            slot5Start: '09:00',
+            slot5End: '11:00',
+            slot5Enabled: false,
+            slot6Start: '11:00',
+            slot6End: '12:00',
+            slot6Enabled: false,
+            emergencyStart: '21:30',
+            emergencyEnabled: true
         };
 
+        // SVG иконки
         const icons = {
             phone: `<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`,
             sms: `<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>`,
@@ -1081,56 +1237,108 @@
             telegram: `<svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>`
         };
 
+        // Глобальные переменные
         let currentDate = new Date();
+        let calendarDate = new Date();
+        let selectedCalendarDate = null;
         let allSchedules = JSON.parse(localStorage.getItem('allSchedules')) || {};
         let settings = JSON.parse(localStorage.getItem('timeSettings')) || {...defaultSettings};
         let completedJobs = JSON.parse(localStorage.getItem('completedJobs')) || [];
         let currentSlotToComplete = null;
         let currentPeriod = 'day';
+
+        // Список всех слотов в порядке их отображения (ДОБАВЛЕНЫ slot4, slot5, slot6)
         const allSlots = ['slot5', 'slot6', 'slot1', 'slot2', 'traffic', 'slot3', 'slot4', 'emergency'];
 
+        // Форматирование даты
         function formatDate(date) {
-            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
 
+        function formatDateTime(date) {
+            return date.toISOString();
+        }
+
+        // Получить расписание (ДОБАВЛЕНЫ slot4, slot5, slot6)
         function getCurrentSchedule() {
             const dateKey = formatDate(currentDate);
             if (!allSchedules[dateKey]) {
                 allSchedules[dateKey] = {
-                    slot1: null, slot2: null, slot3: null, slot4: null,
-                    slot5: null, slot6: null, emergency: null, waitlist: []
+                    slot1: null,
+                    slot2: null,
+                    slot3: null,
+                    slot4: null,
+                    slot5: null,
+                    slot6: null,
+                    emergency: null,
+                    waitlist: []
                 };
             }
             return allSchedules[dateKey];
         }
 
+        // Сохранение
         function saveAllSchedules() {
             localStorage.setItem('allSchedules', JSON.stringify(allSchedules));
             renderSchedule();
         }
 
+        function saveCompletedJobs() {
+            localStorage.setItem('completedJobs', JSON.stringify(completedJobs));
+            renderStats();
+            if (document.getElementById('historyScreen').style.display !== 'none') {
+                searchHistory();
+            }
+        }
+
+        // Переключение слота
         function toggleSlot(slotId) {
             const checkbox = document.getElementById(slotId + 'Enabled');
             const group = document.getElementById(slotId + 'Group');
-            group.classList.toggle('disabled', !checkbox.checked);
+            
+            if (checkbox.checked) {
+                group.classList.remove('disabled');
+            } else {
+                group.classList.add('disabled');
+            }
         }
 
+        // Кнопки контактов
         function openContact(phone, type) {
             let cleanPhone = phone.replace(/[^0-9]/g, '');
-            if (cleanPhone.startsWith('8')) cleanPhone = '7' + cleanPhone.substring(1);
-            else if (cleanPhone.startsWith('9')) cleanPhone = '7' + cleanPhone;
             
-            const urls = {
-                call: `tel:+${cleanPhone}`,
-                sms: `sms:+${cleanPhone}`,
-                whatsapp: `https://wa.me/${cleanPhone}`,
-                telegram: `https://t.me/+${cleanPhone}`
-            };
+            if (cleanPhone.startsWith('8')) {
+                cleanPhone = '7' + cleanPhone.substring(1);
+            } else if (cleanPhone.startsWith('9')) {
+                cleanPhone = '7' + cleanPhone;
+            }
             
-            if (type === 'call' || type === 'sms') window.location.href = urls[type];
-            else window.open(urls[type], '_blank');
+            let url = '';
+            
+            switch(type) {
+                case 'call':
+                    url = `tel:+${cleanPhone}`;
+                    window.location.href = url;
+                    break;
+                case 'sms':
+                    url = `sms:+${cleanPhone}`;
+                    window.location.href = url;
+                    break;
+                case 'whatsapp':
+                    url = `https://wa.me/${cleanPhone}`;
+                    window.open(url, '_blank');
+                    break;
+                case 'telegram':
+                    url = `https://t.me/+${cleanPhone}`;
+                    window.open(url, '_blank');
+                    break;
+            }
         }
 
+        // Изменение даты
         function changeDate(days) {
             currentDate.setDate(currentDate.getDate() + days);
             updateDateDisplay();
@@ -1141,7 +1349,12 @@
         function updateDateDisplay() {
             const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
             const daysShort = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-            document.getElementById('currentDate').textContent = `${String(currentDate.getDate()).padStart(2, '0')}.${String(currentDate.getMonth() + 1).padStart(2, '0')}.${currentDate.getFullYear()}`;
+            const day = daysShort[currentDate.getDay()];
+            const date = currentDate.getDate().toString().padStart(2, '0');
+            const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            const year = currentDate.getFullYear();
+            
+            document.getElementById('currentDate').textContent = `${date}.${month}.${year}`;
             document.getElementById('currentDay').textContent = days[currentDate.getDay()];
         }
 
@@ -1149,17 +1362,21 @@
             const container = document.getElementById('quickDays');
             const today = new Date();
             const currentKey = formatDate(currentDate);
-            let html = '';
             
+            let html = '';
             for (let i = 0; i < 7; i++) {
                 const date = new Date(today);
                 date.setDate(today.getDate() + i);
                 const dateKey = formatDate(date);
                 const daysShort = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+                const day = daysShort[date.getDay()];
+                const dateNum = date.getDate();
+                
+                const isToday = dateKey === currentKey;
                 html += `
-                    <div class="quick-day ${dateKey === currentKey ? 'today' : ''}" onclick="jumpToDate('${dateKey}')">
-                        <div class="quick-day-name">${daysShort[date.getDay()]}</div>
-                        <div class="quick-day-date">${date.getDate()}</div>
+                    <div class="quick-day ${isToday ? 'today' : ''}" onclick="jumpToDate('${dateKey}')">
+                        <div class="quick-day-name">${day}</div>
+                        <div class="quick-day-date">${dateNum}</div>
                     </div>
                 `;
             }
@@ -1174,8 +1391,11 @@
             renderQuickDays();
         }
 
+        // КАЛЕНДАРЬ
         function openDatePicker() {
-            document.getElementById('datePicker').value = formatDate(currentDate);
+            calendarDate = new Date(currentDate);
+            selectedCalendarDate = new Date(currentDate);
+            renderCalendar();
             document.getElementById('dateModal').classList.add('active');
         }
 
@@ -1183,18 +1403,86 @@
             document.getElementById('dateModal').classList.remove('active');
         }
 
-        function applyDate() {
-            const selectedDate = document.getElementById('datePicker').value;
-            if (selectedDate) {
-                const [year, month, day] = selectedDate.split('-');
-                currentDate = new Date(year, month - 1, day);
+        function changeCalendarMonth(delta) {
+            calendarDate.setMonth(calendarDate.getMonth() + delta);
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+            const monthName = months[calendarDate.getMonth()];
+            const year = calendarDate.getFullYear();
+            
+            document.getElementById('calendarMonth').textContent = `${monthName} ${year}`;
+            
+            const firstDay = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), 1);
+            const lastDay = new Date(calendarDate.getFullYear(), calendarDate.getMonth() + 1, 0);
+            const firstDayOfWeek = (firstDay.getDay() + 6) % 7;
+            
+            const daysInMonth = lastDay.getDate();
+            const prevMonthDays = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), 0).getDate();
+            
+            const grid = document.getElementById('calendarGrid');
+            let html = '';
+            
+            const dayHeaders = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+            dayHeaders.forEach(day => {
+                html += `<div class="calendar-day header">${day}</div>`;
+            });
+            
+            for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+                const day = prevMonthDays - i;
+                html += `<div class="calendar-day other-month">${day}</div>`;
+            }
+            
+            const today = new Date();
+            const todayStr = formatDate(today);
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(calendarDate.getFullYear(), calendarDate.getMonth(), day);
+                const dateStr = formatDate(date);
+                const isToday = dateStr === todayStr;
+                const isSelected = selectedCalendarDate && formatDate(selectedCalendarDate) === dateStr;
+                const hasData = allSchedules[dateStr] && (
+                    allSchedules[dateStr].slot1 || 
+                    allSchedules[dateStr].slot2 || 
+                    allSchedules[dateStr].slot3 ||
+                    allSchedules[dateStr].slot4 ||
+                    allSchedules[dateStr].slot5 ||
+                    allSchedules[dateStr].slot6 ||
+                    allSchedules[dateStr].emergency ||
+                    (allSchedules[dateStr].waitlist && allSchedules[dateStr].waitlist.length > 0)
+                );
+                
+                html += `<div class="calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${hasData ? 'has-data' : ''}" onclick="selectCalendarDate(${date.getFullYear()}, ${date.getMonth()}, ${day})">
+                    <div class="calendar-day-number">${day}</div>
+                </div>`;
+            }
+            
+            const remainingCells = 42 - (firstDayOfWeek + daysInMonth);
+            for (let i = 1; i <= remainingCells; i++) {
+                html += `<div class="calendar-day other-month">${i}</div>`;
+            }
+            
+            grid.innerHTML = html;
+        }
+
+        function selectCalendarDate(year, month, day) {
+            selectedCalendarDate = new Date(year, month, day);
+            renderCalendar();
+        }
+
+        function applyCalendarDate() {
+            if (selectedCalendarDate) {
+                currentDate = new Date(selectedCalendarDate);
                 updateDateDisplay();
                 renderSchedule();
                 renderQuickDays();
+                closeDatePicker();
             }
-            closeDatePicker();
         }
 
+        // Настройки
         function loadSettings() {
             Object.keys(settings).forEach(key => {
                 const input = document.getElementById(key);
@@ -1203,7 +1491,13 @@
                         input.checked = settings[key];
                         const slotId = key.replace('Enabled', '');
                         const group = document.getElementById(slotId + 'Group');
-                        if (group) group.classList.toggle('disabled', !settings[key]);
+                        if (group) {
+                            if (settings[key]) {
+                                group.classList.remove('disabled');
+                            } else {
+                                group.classList.add('disabled');
+                            }
+                        }
                     } else {
                         input.value = settings[key];
                     }
@@ -1212,10 +1506,19 @@
         }
 
         function saveSettings() {
+            const newSettings = {};
             Object.keys(defaultSettings).forEach(key => {
                 const input = document.getElementById(key);
-                if (input) settings[key] = key.includes('Enabled') ? input.checked : input.value;
+                if (input) {
+                    if (key.includes('Enabled')) {
+                        newSettings[key] = input.checked;
+                    } else {
+                        newSettings[key] = input.value;
+                    }
+                }
             });
+            
+            settings = newSettings;
             localStorage.setItem('timeSettings', JSON.stringify(settings));
             renderSchedule();
             updateSlotOptions();
@@ -1238,10 +1541,19 @@
             let html = '<option value="">Выберите окно...</option>';
             
             allSlots.forEach(slotId => {
-                if (slotId === 'traffic' || !settings[slotId + 'Enabled']) return;
-                const start = settings[slotId + 'Start'];
-                const end = settings[slotId + 'End'];
-                html += `<option value="${slotId}">${slotId === 'emergency' ? start + '+ Экстренно' : start + '–' + end}</option>`;
+                if (slotId === 'traffic') return;
+                
+                const enabledKey = slotId + 'Enabled';
+                if (settings[enabledKey]) {
+                    const startKey = slotId + 'Start';
+                    const endKey = slotId + 'End';
+                    
+                    if (slotId === 'emergency') {
+                        html += `<option value="${slotId}">${settings[startKey]}+ Экстренно</option>`;
+                    } else {
+                        html += `<option value="${slotId}">${settings[startKey]}–${settings[endKey]}</option>`;
+                    }
+                }
             });
             
             html += '<option value="waitlist">⏳ Лист ожидания</option>';
@@ -1256,15 +1568,16 @@
             if (!slotId || slotId === 'waitlist') {
                 warning.style.display = 'none';
                 submitBtn.disabled = false;
+                return;
+            }
+            
+            const schedule = getCurrentSchedule();
+            if (schedule[slotId]) {
+                warning.style.display = 'block';
+                submitBtn.disabled = true;
             } else {
-                const schedule = getCurrentSchedule();
-                if (schedule[slotId]) {
-                    warning.style.display = 'block';
-                    submitBtn.disabled = true;
-                } else {
-                    warning.style.display = 'none';
-                    submitBtn.disabled = false;
-                }
+                warning.style.display = 'none';
+                submitBtn.disabled = false;
             }
         }
 
@@ -1274,7 +1587,9 @@
             let html = '';
             
             allSlots.forEach(slotId => {
-                if (!settings[slotId + 'Enabled']) return;
+                const enabledKey = slotId + 'Enabled';
+                
+                if (!settings[enabledKey]) return;
                 
                 if (slotId === 'traffic') {
                     html += `
@@ -1285,27 +1600,38 @@
                     `;
                 } else {
                     const data = schedule[slotId];
-                    const time = slotId === 'emergency' ? `🧯 ${settings.emergencyStart}+ Экстренно` : `🚗 ${settings[slotId + 'Start']}–${settings[slotId + 'End']}`;
                     
                     if (data) {
-                        const phoneEsc = data.phone.replace(/'/g, "\\'");
+                        const phoneEscaped = data.phone.replace(/'/g, "\\'");
                         html += `
                             <div class="slot-card filled">
                                 <div class="slot-header">
-                                    <div class="slot-time">${time}</div>
+                                    <div class="slot-time">${getSlotTime(slotId)}</div>
                                     <div class="slot-status">${data.completed ? 'Выполнено' : 'Занято'}</div>
                                 </div>
-                                <div class="slot-info"><div class="label">Имя</div><div class="value">👤 ${data.name}</div></div>
-                                <div class="slot-info"><div class="label">Район</div><div class="value">📍 ${data.area}</div></div>
-                                <div class="slot-info"><div class="label">Телефон</div><div class="value">📞 ${data.phone}</div></div>
-                                <div class="slot-info"><div class="label">Проблема</div><div class="value">🔧 ${data.problem}</div></div>
+                                <div class="slot-info">
+                                    <div class="label">Имя</div>
+                                    <div class="value">👤 ${data.name}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <div class="label">Район</div>
+                                    <div class="value">📍 ${data.area}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <div class="label">Телефон</div>
+                                    <div class="value">📞 ${data.phone}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <div class="label">Проблема</div>
+                                    <div class="value">🔧 ${data.problem}</div>
+                                </div>
                                 ${data.readyEarlier ? '<div class="badge">✅ На отмену</div>' : '<div class="badge no">⬜ НЕТ</div>'}
                                 ${data.completed ? `<div class="badge" style="background: var(--success); margin-left: 8px;">💰 ${data.money}₽</div>` : ''}
                                 <div class="contact-buttons">
-                                    <button class="contact-btn call" onclick="openContact('${phoneEsc}', 'call')">${icons.phone}</button>
-                                    <button class="contact-btn sms" onclick="openContact('${phoneEsc}', 'sms')">${icons.sms}</button>
-                                    <button class="contact-btn whatsapp" onclick="openContact('${phoneEsc}', 'whatsapp')">${icons.whatsapp}</button>
-                                    <button class="contact-btn telegram" onclick="openContact('${phoneEsc}', 'telegram')">${icons.telegram}</button>
+                                    <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
+                                    <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
+                                    <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
+                                    <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
                                 </div>
                                 <div class="slot-actions">
                                     ${!data.completed ? `<button class="btn btn-success" onclick="openCompleteModal('${slotId}')">✅ Завершить</button>` : ''}
@@ -1317,10 +1643,13 @@
                         html += `
                             <div class="slot-card">
                                 <div class="slot-header">
-                                    <div class="slot-time">${time}</div>
+                                    <div class="slot-time">${getSlotTime(slotId)}</div>
                                     <div class="slot-status empty">Свободно</div>
                                 </div>
-                                <div class="empty-state"><div class="icon">📭</div><div>Нет записи</div></div>
+                                <div class="empty-state">
+                                    <div class="icon">📭</div>
+                                    <div>Нет записи</div>
+                                </div>
                             </div>
                         `;
                     }
@@ -1331,9 +1660,21 @@
             renderWaitlist();
         }
 
+        function getSlotTime(slotId) {
+            const startKey = slotId + 'Start';
+            const endKey = slotId + 'End';
+            
+            if (slotId === 'emergency') {
+                return `🧯 ${settings[startKey]}+ Экстренно`;
+            } else {
+                return `🚗 ${settings[startKey]}–${settings[endKey]}`;
+            }
+        }
+
         function deleteSlot(slotId) {
             if (confirm('Удалить запись?')) {
-                getCurrentSchedule()[slotId] = null;
+                const schedule = getCurrentSchedule();
+                schedule[slotId] = null;
                 saveAllSchedules();
             }
         }
@@ -1351,30 +1692,45 @@
 
         document.getElementById('completeForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
             const schedule = getCurrentSchedule();
             const data = schedule[currentSlotToComplete];
-            data.completed = true;
-            data.money = parseInt(document.getElementById('completeMoney').value);
-            data.completedAt = new Date().toISOString();
-            data.comment = document.getElementById('completeComment').value;
+            const money = parseInt(document.getElementById('completeMoney').value);
+            const comment = document.getElementById('completeComment').value;
             
-            completedJobs.push({...data, date: formatDate(currentDate), slotId: currentSlotToComplete});
-            localStorage.setItem('completedJobs', JSON.stringify(completedJobs));
+            data.completed = true;
+            data.money = money;
+            data.completedAt = formatDateTime(new Date());
+            data.comment = comment;
+            
+            completedJobs.push({
+                ...data,
+                date: formatDate(currentDate),
+                slotId: currentSlotToComplete
+            });
+            
             saveAllSchedules();
+            saveCompletedJobs();
             closeCompleteModal();
         });
 
         function renderWaitlist() {
             const container = document.getElementById('waitlistContainer');
-            const waitlist = getCurrentSchedule().waitlist || [];
+            const schedule = getCurrentSchedule();
+            const waitlist = schedule.waitlist || [];
             
             if (waitlist.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="icon">📭</div><div>Список ожидания пуст</div></div>';
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <div>Список ожидания пуст</div>
+                    </div>
+                `;
                 return;
             }
 
             container.innerHTML = waitlist.map((item, index) => {
-                const phoneEsc = item.phone.replace(/'/g, "\\'");
+                const phoneEscaped = item.phone.replace(/'/g, "\\'");
                 return `
                 <div class="waitlist-item">
                     <div class="waitlist-header">
@@ -1384,13 +1740,19 @@
                         </div>
                         ${item.readyEarlier ? '<div class="badge">✅ Готов</div>' : '<div class="badge no">⬜ НЕТ</div>'}
                     </div>
-                    <div class="slot-info"><div class="label">Телефон</div><div class="value">📞 ${item.phone}</div></div>
-                    <div class="slot-info"><div class="label">Проблема</div><div class="value">🔧 ${item.problem}</div></div>
+                    <div class="slot-info">
+                        <div class="label">Телефон</div>
+                        <div class="value">📞 ${item.phone}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Проблема</div>
+                        <div class="value">🔧 ${item.problem}</div>
+                    </div>
                     <div class="contact-buttons">
-                        <button class="contact-btn call" onclick="openContact('${phoneEsc}', 'call')">${icons.phone}</button>
-                        <button class="contact-btn sms" onclick="openContact('${phoneEsc}', 'sms')">${icons.sms}</button>
-                        <button class="contact-btn whatsapp" onclick="openContact('${phoneEsc}', 'whatsapp')">${icons.whatsapp}</button>
-                        <button class="contact-btn telegram" onclick="openContact('${phoneEsc}', 'telegram')">${icons.telegram}</button>
+                        <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
+                        <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
+                        <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
+                        <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
                     </div>
                     <div class="slot-actions">
                         <button class="btn btn-primary" onclick="moveToSlot(${index})">📅 В слот</button>
@@ -1403,7 +1765,8 @@
 
         function deleteWaitlist(index) {
             if (confirm('Удалить из листа ожидания?')) {
-                getCurrentSchedule().waitlist.splice(index, 1);
+                const schedule = getCurrentSchedule();
+                schedule.waitlist.splice(index, 1);
                 saveAllSchedules();
             }
         }
@@ -1418,15 +1781,17 @@
         function closeAddModal() {
             document.getElementById('addModal').classList.remove('active');
             document.getElementById('addForm').reset();
+            document.getElementById('slotWarning').style.display = 'none';
         }
 
         document.getElementById('addForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
             const slotId = document.getElementById('slotSelect').value;
             const schedule = getCurrentSchedule();
             
             if (slotId !== 'waitlist' && schedule[slotId]) {
-                alert('⚠️ Это окно уже занято!');
+                alert('⚠️ Это окно уже занято! Выберите другое.');
                 return;
             }
             
@@ -1439,8 +1804,11 @@
                 completed: false
             };
 
-            if (slotId === 'waitlist') schedule.waitlist.push(data);
-            else schedule[slotId] = data;
+            if (slotId === 'waitlist') {
+                schedule.waitlist.push(data);
+            } else {
+                schedule[slotId] = data;
+            }
 
             saveAllSchedules();
             closeAddModal();
@@ -1452,17 +1820,20 @@
             const freeSlots = enabledSlots.filter(s => !schedule[s]);
             
             if (freeSlots.length === 0) {
-                alert('❌ Все слоты заняты!');
+                alert('❌ Все слоты заняты! Освободите сначала.');
                 return;
             }
 
-            const names = freeSlots.map((s, i) => {
-                const start = settings[s + 'Start'];
-                const end = settings[s + 'End'];
-                return `${i+1}. ${s === 'emergency' ? start + '+ Экстренно' : start + '–' + end}`;
+            const slotNames = {};
+            freeSlots.forEach(s => {
+                const startKey = s + 'Start';
+                const endKey = s + 'End';
+                slotNames[s] = s === 'emergency' ? 
+                    `${settings[startKey]}+ Экстренно` : 
+                    `${settings[startKey]}–${settings[endKey]}`;
             });
 
-            const choice = prompt(`Выберите слот:\n${names.join('\n')}\n\nВведите номер:`);
+            let choice = prompt(`Выберите слот:\n${freeSlots.map((s, i) => `${i+1}. ${slotNames[s]}`).join('\n')}\n\nВведите номер:`);
             
             if (choice && choice > 0 && choice <= freeSlots.length) {
                 const targetSlot = freeSlots[choice - 1];
@@ -1485,17 +1856,23 @@
             let jobs = [];
             
             if (currentPeriod === 'day') {
-                jobs = completedJobs.filter(job => job.date === formatDate(now));
+                const today = formatDate(now);
+                jobs = completedJobs.filter(job => job.date === today);
             } else if (currentPeriod === 'week') {
-                const weekAgo = new Date(now); weekAgo.setDate(weekAgo.getDate() - 7);
+                const weekAgo = new Date(now);
+                weekAgo.setDate(weekAgo.getDate() - 7);
                 jobs = completedJobs.filter(job => new Date(job.completedAt) >= weekAgo);
             } else if (currentPeriod === 'month') {
-                const monthAgo = new Date(now); monthAgo.setMonth(monthAgo.getMonth() - 1);
+                const monthAgo = new Date(now);
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
                 jobs = completedJobs.filter(job => new Date(job.completedAt) >= monthAgo);
             }
             
-            document.getElementById('statTrips').textContent = jobs.length;
-            document.getElementById('statMoney').textContent = jobs.reduce((sum, job) => sum + (job.money || 0), 0) + '₽';
+            const totalTrips = jobs.length;
+            const totalMoney = jobs.reduce((sum, job) => sum + (job.money || 0), 0);
+            
+            document.getElementById('statTrips').textContent = totalTrips;
+            document.getElementById('statMoney').textContent = totalMoney + '₽';
             
             const details = document.getElementById('statDetails');
             if (jobs.length === 0) {
@@ -1515,37 +1892,65 @@
             const container = document.getElementById('historyContainer');
             
             if (!query) {
-                container.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><div>Введите номер телефона</div></div>';
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🔍</div>
+                        <div>Введите номер телефона</div>
+                    </div>
+                `;
                 return;
             }
             
-            const results = completedJobs.filter(job => job.phone.replace(/[^0-9]/g, '').includes(query));
+            const results = completedJobs.filter(job => 
+                job.phone.replace(/[^0-9]/g, '').includes(query)
+            );
             
             if (results.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="icon">❌</div><div>Клиент не найден</div></div>';
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">❌</div>
+                        <div>Клиент не найден</div>
+                    </div>
+                `;
                 return;
             }
             
-            container.innerHTML = results.map(job => {
-                const phoneEsc = job.phone.replace(/'/g, "\\'");
-                const idx = completedJobs.indexOf(job);
+            container.innerHTML = results.map((job, index) => {
+                const phoneEscaped = job.phone.replace(/'/g, "\\'");
                 return `
                 <div class="history-item">
                     <div class="history-date">${job.date}</div>
                     <div class="history-name">${job.name}</div>
-                    <div class="slot-info"><div class="label">Телефон</div><div class="value">📞 ${job.phone}</div></div>
-                    <div class="slot-info"><div class="label">Район</div><div class="value">📍 ${job.area}</div></div>
-                    <div class="slot-info"><div class="label">Проблема</div><div class="value">🔧 ${job.problem}</div></div>
-                    <div class="slot-info"><div class="label">Сумма</div><div class="value">💰 ${job.money}₽</div></div>
-                    ${job.comment ? `<div class="slot-info"><div class="label">Комментарий</div><div class="value">${job.comment}</div></div>` : ''}
+                    <div class="slot-info">
+                        <div class="label">Телефон</div>
+                        <div class="value">📞 ${job.phone}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Район</div>
+                        <div class="value">📍 ${job.area}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Проблема</div>
+                        <div class="value">🔧 ${job.problem}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Сумма</div>
+                        <div class="value">💰 ${job.money}₽</div>
+                    </div>
+                    ${job.comment ? `
+                        <div class="slot-info">
+                            <div class="label">Комментарий</div>
+                            <div class="value">${job.comment}</div>
+                        </div>
+                    ` : ''}
                     <div class="contact-buttons">
-                        <button class="contact-btn call" onclick="openContact('${phoneEsc}', 'call')">${icons.phone}</button>
-                        <button class="contact-btn sms" onclick="openContact('${phoneEsc}', 'sms')">${icons.sms}</button>
-                        <button class="contact-btn whatsapp" onclick="openContact('${phoneEsc}', 'whatsapp')">${icons.whatsapp}</button>
-                        <button class="contact-btn telegram" onclick="openContact('${phoneEsc}', 'telegram')">${icons.telegram}</button>
+                        <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
+                        <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
+                        <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
+                        <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
                     </div>
                     <div class="slot-actions">
-                        <button class="btn btn-danger" onclick="deleteHistory(${idx})">🗑 Удалить</button>
+                        <button class="btn btn-danger" onclick="deleteHistory(${completedJobs.indexOf(job)})">🗑 Удалить</button>
                     </div>
                 </div>
             `;
@@ -1555,9 +1960,7 @@
         function deleteHistory(index) {
             if (confirm('Удалить из истории?')) {
                 completedJobs.splice(index, 1);
-                localStorage.setItem('completedJobs', JSON.stringify(completedJobs));
-                searchHistory();
-                renderStats();
+                saveCompletedJobs();
             }
         }
 
@@ -1566,19 +1969,22 @@
                 schedules: allSchedules,
                 completedJobs: completedJobs,
                 settings: settings,
-                exportDate: new Date().toISOString()
+                exportDate: formatDateTime(new Date())
             };
             
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = `график_выездов_${formatDate(new Date())}.json`;
             a.click();
             URL.revokeObjectURL(url);
-            alert('✅ Данные экспортированы!');
+            
+            alert('✅ Данные экспортированы! Файл сохранён.');
         }
 
+        // ИМПОРТ (НОВЫЙ)
         document.getElementById('importFileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -1586,27 +1992,34 @@
             const reader = new FileReader();
             reader.onload = function(ev) {
                 try {
-                    const data = JSON.parse(ev.target.result);
+                    const importedData = JSON.parse(ev.target.result);
                     
-                    if (!data.schedules || !data.completedJobs) {
-                        alert('❌ Неверный формат файла!');
+                    if (!importedData.schedules || !importedData.completedJobs) {
+                        alert('❌ Ошибка: неверный формат файла!');
                         return;
                     }
 
-                    if (confirm('⚠️ Импорт заменит все данные!\n\nПродолжить?')) {
-                        allSchedules = data.schedules;
-                        completedJobs = data.completedJobs;
-                        if (data.settings) settings = {...defaultSettings, ...data.settings};
+                    if (confirm('⚠️ Импорт заменит все текущие данные!\n\nПродолжить?')) {
+                        allSchedules = importedData.schedules;
+                        completedJobs = importedData.completedJobs;
+                        if (importedData.settings) {
+                            settings = {...defaultSettings, ...importedData.settings};
+                        }
 
                         localStorage.setItem('allSchedules', JSON.stringify(allSchedules));
                         localStorage.setItem('completedJobs', JSON.stringify(completedJobs));
                         localStorage.setItem('timeSettings', JSON.stringify(settings));
 
-                        alert('✅ Данные импортированы!');
+                        loadSettings();
+                        renderSchedule();
+                        renderStats();
+                        updateSlotOptions();
+
+                        alert('✅ Данные успешно импортированы!');
                         location.reload();
                     }
                 } catch (error) {
-                    alert('❌ Ошибка чтения файла!\n\n' + error.message);
+                    alert('❌ Ошибка при чтении файла!\n\n' + error.message);
                 }
             };
             
@@ -1620,37 +2033,37 @@
             
             const dateNav = document.getElementById('dateNavigation');
             const quickDays = document.getElementById('quickDays');
-            const items = document.querySelectorAll('.nav-item');
             
             if (screen === 'main') {
                 document.getElementById('mainScreen').style.display = 'block';
-                items[0].classList.add('active');
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
                 dateNav.style.display = 'flex';
                 quickDays.style.display = 'flex';
             } else if (screen === 'waitlist') {
                 document.getElementById('waitlistScreen').style.display = 'block';
-                items[1].classList.add('active');
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
                 dateNav.style.display = 'flex';
                 quickDays.style.display = 'flex';
             } else if (screen === 'stats') {
                 document.getElementById('statsScreen').style.display = 'block';
-                items[2].classList.add('active');
+                document.querySelectorAll('.nav-item')[2].classList.add('active');
                 dateNav.style.display = 'none';
                 quickDays.style.display = 'none';
                 renderStats();
             } else if (screen === 'history') {
                 document.getElementById('historyScreen').style.display = 'block';
-                items[3].classList.add('active');
+                document.querySelectorAll('.nav-item')[3].classList.add('active');
                 dateNav.style.display = 'none';
                 quickDays.style.display = 'none';
             } else if (screen === 'settings') {
                 document.getElementById('settingsScreen').style.display = 'block';
-                items[4].classList.add('active');
+                document.querySelectorAll('.nav-item')[4].classList.add('active');
                 dateNav.style.display = 'none';
                 quickDays.style.display = 'none';
             }
         }
 
+        // Инициализация
         loadSettings();
         updateDateDisplay();
         renderSchedule();
