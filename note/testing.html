@@ -39,6 +39,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .header.hidden {
+            display: none;
         }
 
         .header h1 {
@@ -775,7 +780,7 @@
 </head>
 <body>
 
-    <div class="header">
+    <div class="header" id="mainHeader">
         <h1>📅 График выездов</h1>
         <div class="date-nav" id="dateNavigation">
             <button onclick="changeDate(-1)">◀</button>
@@ -1119,7 +1124,6 @@
         function openContact(phone, type) {
             let cleanPhone = phone.replace(/[^0-9]/g, '');
             
-            // Для России добавляем +7 если номер начинается с 8 или 9
             if (cleanPhone.startsWith('8')) {
                 cleanPhone = '7' + cleanPhone.substring(1);
             } else if (cleanPhone.startsWith('9')) {
@@ -1597,7 +1601,9 @@
 
         // Навигация
         function showScreen(screen) {
+            // Скрываем все экраны
             document.querySelectorAll('.container').forEach(el => el.style.display = 'none');
+            // Убираем активный класс со всех пунктов меню
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             
             const screenMap = {
@@ -1608,9 +1614,26 @@
                 'settings': 'settingsScreen'
             };
             
+            // Показываем выбранный экран
             document.getElementById(screenMap[screen]).style.display = 'block';
-            event.currentTarget.classList.add('active');
             
+            // Добавляем активный класс к выбранному пункту меню
+            const navItems = document.querySelectorAll('.nav-item');
+            const screenOrder = ['main', 'waitlist', 'stats', 'history', 'settings'];
+            const index = screenOrder.indexOf(screen);
+            if (index !== -1 && navItems[index]) {
+                navItems[index].classList.add('active');
+            }
+            
+            // Управление видимостью календаря
+            const header = document.getElementById('mainHeader');
+            if (screen === 'main' || screen === 'waitlist') {
+                header.classList.remove('hidden');
+            } else {
+                header.classList.add('hidden');
+            }
+            
+            // Загружаем данные для соответствующих экранов
             if (screen === 'stats') renderStats();
             if (screen === 'history') searchHistory();
             if (screen === 'settings') loadSettings();
