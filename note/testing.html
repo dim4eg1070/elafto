@@ -39,11 +39,6 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            transition: all 0.3s ease;
-        }
-
-        .header.hidden {
-            display: none;
         }
 
         .header h1 {
@@ -129,10 +124,6 @@
             background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
             text-align: center;
             padding: 15px;
-        }
-
-        .slot-card.hidden {
-            display: none;
         }
 
         .slot-header {
@@ -535,6 +526,11 @@
             margin-bottom: 15px;
         }
 
+        .settings-group.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
         .settings-group-title {
             font-size: 16px;
             font-weight: 700;
@@ -542,6 +538,7 @@
             margin-bottom: 15px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 8px;
         }
 
@@ -679,11 +676,9 @@
             margin-bottom: 5px;
         }
 
-        .export-btn {
+        .export-btn, .import-btn {
             width: 100%;
             padding: 15px;
-            background: var(--success);
-            color: #000;
             border: none;
             border-radius: 12px;
             font-size: 15px;
@@ -693,25 +688,17 @@
             margin-top: 10px;
         }
 
-        .export-btn:active {
-            transform: scale(0.95);
+        .export-btn {
+            background: var(--success);
+            color: #000;
         }
 
         .import-btn {
-            width: 100%;
-            padding: 15px;
             background: var(--accent);
             color: #000;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
         }
 
-        .import-btn:active {
+        .export-btn:active, .import-btn:active {
             transform: scale(0.95);
         }
 
@@ -719,45 +706,33 @@
             display: none;
         }
 
+        /* Стиль для переключателя (toggle switch) */
         .toggle-switch {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
-        }
-
-        .toggle-switch label {
-            font-size: 14px;
-            color: var(--text);
-            margin: 0;
-        }
-
-        .switch {
             position: relative;
             display: inline-block;
             width: 50px;
             height: 28px;
         }
 
-        .switch input {
+        .toggle-switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
 
-        .slider {
+        .toggle-slider {
             position: absolute;
             cursor: pointer;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.2);
             transition: 0.3s;
-            border-radius: 28px;
+            border-radius: 34px;
         }
 
-        .slider:before {
+        .toggle-slider:before {
             position: absolute;
             content: "";
             height: 20px;
@@ -769,18 +744,18 @@
             border-radius: 50%;
         }
 
-        input:checked + .slider {
+        input:checked + .toggle-slider {
             background-color: var(--accent);
         }
 
-        input:checked + .slider:before {
+        input:checked + .toggle-slider:before {
             transform: translateX(22px);
         }
     </style>
 </head>
 <body>
 
-    <div class="header" id="mainHeader">
+    <div class="header">
         <h1>📅 График выездов</h1>
         <div class="date-nav" id="dateNavigation">
             <button onclick="changeDate(-1)">◀</button>
@@ -795,11 +770,7 @@
 
     <!-- Главный экран -->
     <div id="mainScreen" class="container">
-        <div class="slot-card" id="slot1"></div>
-        <div class="slot-card" id="slot2"></div>
-        <div class="slot-card traffic" id="trafficSlot"></div>
-        <div class="slot-card" id="slot3"></div>
-        <div class="slot-card" id="emergency"></div>
+        <!-- Слоты будут отображаться динамически -->
     </div>
 
     <!-- Лист ожидания -->
@@ -848,10 +819,17 @@
 
     <!-- Настройки -->
     <div id="settingsScreen" class="container" style="display: none;">
-        <div class="section-title">⚙️ Настройки</div>
+        <div class="section-title">⚙️ Настройки окон</div>
         
-        <div class="settings-group">
-            <div class="settings-group-title">🚗 Окно 1</div>
+        <!-- Окно 1 -->
+        <div class="settings-group" id="slot1Group">
+            <div class="settings-group-title">
+                <span>🚗 Окно 1</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="slot1Enabled" checked onchange="toggleSlot('slot1')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
             <div class="time-input-group">
                 <label>Начало:</label>
                 <input type="time" id="slot1Start" value="12:00">
@@ -862,8 +840,15 @@
             </div>
         </div>
 
-        <div class="settings-group">
-            <div class="settings-group-title">🚗 Окно 2</div>
+        <!-- Окно 2 -->
+        <div class="settings-group" id="slot2Group">
+            <div class="settings-group-title">
+                <span>🚗 Окно 2</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="slot2Enabled" checked onchange="toggleSlot('slot2')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
             <div class="time-input-group">
                 <label>Начало:</label>
                 <input type="time" id="slot2Start" value="14:30">
@@ -874,29 +859,34 @@
             </div>
         </div>
 
-        <div class="settings-group">
-            <div class="settings-group-title">⛔ Пробки</div>
-            <div class="toggle-switch">
-                <label>Показывать окно пробок</label>
-                <label class="switch">
-                    <input type="checkbox" id="trafficVisible" onchange="toggleTrafficVisibility()" checked>
-                    <span class="slider"></span>
+        <!-- Пробки -->
+        <div class="settings-group" id="trafficGroup">
+            <div class="settings-group-title">
+                <span>⛔ Пробки</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="trafficEnabled" checked onchange="toggleSlot('traffic')">
+                    <span class="toggle-slider"></span>
                 </label>
             </div>
-            <div id="trafficSettings">
-                <div class="time-input-group">
-                    <label>Начало:</label>
-                    <input type="time" id="trafficStart" value="16:30">
-                </div>
-                <div class="time-input-group">
-                    <label>Конец:</label>
-                    <input type="time" id="trafficEnd" value="18:30">
-                </div>
+            <div class="time-input-group">
+                <label>Начало:</label>
+                <input type="time" id="trafficStart" value="16:30">
+            </div>
+            <div class="time-input-group">
+                <label>Конец:</label>
+                <input type="time" id="trafficEnd" value="18:30">
             </div>
         </div>
 
-        <div class="settings-group">
-            <div class="settings-group-title">🚗 Окно 3</div>
+        <!-- Окно 3 -->
+        <div class="settings-group" id="slot3Group">
+            <div class="settings-group-title">
+                <span>🚗 Окно 3</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="slot3Enabled" checked onchange="toggleSlot('slot3')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
             <div class="time-input-group">
                 <label>Начало:</label>
                 <input type="time" id="slot3Start" value="18:30">
@@ -907,8 +897,72 @@
             </div>
         </div>
 
-        <div class="settings-group">
-            <div class="settings-group-title">🧯 Экстренно</div>
+        <!-- Окно 4 (новое) -->
+        <div class="settings-group disabled" id="slot4Group">
+            <div class="settings-group-title">
+                <span>🚗 Окно 4</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="slot4Enabled" onchange="toggleSlot('slot4')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="time-input-group">
+                <label>Начало:</label>
+                <input type="time" id="slot4Start" value="21:30">
+            </div>
+            <div class="time-input-group">
+                <label>Конец:</label>
+                <input type="time" id="slot4End" value="23:30">
+            </div>
+        </div>
+
+        <!-- Окно 5 (новое) -->
+        <div class="settings-group disabled" id="slot5Group">
+            <div class="settings-group-title">
+                <span>🚗 Окно 5</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="slot5Enabled" onchange="toggleSlot('slot5')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="time-input-group">
+                <label>Начало:</label>
+                <input type="time" id="slot5Start" value="09:00">
+            </div>
+            <div class="time-input-group">
+                <label>Конец:</label>
+                <input type="time" id="slot5End" value="11:00">
+            </div>
+        </div>
+
+        <!-- Окно 6 (новое) -->
+        <div class="settings-group disabled" id="slot6Group">
+            <div class="settings-group-title">
+                <span>🚗 Окно 6</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="slot6Enabled" onchange="toggleSlot('slot6')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="time-input-group">
+                <label>Начало:</label>
+                <input type="time" id="slot6Start" value="11:00">
+            </div>
+            <div class="time-input-group">
+                <label>Конец:</label>
+                <input type="time" id="slot6End" value="12:00">
+            </div>
+        </div>
+
+        <!-- Экстренно -->
+        <div class="settings-group" id="emergencyGroup">
+            <div class="settings-group-title">
+                <span>🧯 Экстренно</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="emergencyEnabled" checked onchange="toggleSlot('emergency')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
             <div class="time-input-group">
                 <label>Начало:</label>
                 <input type="time" id="emergencyStart" value="21:30">
@@ -925,10 +979,8 @@
             🔄 Сбросить на стандартные
         </button>
 
-        <div class="settings-divider"></div>
-
         <button class="export-btn" onclick="exportData()">
-            📥 Экспорт данных
+            📥 Экспорт / Бэкап данных
         </button>
 
         <input type="file" id="importFile" accept=".json" onchange="importData(event)">
@@ -1046,14 +1098,27 @@
         const defaultSettings = {
             slot1Start: '12:00',
             slot1End: '14:30',
+            slot1Enabled: true,
             slot2Start: '14:30',
             slot2End: '16:30',
+            slot2Enabled: true,
             trafficStart: '16:30',
             trafficEnd: '18:30',
+            trafficEnabled: true,
             slot3Start: '18:30',
             slot3End: '21:30',
+            slot3Enabled: true,
+            slot4Start: '21:30',
+            slot4End: '23:30',
+            slot4Enabled: false,
+            slot5Start: '09:00',
+            slot5End: '11:00',
+            slot5Enabled: false,
+            slot6Start: '11:00',
+            slot6End: '12:00',
+            slot6Enabled: false,
             emergencyStart: '21:30',
-            trafficVisible: true
+            emergencyEnabled: true
         };
 
         // SVG иконки
@@ -1071,6 +1136,9 @@
         let completedJobs = JSON.parse(localStorage.getItem('completedJobs')) || [];
         let currentSlotToComplete = null;
         let currentPeriod = 'day';
+
+        // Список всех слотов в порядке их отображения
+        const allSlots = ['slot5', 'slot6', 'slot1', 'slot2', 'traffic', 'slot3', 'slot4', 'emergency'];
 
         // Форматирование даты
         function formatDate(date) {
@@ -1092,6 +1160,9 @@
                     slot1: null,
                     slot2: null,
                     slot3: null,
+                    slot4: null,
+                    slot5: null,
+                    slot6: null,
                     emergency: null,
                     waitlist: []
                 };
@@ -1113,11 +1184,16 @@
             }
         }
 
-        // Функция переключения видимости окна пробок
-        function toggleTrafficVisibility() {
-            const isVisible = document.getElementById('trafficVisible').checked;
-            const trafficSettings = document.getElementById('trafficSettings');
-            trafficSettings.style.display = isVisible ? 'block' : 'none';
+        // Переключение слота
+        function toggleSlot(slotId) {
+            const checkbox = document.getElementById(slotId + 'Enabled');
+            const group = document.getElementById(slotId + 'Group');
+            
+            if (checkbox.checked) {
+                group.classList.remove('disabled');
+            } else {
+                group.classList.add('disabled');
+            }
         }
 
         // Кнопки контактов
@@ -1228,14 +1304,22 @@
 
         // Настройки
         function loadSettings() {
-            Object.keys(defaultSettings).forEach(key => {
+            Object.keys(settings).forEach(key => {
                 const input = document.getElementById(key);
                 if (input) {
-                    if (key === 'trafficVisible') {
-                        input.checked = settings[key] !== false;
-                        toggleTrafficVisibility();
+                    if (key.includes('Enabled')) {
+                        input.checked = settings[key];
+                        const slotId = key.replace('Enabled', '');
+                        const group = document.getElementById(slotId + 'Group');
+                        if (group) {
+                            if (settings[key]) {
+                                group.classList.remove('disabled');
+                            } else {
+                                group.classList.add('disabled');
+                            }
+                        }
                     } else {
-                        input.value = settings[key] || defaultSettings[key];
+                        input.value = settings[key];
                     }
                 }
             });
@@ -1246,7 +1330,7 @@
             Object.keys(defaultSettings).forEach(key => {
                 const input = document.getElementById(key);
                 if (input) {
-                    if (key === 'trafficVisible') {
+                    if (key.includes('Enabled')) {
                         newSettings[key] = input.checked;
                     } else {
                         newSettings[key] = input.value;
@@ -1274,14 +1358,27 @@
 
         function updateSlotOptions() {
             const select = document.getElementById('slotSelect');
-            select.innerHTML = `
-                <option value="">Выберите окно...</option>
-                <option value="slot1">${settings.slot1Start}–${settings.slot1End}</option>
-                <option value="slot2">${settings.slot2Start}–${settings.slot2End}</option>
-                <option value="slot3">${settings.slot3Start}–${settings.slot3End}</option>
-                <option value="emergency">${settings.emergencyStart}+ Экстренно</option>
-                <option value="waitlist">⏳ Лист ожидания</option>
-            `;
+            let html = '<option value="">Выберите окно...</option>';
+            
+            // Добавляем только включенные слоты
+            allSlots.forEach(slotId => {
+                if (slotId === 'traffic') return; // Пропускаем пробки
+                
+                const enabledKey = slotId + 'Enabled';
+                if (settings[enabledKey]) {
+                    const startKey = slotId + 'Start';
+                    const endKey = slotId + 'End';
+                    
+                    if (slotId === 'emergency') {
+                        html += `<option value="${slotId}">${settings[startKey]}+ Экстренно</option>`;
+                    } else {
+                        html += `<option value="${slotId}">${settings[startKey]}–${settings[endKey]}</option>`;
+                    }
+                }
+            });
+            
+            html += '<option value="waitlist">⏳ Лист ожидания</option>';
+            select.innerHTML = html;
         }
 
         function checkSlotAvailability() {
@@ -1305,238 +1402,137 @@
             }
         }
 
-        function getSlotTime(slotId) {
-            switch(slotId) {
-                case 'slot1': return `${settings.slot1Start}–${settings.slot1End}`;
-                case 'slot2': return `${settings.slot2Start}–${settings.slot2End}`;
-                case 'slot3': return `${settings.slot3Start}–${settings.slot3End}`;
-                case 'emergency': return `${settings.emergencyStart}+ Экстренно`;
-                default: return '';
-            }
-        }
-
         // Рендер расписания
         function renderSchedule() {
             const schedule = getCurrentSchedule();
+            const container = document.getElementById('mainScreen');
+            let html = '';
             
-            // Показываем или скрываем окно пробок
-            const trafficSlot = document.getElementById('trafficSlot');
-            if (settings.trafficVisible !== false) {
-                trafficSlot.classList.remove('hidden');
-                trafficSlot.innerHTML = `
-                    <div style="font-size: 18px; font-weight: 700;">⛔ ${settings.trafficStart}–${settings.trafficEnd} │ ПРОБКИ</div>
-                    <div style="font-size: 13px; margin-top: 5px; opacity: 0.9;">Новые адреса не беру</div>
-                `;
-            } else {
-                trafficSlot.classList.add('hidden');
-            }
-            
-            ['slot1', 'slot2', 'slot3', 'emergency'].forEach(slotId => {
-                const slotEl = document.getElementById(slotId);
-                const data = schedule[slotId];
+            allSlots.forEach(slotId => {
+                const enabledKey = slotId + 'Enabled';
                 
-                if (data) {
-                    slotEl.classList.add('filled');
-                    const phoneEscaped = data.phone.replace(/'/g, "\\'");
-                    slotEl.innerHTML = `
-                        <div class="slot-header">
-                            <div class="slot-time">${getSlotTime(slotId)}</div>
-                            <div class="slot-status ${data.completed ? 'completed' : ''}">${data.completed ? 'Выполнено' : 'Занято'}</div>
+                // Пропускаем отключенные слоты
+                if (!settings[enabledKey]) return;
+                
+                if (slotId === 'traffic') {
+                    // Пробки
+                    html += `
+                        <div class="slot-card traffic">
+                            <div style="font-size: 18px; font-weight: 700;">⛔ ${settings.trafficStart}–${settings.trafficEnd} │ ПРОБКИ</div>
+                            <div style="font-size: 13px; margin-top: 5px; opacity: 0.9;">Новые адреса не беру</div>
                         </div>
-                        <div class="slot-info">
-                            <div class="label">Имя</div>
-                            <div class="value">👤 ${data.name}</div>
-                        </div>
-                        <div class="slot-info">
-                            <div class="label">Район</div>
-                            <div class="value">📍 ${data.area}</div>
-                        </div>
-                        <div class="slot-info">
-                            <div class="label">Телефон</div>
-                            <div class="value">📞 ${data.phone}</div>
-                        </div>
-                        <div class="slot-info">
-                            <div class="label">Проблема</div>
-                            <div class="value">⚡ ${data.problem}</div>
-                        </div>
-                        <div class="contact-buttons">
-                            <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
-                            <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
-                            <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
-                            <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
-                        </div>
-                        ${data.completed ? `
-                            <div class="slot-info">
-                                <div class="label">Сумма</div>
-                                <div class="value">💰 ${data.money}₽</div>
-                            </div>
-                            ${data.completionComment ? `
-                                <div class="slot-info">
-                                    <div class="label">Комментарий</div>
-                                    <div class="value">${data.completionComment}</div>
-                                </div>
-                            ` : ''}
-                            <div class="slot-actions">
-                                <button class="btn btn-danger" onclick="deleteSlot('${slotId}')">🗑️ Удалить</button>
-                            </div>
-                        ` : `
-                            <div class="slot-actions">
-                                <button class="btn btn-success" onclick="openCompleteModal('${slotId}')">✅ Завершить</button>
-                                <button class="btn btn-danger" onclick="deleteSlot('${slotId}')">🗑️ Удалить</button>
-                            </div>
-                        `}
                     `;
                 } else {
-                    slotEl.classList.remove('filled');
-                    slotEl.innerHTML = `
-                        <div class="slot-header">
-                            <div class="slot-time">${getSlotTime(slotId)}</div>
-                            <div class="slot-status empty">Свободно</div>
-                        </div>
-                        <div style="text-align: center; padding: 20px 0; color: var(--text-dim);">
-                            <div style="font-size: 40px; margin-bottom: 10px;">📭</div>
-                            <div>Окно свободно</div>
-                        </div>
-                    `;
+                    const data = schedule[slotId];
+                    
+                    if (data) {
+                        const phoneEscaped = data.phone.replace(/'/g, "\\'");
+                        html += `
+                            <div class="slot-card filled">
+                                <div class="slot-header">
+                                    <div class="slot-time">${getSlotTime(slotId)}</div>
+                                    <div class="slot-status">${data.completed ? 'Выполнено' : 'Занято'}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <div class="label">Имя</div>
+                                    <div class="value">👤 ${data.name}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <div class="label">Район</div>
+                                    <div class="value">📍 ${data.area}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <div class="label">Телефон</div>
+                                    <div class="value">📞 ${data.phone}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <div class="label">Проблема</div>
+                                    <div class="value">🔧 ${data.problem}</div>
+                                </div>
+                                ${data.readyEarlier ? '<div class="badge">✅ На отмену</div>' : '<div class="badge no">⬜ НЕТ</div>'}
+                                ${data.completed ? `<div class="badge" style="background: var(--success); margin-left: 8px;">💰 ${data.money}₽</div>` : ''}
+                                <div class="contact-buttons">
+                                    <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
+                                    <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
+                                    <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
+                                    <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
+                                </div>
+                                <div class="slot-actions">
+                                    ${!data.completed ? `<button class="btn btn-success" onclick="openCompleteModal('${slotId}')">✅ Завершить</button>` : ''}
+                                    <button class="btn btn-danger" onclick="deleteSlot('${slotId}')">🗑 Удалить</button>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="slot-card">
+                                <div class="slot-header">
+                                    <div class="slot-time">${getSlotTime(slotId)}</div>
+                                    <div class="slot-status empty">Свободно</div>
+                                </div>
+                                <div class="empty-state">
+                                    <div class="icon">📭</div>
+                                    <div>Нет записи</div>
+                                </div>
+                            </div>
+                        `;
+                    }
                 }
             });
-
+            
+            container.innerHTML = html;
             renderWaitlist();
         }
 
-        function renderWaitlist() {
-            const schedule = getCurrentSchedule();
-            const container = document.getElementById('waitlistContainer');
+        function getSlotTime(slotId) {
+            const startKey = slotId + 'Start';
+            const endKey = slotId + 'End';
             
-            if (!schedule.waitlist || schedule.waitlist.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="icon">⏳</div>
-                        <div>Лист ожидания пуст</div>
-                    </div>
-                `;
-                return;
+            if (slotId === 'emergency') {
+                return `🧯 ${settings[startKey]}+ Экстренно`;
+            } else {
+                return `🚗 ${settings[startKey]}–${settings[endKey]}`;
             }
-
-            let html = '';
-            schedule.waitlist.forEach((item, index) => {
-                const phoneEscaped = item.phone.replace(/'/g, "\\'");
-                html += `
-                    <div class="waitlist-item">
-                        <div class="waitlist-header">
-                            <div class="waitlist-name">👤 ${item.name}</div>
-                            <div>
-                                <span class="badge ${item.readyEarlier ? '' : 'no'}">
-                                    ${item.readyEarlier ? '✅ На отмену' : 'Ждёт'}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="slot-info">
-                            <div class="label">Район</div>
-                            <div class="value">📍 ${item.area}</div>
-                        </div>
-                        <div class="slot-info">
-                            <div class="label">Телефон</div>
-                            <div class="value">📞 ${item.phone}</div>
-                        </div>
-                        <div class="slot-info">
-                            <div class="label">Проблема</div>
-                            <div class="value">⚡ ${item.problem}</div>
-                        </div>
-                        <div class="contact-buttons">
-                            <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
-                            <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
-                            <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
-                            <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
-                        </div>
-                        <div class="slot-actions">
-                            <button class="btn btn-primary" onclick="moveFromWaitlist(${index})">➡️ В график</button>
-                            <button class="btn btn-danger" onclick="deleteFromWaitlist(${index})">🗑️ Удалить</button>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
         }
 
-        // Модалки
-        function openAddModal() {
-            updateSlotOptions();
-            document.getElementById('addForm').reset();
-            document.getElementById('slotWarning').style.display = 'none';
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('addModal').classList.add('active');
+        // Удаление слота
+        function deleteSlot(slotId) {
+            if (confirm('Удалить запись?')) {
+                const schedule = getCurrentSchedule();
+                schedule[slotId] = null;
+                saveAllSchedules();
+            }
         }
 
-        function closeAddModal() {
-            document.getElementById('addModal').classList.remove('active');
-        }
-
+        // Завершение работы
         function openCompleteModal(slotId) {
             currentSlotToComplete = slotId;
-            document.getElementById('completeForm').reset();
             document.getElementById('completeModal').classList.add('active');
         }
 
         function closeCompleteModal() {
             document.getElementById('completeModal').classList.remove('active');
+            document.getElementById('completeForm').reset();
             currentSlotToComplete = null;
         }
-
-        // Обработчики форм
-        document.getElementById('addForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const slotId = document.getElementById('slotSelect').value;
-            const name = document.getElementById('clientName').value;
-            const area = document.getElementById('clientArea').value;
-            const phone = document.getElementById('clientPhone').value;
-            const problem = document.getElementById('clientProblem').value;
-            const readyEarlier = document.getElementById('readyEarlier').checked;
-            
-            const clientData = {
-                name,
-                area,
-                phone,
-                problem,
-                readyEarlier,
-                createdAt: formatDateTime(new Date())
-            };
-            
-            const schedule = getCurrentSchedule();
-            
-            if (slotId === 'waitlist') {
-                if (!schedule.waitlist) schedule.waitlist = [];
-                schedule.waitlist.push(clientData);
-            } else {
-                schedule[slotId] = {
-                    ...clientData,
-                    completed: false
-                };
-            }
-            
-            saveAllSchedules();
-            closeAddModal();
-        });
 
         document.getElementById('completeForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const money = document.getElementById('completeMoney').value;
+            const schedule = getCurrentSchedule();
+            const data = schedule[currentSlotToComplete];
+            const money = parseInt(document.getElementById('completeMoney').value);
             const comment = document.getElementById('completeComment').value;
             
-            const schedule = getCurrentSchedule();
-            const slotData = schedule[currentSlotToComplete];
-            
-            slotData.completed = true;
-            slotData.money = money;
-            slotData.completionComment = comment;
-            slotData.completedAt = formatDateTime(new Date());
+            data.completed = true;
+            data.money = money;
+            data.completedAt = formatDateTime(new Date());
+            data.comment = comment;
             
             completedJobs.push({
-                ...slotData,
+                ...data,
                 date: formatDate(currentDate),
-                slot: currentSlotToComplete
+                slotId: currentSlotToComplete
             });
             
             saveAllSchedules();
@@ -1544,16 +1540,57 @@
             closeCompleteModal();
         });
 
-        // Удаление
-        function deleteSlot(slotId) {
-            if (confirm('Удалить эту запись?')) {
-                const schedule = getCurrentSchedule();
-                schedule[slotId] = null;
-                saveAllSchedules();
+        // Лист ожидания
+        function renderWaitlist() {
+            const container = document.getElementById('waitlistContainer');
+            const schedule = getCurrentSchedule();
+            const waitlist = schedule.waitlist || [];
+            
+            if (waitlist.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <div>Список ожидания пуст</div>
+                    </div>
+                `;
+                return;
             }
+
+            container.innerHTML = waitlist.map((item, index) => {
+                const phoneEscaped = item.phone.replace(/'/g, "\\'");
+                return `
+                <div class="waitlist-item">
+                    <div class="waitlist-header">
+                        <div>
+                            <div class="waitlist-name">${index + 1}️⃣ ${item.name}</div>
+                            <div style="font-size: 13px; color: var(--text-dim); margin-top: 4px;">📍 ${item.area}</div>
+                        </div>
+                        ${item.readyEarlier ? '<div class="badge">✅ Готов</div>' : '<div class="badge no">⬜ НЕТ</div>'}
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Телефон</div>
+                        <div class="value">📞 ${item.phone}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Проблема</div>
+                        <div class="value">🔧 ${item.problem}</div>
+                    </div>
+                    <div class="contact-buttons">
+                        <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
+                        <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
+                        <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
+                        <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
+                    </div>
+                    <div class="slot-actions">
+                        <button class="btn btn-primary" onclick="moveToSlot(${index})">📅 В слот</button>
+                        <button class="btn btn-danger" onclick="deleteWaitlist(${index})">🗑</button>
+                    </div>
+                </div>
+            `;
+            }).join('');
         }
 
-        function deleteFromWaitlist(index) {
+        function deleteWaitlist(index) {
             if (confirm('Удалить из листа ожидания?')) {
                 const schedule = getCurrentSchedule();
                 schedule.waitlist.splice(index, 1);
@@ -1561,254 +1598,310 @@
             }
         }
 
-        function moveFromWaitlist(index) {
+        // Модалка добавления
+        function openAddModal() {
+            document.getElementById('slotSelect').value = '';
+            document.getElementById('slotWarning').style.display = 'none';
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('addForm').reset();
+            document.getElementById('slotWarning').style.display = 'none';
+        }
+
+        document.getElementById('addForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const slotId = document.getElementById('slotSelect').value;
             const schedule = getCurrentSchedule();
-            const item = schedule.waitlist[index];
             
-            const availableSlots = ['slot1', 'slot2', 'slot3', 'emergency'].filter(s => !schedule[s]);
-            
-            if (availableSlots.length === 0) {
-                alert('❌ Нет свободных окон!');
+            if (slotId !== 'waitlist' && schedule[slotId]) {
+                alert('⚠️ Это окно уже занято! Выберите другое.');
                 return;
             }
             
-            const slotNames = {
-                slot1: `${settings.slot1Start}–${settings.slot1End}`,
-                slot2: `${settings.slot2Start}–${settings.slot2End}`,
-                slot3: `${settings.slot3Start}–${settings.slot3End}`,
-                emergency: `${settings.emergencyStart}+ Экстренно`
+            const data = {
+                name: document.getElementById('clientName').value,
+                area: document.getElementById('clientArea').value,
+                phone: document.getElementById('clientPhone').value,
+                problem: document.getElementById('clientProblem').value,
+                readyEarlier: document.getElementById('readyEarlier').checked,
+                completed: false
             };
+
+            if (slotId === 'waitlist') {
+                schedule.waitlist.push(data);
+            } else {
+                schedule[slotId] = data;
+            }
+
+            saveAllSchedules();
+            closeAddModal();
+        });
+
+        function moveToSlot(index) {
+            const schedule = getCurrentSchedule();
+            const enabledSlots = allSlots.filter(s => s !== 'traffic' && settings[s + 'Enabled']);
+            const freeSlots = enabledSlots.filter(s => !schedule[s]);
             
-            let message = 'Выберите окно:\n';
-            availableSlots.forEach((slot, i) => {
-                message += `${i + 1}. ${slotNames[slot]}\n`;
+            if (freeSlots.length === 0) {
+                alert('❌ Все слоты заняты! Освободите сначала.');
+                return;
+            }
+
+            const slotNames = {};
+            freeSlots.forEach(s => {
+                const startKey = s + 'Start';
+                const endKey = s + 'End';
+                slotNames[s] = s === 'emergency' ? 
+                    `${settings[startKey]}+ Экстренно` : 
+                    `${settings[startKey]}–${settings[endKey]}`;
             });
+
+            let choice = prompt(`Выберите слот:\n${freeSlots.map((s, i) => `${i+1}. ${slotNames[s]}`).join('\n')}\n\nВведите номер:`);
             
-            const choice = prompt(message);
-            const choiceNum = parseInt(choice);
-            
-            if (choiceNum > 0 && choiceNum <= availableSlots.length) {
-                const selectedSlot = availableSlots[choiceNum - 1];
-                schedule[selectedSlot] = {
-                    ...item,
-                    completed: false
-                };
+            if (choice && choice > 0 && choice <= freeSlots.length) {
+                const targetSlot = freeSlots[choice - 1];
+                schedule[targetSlot] = schedule.waitlist[index];
                 schedule.waitlist.splice(index, 1);
                 saveAllSchedules();
                 showScreen('main');
             }
         }
 
-        // Навигация
-        function showScreen(screen) {
-            // Скрываем все экраны
-            document.querySelectorAll('.container').forEach(el => el.style.display = 'none');
-            // Убираем активный класс со всех пунктов меню
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            
-            const screenMap = {
-                'main': 'mainScreen',
-                'waitlist': 'waitlistScreen',
-                'stats': 'statsScreen',
-                'history': 'historyScreen',
-                'settings': 'settingsScreen'
-            };
-            
-            // Показываем выбранный экран
-            document.getElementById(screenMap[screen]).style.display = 'block';
-            
-            // Добавляем активный класс к выбранному пункту меню
-            const navItems = document.querySelectorAll('.nav-item');
-            const screenOrder = ['main', 'waitlist', 'stats', 'history', 'settings'];
-            const index = screenOrder.indexOf(screen);
-            if (index !== -1 && navItems[index]) {
-                navItems[index].classList.add('active');
-            }
-            
-            // Управление видимостью календаря
-            const header = document.getElementById('mainHeader');
-            if (screen === 'main' || screen === 'waitlist') {
-                header.classList.remove('hidden');
-            } else {
-                header.classList.add('hidden');
-            }
-            
-            // Загружаем данные для соответствующих экранов
-            if (screen === 'stats') renderStats();
-            if (screen === 'history') searchHistory();
-            if (screen === 'settings') loadSettings();
-        }
-
         // Статистика
         function changePeriod(period) {
             currentPeriod = period;
             document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            event.target.classList.add('active');
             renderStats();
         }
 
         function renderStats() {
             const now = new Date();
-            let startDate;
+            let jobs = [];
             
-            switch(currentPeriod) {
-                case 'day':
-                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                    break;
-                case 'week':
-                    startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                    break;
-                case 'month':
-                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                    break;
+            if (currentPeriod === 'day') {
+                const today = formatDate(now);
+                jobs = completedJobs.filter(job => job.date === today);
+            } else if (currentPeriod === 'week') {
+                const weekAgo = new Date(now);
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                jobs = completedJobs.filter(job => new Date(job.completedAt) >= weekAgo);
+            } else if (currentPeriod === 'month') {
+                const monthAgo = new Date(now);
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
+                jobs = completedJobs.filter(job => new Date(job.completedAt) >= monthAgo);
             }
             
-            const filtered = completedJobs.filter(job => {
-                const jobDate = new Date(job.date);
-                return jobDate >= startDate;
-            });
-            
-            const totalTrips = filtered.length;
-            const totalMoney = filtered.reduce((sum, job) => sum + parseInt(job.money || 0), 0);
+            const totalTrips = jobs.length;
+            const totalMoney = jobs.reduce((sum, job) => sum + (job.money || 0), 0);
             
             document.getElementById('statTrips').textContent = totalTrips;
             document.getElementById('statMoney').textContent = totalMoney + '₽';
             
-            let detailsHtml = '';
-            if (filtered.length > 0) {
-                detailsHtml = '<div style="max-height: 300px; overflow-y: auto;">';
-                filtered.reverse().forEach(job => {
-                    detailsHtml += `
-                        <div style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                            <div style="font-weight: 600;">📅 ${job.date} │ ${job.name}</div>
-                            <div style="font-size: 13px; color: var(--text-dim); margin-top: 4px;">
-                                📍 ${job.area} │ 💰 ${job.money}₽
-                            </div>
-                        </div>
-                    `;
-                });
-                detailsHtml += '</div>';
+            const details = document.getElementById('statDetails');
+            if (jobs.length === 0) {
+                details.innerHTML = '<div style="color: var(--text-dim); text-align: center; padding: 20px;">Нет данных</div>';
             } else {
-                detailsHtml = '<div style="text-align: center; padding: 20px; color: var(--text-dim);">Нет данных за выбранный период</div>';
+                details.innerHTML = jobs.map(job => `
+                    <div style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <div style="font-weight: 600; margin-bottom: 4px;">${job.name} — ${job.money}₽</div>
+                        <div style="font-size: 12px; color: var(--text-dim);">${job.date} • ${job.area} • ${job.problem}</div>
+                    </div>
+                `).join('');
             }
-            
-            document.getElementById('statDetails').innerHTML = detailsHtml;
         }
 
-        // История
+        // История клиентов
         function searchHistory() {
-            const phone = document.getElementById('searchPhone').value.toLowerCase();
+            const query = document.getElementById('searchPhone').value.replace(/[^0-9]/g, '');
             const container = document.getElementById('historyContainer');
             
-            const filtered = completedJobs.filter(job => 
-                job.phone.toLowerCase().includes(phone)
-            );
-            
-            if (filtered.length === 0) {
+            if (!query) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <div class="icon">🔍</div>
-                        <div>Ничего не найдено</div>
+                        <div>Введите номер телефона</div>
                     </div>
                 `;
                 return;
             }
             
-            let html = '';
-            filtered.reverse().forEach(job => {
-                const phoneEscaped = job.phone.replace(/'/g, "\\'");
-                html += `
-                    <div class="history-item">
-                        <div class="history-date">📅 ${job.date}</div>
-                        <div class="history-name">👤 ${job.name}</div>
-                        <div class="slot-info">
-                            <div class="label">Район</div>
-                            <div class="value">📍 ${job.area}</div>
-                        </div>
-                        <div class="slot-info">
-                            <div class="label">Телефон</div>
-                            <div class="value">📞 ${job.phone}</div>
-                        </div>
-                        <div class="slot-info">
-                            <div class="label">Проблема</div>
-                            <div class="value">⚡ ${job.problem}</div>
-                        </div>
-                        <div class="slot-info">
-                            <div class="label">Сумма</div>
-                            <div class="value">💰 ${job.money}₽</div>
-                        </div>
-                        ${job.completionComment ? `
-                            <div class="slot-info">
-                                <div class="label">Комментарий</div>
-                                <div class="value">${job.completionComment}</div>
-                            </div>
-                        ` : ''}
-                        <div class="contact-buttons">
-                            <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
-                            <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
-                            <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
-                            <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
-                        </div>
+            const results = completedJobs.filter(job => 
+                job.phone.replace(/[^0-9]/g, '').includes(query)
+            );
+            
+            if (results.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">❌</div>
+                        <div>Клиент не найден</div>
                     </div>
                 `;
-            });
-            container.innerHTML = html;
+                return;
+            }
+            
+            container.innerHTML = results.map((job, index) => {
+                const phoneEscaped = job.phone.replace(/'/g, "\\'");
+                return `
+                <div class="history-item">
+                    <div class="history-date">${job.date}</div>
+                    <div class="history-name">${job.name}</div>
+                    <div class="slot-info">
+                        <div class="label">Телефон</div>
+                        <div class="value">📞 ${job.phone}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Район</div>
+                        <div class="value">📍 ${job.area}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Проблема</div>
+                        <div class="value">🔧 ${job.problem}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Сумма</div>
+                        <div class="value">💰 ${job.money}₽</div>
+                    </div>
+                    ${job.comment ? `
+                        <div class="slot-info">
+                            <div class="label">Комментарий</div>
+                            <div class="value">${job.comment}</div>
+                        </div>
+                    ` : ''}
+                    <div class="contact-buttons">
+                        <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
+                        <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
+                        <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
+                        <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
+                    </div>
+                    <div class="slot-actions">
+                        <button class="btn btn-danger" onclick="deleteHistory(${completedJobs.indexOf(job)})">🗑 Удалить</button>
+                    </div>
+                </div>
+            `;
+            }).join('');
         }
 
-        // Экспорт/Импорт
+        function deleteHistory(index) {
+            if (confirm('Удалить из истории?')) {
+                completedJobs.splice(index, 1);
+                saveCompletedJobs();
+            }
+        }
+
+        // Экспорт данных
         function exportData() {
             const data = {
                 schedules: allSchedules,
                 completedJobs: completedJobs,
                 settings: settings,
-                exportDate: new Date().toISOString()
+                exportDate: formatDateTime(new Date())
             };
             
-            const dataStr = JSON.stringify(data, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `график_выездов_${formatDate(new Date())}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
             
-            const exportFileDefaultName = `график_выездов_${formatDate(new Date())}.json`;
-            
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
+            alert('✅ Данные экспортированы! Файл сохранён.');
         }
 
+        // Импорт данных
         function importData(event) {
             const file = event.target.files[0];
             if (!file) return;
-            
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
-                    const data = JSON.parse(e.target.result);
+                    const importedData = JSON.parse(e.target.result);
                     
-                    if (confirm('❗ Импорт заменит все текущие данные. Продолжить?')) {
-                        if (data.schedules) allSchedules = data.schedules;
-                        if (data.completedJobs) completedJobs = data.completedJobs;
-                        if (data.settings) settings = data.settings;
-                        
-                        saveAllSchedules();
-                        saveCompletedJobs();
+                    if (!importedData.schedules || !importedData.completedJobs) {
+                        alert('❌ Ошибка: неверный формат файла!');
+                        return;
+                    }
+
+                    if (confirm('⚠️ Импорт заменит все текущие данные!\n\nПродолжить?')) {
+                        allSchedules = importedData.schedules;
+                        completedJobs = importedData.completedJobs;
+                        if (importedData.settings) {
+                            settings = {...defaultSettings, ...importedData.settings};
+                        }
+
+                        localStorage.setItem('allSchedules', JSON.stringify(allSchedules));
+                        localStorage.setItem('completedJobs', JSON.stringify(completedJobs));
                         localStorage.setItem('timeSettings', JSON.stringify(settings));
-                        
+
                         loadSettings();
                         renderSchedule();
+                        renderStats();
+                        updateSlotOptions();
+
                         alert('✅ Данные успешно импортированы!');
                     }
                 } catch (error) {
-                    alert('❌ Ошибка при чтении файла!');
+                    alert('❌ Ошибка при чтении файла!\n\n' + error.message);
                 }
             };
+            
             reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // Переключение экранов
+        function showScreen(screen) {
+            document.querySelectorAll('.container').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            const dateNav = document.getElementById('dateNavigation');
+            const quickDays = document.getElementById('quickDays');
+            
+            if (screen === 'main') {
+                document.getElementById('mainScreen').style.display = 'block';
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+                dateNav.style.display = 'flex';
+                quickDays.style.display = 'flex';
+            } else if (screen === 'waitlist') {
+                document.getElementById('waitlistScreen').style.display = 'block';
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+                dateNav.style.display = 'flex';
+                quickDays.style.display = 'flex';
+            } else if (screen === 'stats') {
+                document.getElementById('statsScreen').style.display = 'block';
+                document.querySelectorAll('.nav-item')[2].classList.add('active');
+                dateNav.style.display = 'none';
+                quickDays.style.display = 'none';
+                renderStats();
+            } else if (screen === 'history') {
+                document.getElementById('historyScreen').style.display = 'block';
+                document.querySelectorAll('.nav-item')[3].classList.add('active');
+                dateNav.style.display = 'none';
+                quickDays.style.display = 'none';
+            } else if (screen === 'settings') {
+                document.getElementById('settingsScreen').style.display = 'block';
+                document.querySelectorAll('.nav-item')[4].classList.add('active');
+                dateNav.style.display = 'none';
+                quickDays.style.display = 'none';
+            }
         }
 
         // Инициализация
+        loadSettings();
         updateDateDisplay();
         renderSchedule();
         renderQuickDays();
-        loadSettings();
+        updateSlotOptions();
+        renderStats();
     </script>
+
 </body>
 </html>
