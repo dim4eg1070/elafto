@@ -869,18 +869,13 @@
         <div class="quick-days" id="quickDays"></div>
     </div>
 
-    <!-- Главный экран -->
-    <div id="mainScreen" class="container">
-        <!-- Слоты будут отображаться динамически -->
-    </div>
+    <div id="mainScreen" class="container"></div>
 
-    <!-- Лист ожидания -->
     <div id="waitlistScreen" class="container" style="display: none;">
         <div class="section-title">⏳ Лист ожидания</div>
         <div id="waitlistContainer"></div>
     </div>
 
-    <!-- Статистика -->
     <div id="statsScreen" class="container" style="display: none;">
         <div class="section-title">📊 Статистика</div>
         
@@ -907,7 +902,6 @@
         </div>
     </div>
 
-    <!-- История -->
     <div id="historyScreen" class="container" style="display: none;">
         <div class="section-title">🔍 История клиентов</div>
         
@@ -918,11 +912,9 @@
         <div id="historyContainer"></div>
     </div>
 
-    <!-- Настройки -->
     <div id="settingsScreen" class="container" style="display: none;">
         <div class="section-title">⚙️ Настройки окон</div>
         
-        <!-- Окно 1 -->
         <div class="settings-group" id="slot1Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 1</span>
@@ -941,7 +933,6 @@
             </div>
         </div>
 
-        <!-- Окно 2 -->
         <div class="settings-group" id="slot2Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 2</span>
@@ -960,7 +951,6 @@
             </div>
         </div>
 
-        <!-- Пробки -->
         <div class="settings-group" id="trafficGroup">
             <div class="settings-group-title">
                 <span>⛔ Пробки</span>
@@ -979,7 +969,6 @@
             </div>
         </div>
 
-        <!-- Окно 3 -->
         <div class="settings-group" id="slot3Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 3</span>
@@ -998,7 +987,6 @@
             </div>
         </div>
 
-        <!-- Окно 4 -->
         <div class="settings-group disabled" id="slot4Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 4</span>
@@ -1017,7 +1005,6 @@
             </div>
         </div>
 
-        <!-- Окно 5 -->
         <div class="settings-group disabled" id="slot5Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 5</span>
@@ -1036,7 +1023,6 @@
             </div>
         </div>
 
-        <!-- Окно 6 -->
         <div class="settings-group disabled" id="slot6Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 6</span>
@@ -1055,7 +1041,6 @@
             </div>
         </div>
 
-        <!-- Экстренно -->
         <div class="settings-group" id="emergencyGroup">
             <div class="settings-group-title">
                 <span>🧯 Экстренно</span>
@@ -1090,10 +1075,8 @@
         </button>
     </div>
 
-    <!-- FAB кнопка -->
     <button class="fab" onclick="openAddModal()">+</button>
 
-    <!-- Нижнее меню -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showScreen('main')">
             <div class="icon">📅</div>
@@ -1117,7 +1100,6 @@
         </div>
     </div>
 
-    <!-- Модалка добавления -->
     <div id="addModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">➕ Новая запись</div>
@@ -1159,7 +1141,6 @@
         </div>
     </div>
 
-    <!-- Модалка завершения работы -->
     <div id="completeModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">✅ Завершить работу</div>
@@ -1180,7 +1161,6 @@
         </div>
     </div>
 
-    <!-- Модалка выбора даты с календарем -->
     <div id="dateModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">📅 Выбрать дату</div>
@@ -1683,7 +1663,7 @@
             
             const schedule = getCurrentSchedule();
             const data = schedule[currentSlotToComplete];
-            const money = parseInt(document.getElementById('completeMoney').value);
+            const money = parseInt(document.getElementById('completeMoney').value) || 0;
             const comment = document.getElementById('completeComment').value;
             
             data.completed = true;
@@ -1692,7 +1672,15 @@
             data.comment = comment;
             
             completedJobs.push({
-                ...data,
+                name: data.name,
+                area: data.area,
+                phone: data.phone,
+                problem: data.problem,
+                readyEarlier: data.readyEarlier,
+                completed: true,
+                money: money,
+                completedAt: data.completedAt,
+                comment: comment,
                 date: formatDate(currentDate),
                 slotId: currentSlotToComplete
             });
@@ -1993,7 +1981,10 @@
 
                     if (confirm('⚠️ Импорт заменит все текущие данные!\n\nПродолжить?')) {
                         allSchedules = importedData.schedules;
-                        completedJobs = importedData.completedJobs;
+                        completedJobs = importedData.completedJobs.map(job => ({
+                            ...job,
+                            money: parseInt(job.money) || 0
+                        }));
                         if (importedData.settings) {
                             settings = {...defaultSettings, ...importedData.settings};
                         }
