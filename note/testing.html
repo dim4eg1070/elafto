@@ -998,7 +998,7 @@
             </div>
         </div>
 
-        <!-- Окно 4 (НОВОЕ) -->
+        <!-- Окно 4 -->
         <div class="settings-group disabled" id="slot4Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 4</span>
@@ -1017,7 +1017,7 @@
             </div>
         </div>
 
-        <!-- Окно 5 (НОВОЕ) -->
+        <!-- Окно 5 -->
         <div class="settings-group disabled" id="slot5Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 5</span>
@@ -1036,7 +1036,7 @@
             </div>
         </div>
 
-        <!-- Окно 6 (НОВОЕ) -->
+        <!-- Окно 6 -->
         <div class="settings-group disabled" id="slot6Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 6</span>
@@ -1857,7 +1857,10 @@
             }
             
             const totalTrips = jobs.length;
-            const totalMoney = jobs.reduce((sum, job) => sum + (job.money || 0), 0);
+            const totalMoney = jobs.reduce((sum, job) => {
+                const money = parseInt(job.money) || 0;
+                return sum + money;
+            }, 0);
             
             document.getElementById('statTrips').textContent = totalTrips;
             document.getElementById('statMoney').textContent = totalMoney + '₽';
@@ -1868,7 +1871,7 @@
             } else {
                 details.innerHTML = jobs.map(job => `
                     <div style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <div style="font-weight: 600; margin-bottom: 4px;">${job.name} — ${job.money}₽</div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">${job.name} — ${parseInt(job.money) || 0}₽</div>
                         <div style="font-size: 12px; color: var(--text-dim);">${job.date} • ${job.area} • ${job.problem}</div>
                     </div>
                 `).join('');
