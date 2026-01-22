@@ -1202,7 +1202,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
-        // Настройки по умолчанию (ДОБАВЛЕНЫ slot4, slot5, slot6)
         const defaultSettings = {
             slot1Start: '12:00',
             slot1End: '14:30',
@@ -1229,7 +1228,6 @@
             emergencyEnabled: true
         };
 
-        // SVG иконки
         const icons = {
             phone: `<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`,
             sms: `<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>`,
@@ -1237,7 +1235,6 @@
             telegram: `<svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>`
         };
 
-        // Глобальные переменные
         let currentDate = new Date();
         let calendarDate = new Date();
         let selectedCalendarDate = null;
@@ -1247,10 +1244,8 @@
         let currentSlotToComplete = null;
         let currentPeriod = 'day';
 
-        // Список всех слотов в порядке их отображения (ДОБАВЛЕНЫ slot4, slot5, slot6)
         const allSlots = ['slot5', 'slot6', 'slot1', 'slot2', 'traffic', 'slot3', 'slot4', 'emergency'];
 
-        // Форматирование даты
         function formatDate(date) {
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -1262,7 +1257,6 @@
             return date.toISOString();
         }
 
-        // Получить расписание (ДОБАВЛЕНЫ slot4, slot5, slot6)
         function getCurrentSchedule() {
             const dateKey = formatDate(currentDate);
             if (!allSchedules[dateKey]) {
@@ -1280,7 +1274,6 @@
             return allSchedules[dateKey];
         }
 
-        // Сохранение
         function saveAllSchedules() {
             localStorage.setItem('allSchedules', JSON.stringify(allSchedules));
             renderSchedule();
@@ -1294,7 +1287,6 @@
             }
         }
 
-        // Переключение слота
         function toggleSlot(slotId) {
             const checkbox = document.getElementById(slotId + 'Enabled');
             const group = document.getElementById(slotId + 'Group');
@@ -1306,7 +1298,6 @@
             }
         }
 
-        // Кнопки контактов
         function openContact(phone, type) {
             let cleanPhone = phone.replace(/[^0-9]/g, '');
             
@@ -1338,7 +1329,6 @@
             }
         }
 
-        // Изменение даты
         function changeDate(days) {
             currentDate.setDate(currentDate.getDate() + days);
             updateDateDisplay();
@@ -1391,7 +1381,6 @@
             renderQuickDays();
         }
 
-        // КАЛЕНДАРЬ
         function openDatePicker() {
             calendarDate = new Date(currentDate);
             selectedCalendarDate = new Date(currentDate);
@@ -1482,7 +1471,6 @@
             }
         }
 
-        // Настройки
         function loadSettings() {
             Object.keys(settings).forEach(key => {
                 const input = document.getElementById(key);
@@ -1915,8 +1903,9 @@
                 return;
             }
             
-            container.innerHTML = results.map((job, index) => {
+            container.innerHTML = results.map((job) => {
                 const phoneEscaped = job.phone.replace(/'/g, "\\'");
+                const jobIndex = completedJobs.indexOf(job);
                 return `
                 <div class="history-item">
                     <div class="history-date">${job.date}</div>
@@ -1950,7 +1939,7 @@
                         <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
                     </div>
                     <div class="slot-actions">
-                        <button class="btn btn-danger" onclick="deleteHistory(${completedJobs.indexOf(job)})">🗑 Удалить</button>
+                        <button class="btn btn-danger" onclick="deleteHistory(${jobIndex})">🗑 Удалить</button>
                     </div>
                 </div>
             `;
@@ -1961,6 +1950,7 @@
             if (confirm('Удалить из истории?')) {
                 completedJobs.splice(index, 1);
                 saveCompletedJobs();
+                searchHistory();
             }
         }
 
@@ -1984,7 +1974,6 @@
             alert('✅ Данные экспортированы! Файл сохранён.');
         }
 
-        // ИМПОРТ (НОВЫЙ)
         document.getElementById('importFileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -2063,7 +2052,6 @@
             }
         }
 
-        // Инициализация
         loadSettings();
         updateDateDisplay();
         renderSchedule();
