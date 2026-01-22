@@ -542,7 +542,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
         }
 
         .time-input-group {
@@ -568,20 +567,34 @@
             margin: 20px 0;
         }
 
-        .reset-btn {
+        .reset-btn, .export-btn, .import-btn {
             width: 100%;
-            padding: 12px;
-            background: var(--warning);
-            color: #000;
+            padding: 15px;
             border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: 10px;
         }
 
-        .reset-btn:active {
+        .reset-btn {
+            background: var(--warning);
+            color: #000;
+        }
+
+        .export-btn {
+            background: var(--success);
+            color: #000;
+        }
+
+        .import-btn {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .reset-btn:active, .export-btn:active, .import-btn:active {
             transform: scale(0.95);
         }
 
@@ -621,20 +634,19 @@
             flex: 1;
             padding: 10px;
             background: rgba(255, 255, 255, 0.05);
-            border: 2px solid transparent;
+            border: none;
             border-radius: 10px;
             color: var(--text-dim);
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 13px;
             font-weight: 600;
-            border: none;
         }
 
         .period-btn.active {
-            border: 2px solid var(--accent);
             color: var(--accent);
             background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--accent);
         }
 
         .period-btn:active {
@@ -680,37 +692,10 @@
             margin-bottom: 5px;
         }
 
-        .export-btn, .import-btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .export-btn {
-            background: var(--success);
-            color: #000;
-        }
-
-        .import-btn {
-            background: var(--accent);
-            color: #000;
-        }
-
-        .export-btn:active, .import-btn:active {
-            transform: scale(0.95);
-        }
-
         input[type="file"] {
             display: none;
         }
 
-        /* Стиль для переключателя (toggle switch) */
         .toggle-switch {
             position: relative;
             display: inline-block;
@@ -772,25 +757,20 @@
         <div class="quick-days" id="quickDays"></div>
     </div>
 
-    <!-- Главный экран -->
-    <div id="mainScreen" class="container">
-        <!-- Слоты будут отображаться динамически -->
-    </div>
+    <div id="mainScreen" class="container"></div>
 
-    <!-- Лист ожидания -->
     <div id="waitlistScreen" class="container" style="display: none;">
         <div class="section-title">⏳ Лист ожидания</div>
         <div id="waitlistContainer"></div>
     </div>
 
-    <!-- Статистика -->
     <div id="statsScreen" class="container" style="display: none;">
         <div class="section-title">📊 Статистика</div>
         
         <div class="period-selector">
-            <button class="period-btn active" onclick="changePeriod('day', this)">День</button>
-            <button class="period-btn" onclick="changePeriod('week', this)">Неделя</button>
-            <button class="period-btn" onclick="changePeriod('month', this)">Месяц</button>
+            <button class="period-btn active" onclick="changePeriod('day')">День</button>
+            <button class="period-btn" onclick="changePeriod('week')">Неделя</button>
+            <button class="period-btn" onclick="changePeriod('month')">Месяц</button>
         </div>
 
         <div class="stat-grid">
@@ -810,7 +790,6 @@
         </div>
     </div>
 
-    <!-- История -->
     <div id="historyScreen" class="container" style="display: none;">
         <div class="section-title">🔍 История клиентов</div>
         
@@ -821,11 +800,9 @@
         <div id="historyContainer"></div>
     </div>
 
-    <!-- Настройки -->
     <div id="settingsScreen" class="container" style="display: none;">
         <div class="section-title">⚙️ Настройки окон</div>
         
-        <!-- Окно 1 -->
         <div class="settings-group" id="slot1Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 1</span>
@@ -844,7 +821,6 @@
             </div>
         </div>
 
-        <!-- Окно 2 -->
         <div class="settings-group" id="slot2Group">
             <div class="settings-group-title">
                 <span>🚗 Окно 2</span>
@@ -863,7 +839,6 @@
             </div>
         </div>
 
-        <!-- Пробки -->
         <div class="settings-group" id="trafficGroup">
             <div class="settings-group-title">
                 <span>⛔ Пробки</span>
@@ -875,4 +850,231 @@
             <div class="time-input-group">
                 <label>Начало:</label>
                 <input type="time" id="trafficStart" value="16:30">
-            </
+            </div>
+            <div class="time-input-group">
+                <label>Конец:</label>
+                <input type="time" id="trafficEnd" value="18:30">
+            </div>
+        </div>
+
+        <div class="settings-group" id="slot3Group">
+            <div class="settings-group-title">
+                <span>🚗 Окно 3</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="slot3Enabled" checked onchange="toggleSlot('slot3')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="time-input-group">
+                <label>Начало:</label>
+                <input type="time" id="slot3Start" value="18:30">
+            </div>
+            <div class="time-input-group">
+                <label>Конец:</label>
+                <input type="time" id="slot3End" value="21:30">
+            </div>
+        </div>
+
+        <div class="settings-group disabled" id="slot4Group">
+            <div class="settings-group-title">
+                <span>🚗 Окно 4</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="slot4Enabled" onchange="toggleSlot('slot4')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="time-input-group">
+                <label>Начало:</label>
+                <input type="time" id="slot4Start" value="21:30">
+            </div>
+            <div class="time-input-group">
+                <label>Конец:</label>
+                <input type="time" id="slot4End" value="23:30">
+            </div>
+        </div>
+
+        <div class="settings-group disabled" id="slot5Group">
+            <div class="settings-group-title">
+                <span>🚗 Окно 5</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="slot5Enabled" onchange="toggleSlot('slot5')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="time-input-group">
+                <label>Начало:</label>
+                <input type="time" id="slot5Start" value="09:00">
+            </div>
+            <div class="time-input-group">
+                <label>Конец:</label>
+                <input type="time" id="slot5End" value="11:00">
+            </div>
+        </div>
+
+        <div class="settings-group disabled" id="slot6Group">
+            <div class="settings-group-title">
+                <span>🚗 Окно 6</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="slot6Enabled" onchange="toggleSlot('slot6')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="time-input-group">
+                <label>Начало:</label>
+                <input type="time" id="slot6Start" value="11:00">
+            </div>
+            <div class="time-input-group">
+                <label>Конец:</label>
+                <input type="time" id="slot6End" value="12:00">
+            </div>
+        </div>
+
+        <div class="settings-group" id="emergencyGroup">
+            <div class="settings-group-title">
+                <span>🧯 Экстренно</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="emergencyEnabled" checked onchange="toggleSlot('emergency')">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="time-input-group">
+                <label>Начало:</label>
+                <input type="time" id="emergencyStart" value="21:30">
+            </div>
+        </div>
+
+        <div class="settings-divider"></div>
+
+        <button class="btn btn-primary" onclick="saveSettings()" style="width: 100%; margin-bottom: 10px;">
+            💾 Сохранить настройки
+        </button>
+
+        <button class="reset-btn" onclick="resetSettings()">
+            🔄 Сбросить на стандартные
+        </button>
+
+        <button class="export-btn" onclick="exportData()">
+            📥 Экспорт / Бэкап данных
+        </button>
+
+        <input type="file" id="importFileInput" accept=".json" style="display:none;">
+        <button class="import-btn" onclick="document.getElementById('importFileInput').click()">
+            📤 Импорт данных
+        </button>
+    </div>
+
+    <button class="fab" onclick="openAddModal()">+</button>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="showScreen('main')">
+            <div class="icon">📅</div>
+            <div>График</div>
+        </div>
+        <div class="nav-item" onclick="showScreen('waitlist')">
+            <div class="icon">⏳</div>
+            <div>Ожидание</div>
+        </div>
+        <div class="nav-item" onclick="showScreen('stats')">
+            <div class="icon">📊</div>
+            <div>Статистика</div>
+        </div>
+        <div class="nav-item" onclick="showScreen('history')">
+            <div class="icon">🔍</div>
+            <div>История</div>
+        </div>
+        <div class="nav-item" onclick="showScreen('settings')">
+            <div class="icon">⚙️</div>
+            <div>Настройки</div>
+        </div>
+    </div>
+
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">➕ Новая запись</div>
+            <div id="slotWarning" style="display: none;" class="alert">
+                ⚠️ Это окно уже занято! Выберите другое или удалите существующую запись.
+            </div>
+            <form id="addForm">
+                <div class="form-group">
+                    <label>Окно</label>
+                    <select id="slotSelect" required onchange="checkSlotAvailability()">
+                        <option value="">Выберите окно...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Имя</label>
+                    <input type="text" id="clientName" required placeholder="Иван">
+                </div>
+                <div class="form-group">
+                    <label>Район</label>
+                    <input type="text" id="clientArea" required placeholder="СЗ, Центр, ЧМЗ...">
+                </div>
+                <div class="form-group">
+                    <label>Телефон</label>
+                    <input type="tel" id="clientPhone" required placeholder="89XXXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label>Проблема</label>
+                    <textarea id="clientProblem" required placeholder="Сел АКБ, не крутит..."></textarea>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="readyEarlier">
+                    <label for="readyEarlier" style="margin: 0;">✅ Готов на отмену (раньше)</label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddModal()">Отмена</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="completeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">✅ Завершить работу</div>
+            <form id="completeForm">
+                <div class="form-group">
+                    <label>Сумма за работу (₽)</label>
+                    <input type="number" id="completeMoney" required placeholder="1500" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Комментарий (необязательно)</label>
+                    <textarea id="completeComment" placeholder="Заменил клеммы, проверил генератор..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeCompleteModal()">Отмена</button>
+                    <button type="submit" class="btn btn-success">Завершить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="dateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">📅 Выбрать дату</div>
+            <div class="form-group">
+                <input type="date" id="datePicker" style="width: 100%;">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeDatePicker()">Отмена</button>
+                <button class="btn btn-primary" onclick="applyDate()">Выбрать</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const defaultSettings = {
+            slot1Start: '12:00', slot1End: '14:30', slot1Enabled: true,
+            slot2Start: '14:30', slot2End: '16:30', slot2Enabled: true,
+            trafficStart: '16:30', trafficEnd: '18:30', trafficEnabled: true,
+            slot3Start: '18:30', slot3End: '21:30', slot3Enabled: true,
+            slot4Start: '21:30', slot4End: '23:30', slot4Enabled: false,
+            slot5Start: '09:00', slot5End: '11:00', slot5Enabled: false,
+            slot6Start: '11:00', slot6End: '12:00', slot6Enabled: false,
+            emergencyStart: '21:30', emergencyEnabled: true
+        };
+
+        const icons = {
+            phone: `<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`,
+            sms: `<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>`,
+            whatsapp: `<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.2
