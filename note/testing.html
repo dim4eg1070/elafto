@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>График выездов</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0e27;
+            --card: #1a1f3a;
+            --accent: #00d4ff;
+            --text: #e8eaf6;
+            --text-dim: #9fa8da;
+            --danger: #ff3d71;
+            --success: #00e676;
+            --warning: #ffd600;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 80px;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 15px 20px 20px 20px;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .date-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .date-nav button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .date-nav button:active {
+            transform: scale(0.9);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .date-display {
+            flex: 1;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .date-display:active {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .date-main {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .date-sub {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .container {
+            padding: 20px 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .slot-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .slot-card.filled {
+            border-color: var(--accent);
+        }
+
+        .slot-card.traffic {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            text-align: center;
+            padding: 15px;
+        }
+
+        .slot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .slot-time {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .slot-status {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: var(--success);
+            color: #000;
+            font-weight: 600;
+        }
+
+        .slot-status.empty {
+            background: var(--text-dim);
+        }
+
+        .slot-status.completed {
+            background: var(--success);
+        }
+
+        .slot-info {
+            margin-bottom: 10px;
+        }
+
+        .slot-info .label {
+            color: var(--text-dim);
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .slot-info .value {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+
+        .contact-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .contact-btn.call {
+            background: #4CAF50;
+        }
+
+        .contact-btn.sms {
+            background: #2196F3;
+        }
+
+        .contact-btn.whatsapp {
+            background: #25D366;
+        }
+
+        .contact-btn.telegram {
+            background: #0088cc;
+        }
+
+        .contact-btn:active {
+            transform: scale(0.9);
+        }
+
+        .slot-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background: var(--text-dim);
+            color: #000;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #000;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            font-size: 28px;
+            color: #fff;
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 99;
+        }
+
+        .fab:active {
+            transform: scale(0.9);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            color: var(--text-dim);
+            font-size: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 6px 12px;
+            border-radius: 10px;
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .nav-item .icon {
+            font-size: 22px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 200;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 500px;
+            animation: slideUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .waitlist-item {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--warning);
+        }
+
+        .waitlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .waitlist-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--success);
+            color: #000;
+        }
+
+        .badge.no {
+            background: var(--text-dim);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-dim);
+        }
+
+        .empty-state .icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .alert {
+            background: var(--danger);
+            color: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        input[type="date"], input[type="time"] {
+            cursor: pointer;
+        }
+
+        .quick-days {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .quick-day {
+            flex: 1;
+            min-width: 70px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-day.today {
+            border-color: var(--accent);
+            background: rgba(0, 212, 255, 0.15);
+        }
+
+        .quick-day:active {
+            transform: scale(0.95);
+        }
+
+        .quick-day-name {
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .quick-day-date {
+            opacity: 0.8;
+            font-size: 11px;
+        }
+
+        .settings-group {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .settings-group-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .time-input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .time-input-group label {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .time-input-group input[type="time"] {
+            width: 100px;
+            padding: 8px;
+        }
+
+        .settings-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 20px 0;
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--warning);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:active {
+            transform: scale(0.95);
+        }
+
+        .stat-card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-dim);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .period-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .period-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .period-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .period-btn:active {
+            transform: scale(0.95);
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: var(--card);
+            color: var(--text);
+            font-size: 16px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .history-item {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+
+        .history-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .export-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--success);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .export-btn:active {
+            transform: scale(0.95);
+        }
+
+        .import-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .import-btn:active {
+            transform: scale(0.95);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .add-slot-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 2px dashed var(--accent);
+            border-radius: 10px;
+            color: var(--accent);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .add-slot-btn:active {
+            transform: scale(0.95);
+        }
+
+        .delete-slot-btn {
+            background: var(--danger);
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .delete-slot-btn:active {
+            transform: scale(0.9);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📅 График выездов</h1>
+        <div class="date-nav" id="dateNavigation">
+            <button onclick="changeDate(-1)">◀</button>
+            <div class="date-display" onclick="openDatePicker()">
+                <div class="date-main" id="currentDate"></div>
+                <div class="date-sub" id="currentDay"></div>
+            </div>
+            <button onclick="changeDate(1)">▶</button>
+        </div>
+        <div class="quick-days" id="quickDays"></div>
+    </div>
+
+    <!-- Главный экран -->
+    <div id="mainScreen" class="container"></div>
+
+    <!-- Лист ожидания -->
+    <div id="waitlistScreen" class="container" style="display: none;">
+        <div class="section-title">⏳ Лист ожидания</div>
+        <div id="waitlistContainer"></div>
+    </div>
+
+    <!-- Статистика -->
+    <div id="statsScreen" class="container" style="display: none;">
+        <div class="section-title">📊 Статистика</div>
+        
+        <div class="period-selector">
+            <button class="period-btn active" onclick="changePeriod('day')">День</button>
+            <button class="period-btn" onclick="changePeriod('week')">Неделя</button>
+            <button class="period-btn" onclick="changePeriod('month')">Месяц</button>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="statTrips">0</div>
+                <div class="stat-label">🚗 Выездов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="statMoney">0₽</div>
+                <div class="stat-label">💰 Заработано</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="settings-group-title">📈 Детали</div>
+            <div id="statDetails"></div>
+        </div>
+    </div>
+
+    <!-- История -->
+    <div id="historyScreen" class="container" style="display: none;">
+        <div class="section-title">🔍 История клиентов</div>
+        
+        <div class="search-box">
+            <input type="tel" id="searchPhone" placeholder="Поиск по телефону..." oninput="searchHistory()">
+        </div>
+
+        <div id="historyContainer"></div>
+    </div>
+
+    <!-- Настройки -->
+    <div id="settingsScreen" class="container" style="display: none;">
+        <div class="section-title">⚙️ Настройки окон</div>
+        
+        <div id="slotsSettingsContainer"></div>
+
+        <button class="add-slot-btn" onclick="addNewSlot('work')">
+            ➕ Добавить окно для записи
+        </button>
+
+        <button class="add-slot-btn" onclick="addNewSlot('traffic')">
+            ➕ Добавить окно пробок
+        </button>
+
+        <div class="settings-divider"></div>
+
+        <button class="export-btn" onclick="exportData()">
+            📥 Экспорт данных
+        </button>
+
+        <input type="file" id="importFile" accept=".json" onchange="importData(event)">
+        <button class="import-btn" onclick="document.getElementById('importFile').click()">
+            📤 Импорт данных
+        </button>
+    </div>
+
+    <!-- FAB кнопка -->
+    <button class="fab" onclick="openAddModal()">+</button>
+
+    <!-- Нижнее меню -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="showScreen('main')">
+            <div class="icon">📅</div>
+            <div>График</div>
+        </div>
+        <div class="nav-item" onclick="showScreen('waitlist')">
+            <div class="icon">⏳</div>
+            <div>Ожидание</div>
+        </div>
+        <div class="nav-item" onclick="showScreen('stats')">
+            <div class="icon">📊</div>
+            <div>Статистика</div>
+        </div>
+        <div class="nav-item" onclick="showScreen('history')">
+            <div class="icon">🔍</div>
+            <div>История</div>
+        </div>
+        <div class="nav-item" onclick="showScreen('settings')">
+            <div class="icon">⚙️</div>
+            <div>Настройки</div>
+        </div>
+    </div>
+
+    <!-- Модалка добавления -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">➕ Новая запись</div>
+            <div id="slotWarning" style="display: none;" class="alert">
+                ⚠️ Это окно уже занято! Выберите другое или удалите существующую запись.
+            </div>
+            <form id="addForm">
+                <div class="form-group">
+                    <label>Окно</label>
+                    <select id="slotSelect" required onchange="checkSlotAvailability()">
+                        <option value="">Выберите окно...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Имя</label>
+                    <input type="text" id="clientName" required placeholder="Иван">
+                </div>
+                <div class="form-group">
+                    <label>Район</label>
+                    <input type="text" id="clientArea" required placeholder="СЗ, Центр, ЧМЗ...">
+                </div>
+                <div class="form-group">
+                    <label>Телефон</label>
+                    <input type="tel" id="clientPhone" required placeholder="89XXXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label>Проблема</label>
+                    <textarea id="clientProblem" required placeholder="Сел АКБ, не крутит..."></textarea>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="readyEarlier">
+                    <label for="readyEarlier" style="margin: 0;">✅ Готов на отмену (раньше)</label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddModal()">Отмена</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модалка завершения работы -->
+    <div id="completeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">✅ Завершить работу</div>
+            <form id="completeForm">
+                <div class="form-group">
+                    <label>Сумма за работу (₽)</label>
+                    <input type="number" id="completeMoney" required placeholder="1500" min="0">
+                </div>
+                <div class="form-group">
+                    <label>Комментарий (необязательно)</label>
+                    <textarea id="completeComment" placeholder="Заменил клеммы, проверил генератор..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeCompleteModal()">Отмена</button>
+                    <button type="submit" class="btn btn-success">Завершить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модалка выбора даты -->
+    <div id="dateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">📅 Выбрать дату</div>
+            <div class="form-group">
+                <input type="date" id="datePicker" style="width: 100%;">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeDatePicker()">Отмена</button>
+                <button class="btn btn-primary" onclick="applyDate()">Выбрать</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // SVG иконки
+        const icons = {
+            phone: `<svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`,
+            sms: `<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7V9h2v2zm4 0h-2V9h2v2zm4 0h-2V9h2v2z"/></svg>`,
+            whatsapp: `<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`,
+            telegram: `<svg viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg>`
+        };
+
+        // Глобальные переменные
+        let currentDate = new Date();
+        let allSchedules = JSON.parse(localStorage.getItem('allSchedules')) || {};
+        let slots = JSON.parse(localStorage.getItem('slots')) || [
+            {id: 'slot1', type: 'work', startTime: '12:00', endTime: '14:30'},
+            {id: 'slot2', type: 'work', startTime: '14:30', endTime: '16:30'},
+            {id: 'slot3', type: 'traffic', startTime: '16:30', endTime: '18:30'},
+            {id: 'slot4', type: 'work', startTime: '18:30', endTime: '21:30'},
+            {id: 'slot5', type: 'work', startTime: '21:30', endTime: '23:59', isEmergency: true}
+        ];
+        let completedJobs = JSON.parse(localStorage.getItem('completedJobs')) || [];
+        let currentSlotToComplete = null;
+        let currentPeriod = 'day';
+
+        // Форматирование даты
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatDateTime(date) {
+            return date.toISOString();
+        }
+
+        // Получить расписание
+        function getCurrentSchedule() {
+            const dateKey = formatDate(currentDate);
+            if (!allSchedules[dateKey]) {
+                allSchedules[dateKey] = {
+                    slots: {},
+                    waitlist: []
+                };
+            }
+            return allSchedules[dateKey];
+        }
+
+        // Сохранение
+        function saveAllSchedules() {
+            localStorage.setItem('allSchedules', JSON.stringify(allSchedules));
+            renderSchedule();
+        }
+
+        function saveSlots() {
+            localStorage.setItem('slots', JSON.stringify(slots));
+            renderSchedule();
+            renderSlotsSettings();
+            updateSlotOptions();
+        }
+
+        function saveCompletedJobs() {
+            localStorage.setItem('completedJobs', JSON.stringify(completedJobs));
+            renderStats();
+            if (document.getElementById('historyScreen').style.display !== 'none') {
+                searchHistory();
+            }
+        }
+
+        // Управление слотами
+        function addNewSlot(type) {
+            const newId = 'slot' + Date.now();
+            const newSlot = {
+                id: newId,
+                type: type,
+                startTime: '09:00',
+                endTime: type === 'traffic' ? '10:00' : '12:00',
+                isEmergency: false
+            };
+            slots.push(newSlot);
+            saveSlots();
+        }
+
+        function deleteSlotConfig(slotId) {
+            if (confirm('Удалить это окно? Все записи в этом окне будут потеряны!')) {
+                slots = slots.filter(s => s.id !== slotId);
+                
+                // Удалить все записи из этого окна во всех днях
+                Object.keys(allSchedules).forEach(dateKey => {
+                    if (allSchedules[dateKey].slots && allSchedules[dateKey].slots[slotId]) {
+                        delete allSchedules[dateKey].slots[slotId];
+                    }
+                });
+                
+                saveSlots();
+                saveAllSchedules();
+            }
+        }
+
+        function updateSlotTime(slotId, field, value) {
+            const slot = slots.find(s => s.id === slotId);
+            if (slot) {
+                slot[field] = value;
+                saveSlots();
+            }
+        }
+
+        // Кнопки контактов
+        function openContact(phone, type) {
+            let cleanPhone = phone.replace(/[^0-9]/g, '');
+            
+            if (cleanPhone.startsWith('8')) {
+                cleanPhone = '7' + cleanPhone.substring(1);
+            } else if (cleanPhone.startsWith('9')) {
+                cleanPhone = '7' + cleanPhone;
+            }
+            
+            let url = '';
+            
+            switch(type) {
+                case 'call':
+                    url = `tel:+${cleanPhone}`;
+                    window.location.href = url;
+                    break;
+                case 'sms':
+                    url = `sms:+${cleanPhone}`;
+                    window.location.href = url;
+                    break;
+                case 'whatsapp':
+                    url = `https://wa.me/${cleanPhone}`;
+                    window.open(url, '_blank');
+                    break;
+                case 'telegram':
+                    url = `https://t.me/+${cleanPhone}`;
+                    window.open(url, '_blank');
+                    break;
+            }
+        }
+
+        // Изменение даты
+        function changeDate(days) {
+            currentDate.setDate(currentDate.getDate() + days);
+            updateDateDisplay();
+            renderSchedule();
+            renderQuickDays();
+        }
+
+        function updateDateDisplay() {
+            const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+            const daysShort = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+            const day = daysShort[currentDate.getDay()];
+            const date = currentDate.getDate().toString().padStart(2, '0');
+            const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            const year = currentDate.getFullYear();
+            
+            document.getElementById('currentDate').textContent = `${date}.${month}.${year}`;
+            document.getElementById('currentDay').textContent = days[currentDate.getDay()];
+        }
+
+        function renderQuickDays() {
+            const container = document.getElementById('quickDays');
+            const today = new Date();
+            const currentKey = formatDate(currentDate);
+            
+            let html = '';
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                const dateKey = formatDate(date);
+                const daysShort = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+                const day = daysShort[date.getDay()];
+                const dateNum = date.getDate();
+                
+                const isToday = dateKey === currentKey;
+                html += `
+                    <div class="quick-day ${isToday ? 'today' : ''}" onclick="jumpToDate('${dateKey}')">
+                        <div class="quick-day-name">${day}</div>
+                        <div class="quick-day-date">${dateNum}</div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function jumpToDate(dateKey) {
+            const [year, month, day] = dateKey.split('-');
+            currentDate = new Date(year, month - 1, day);
+            updateDateDisplay();
+            renderSchedule();
+            renderQuickDays();
+        }
+
+        function openDatePicker() {
+            document.getElementById('datePicker').value = formatDate(currentDate);
+            document.getElementById('dateModal').classList.add('active');
+        }
+
+        function closeDatePicker() {
+            document.getElementById('dateModal').classList.remove('active');
+        }
+
+        function applyDate() {
+            const selectedDate = document.getElementById('datePicker').value;
+            if (selectedDate) {
+                const [year, month, day] = selectedDate.split('-');
+                currentDate = new Date(year, month - 1, day);
+                updateDateDisplay();
+                renderSchedule();
+                renderQuickDays();
+            }
+            closeDatePicker();
+        }
+
+        function updateSlotOptions() {
+            const select = document.getElementById('slotSelect');
+            const workSlots = slots.filter(s => s.type === 'work');
+            
+            let html = '<option value="">Выберите окно...</option>';
+            workSlots.forEach(slot => {
+                const label = slot.isEmergency ? 
+                    `${slot.startTime}+ Экстренно` : 
+                    `${slot.startTime}–${slot.endTime}`;
+                html += `<option value="${slot.id}">${label}</option>`;
+            });
+            html += '<option value="waitlist">⏳ Лист ожидания</option>';
+            
+            select.innerHTML = html;
+        }
+
+        function checkSlotAvailability() {
+            const slotId = document.getElementById('slotSelect').value;
+            const warning = document.getElementById('slotWarning');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (!slotId || slotId === 'waitlist') {
+                warning.style.display = 'none';
+                submitBtn.disabled = false;
+                return;
+            }
+            
+            const schedule = getCurrentSchedule();
+            if (schedule.slots[slotId]) {
+                warning.style.display = 'block';
+                submitBtn.disabled = true;
+            } else {
+                warning.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Рендер настроек слотов
+        function renderSlotsSettings() {
+            const container = document.getElementById('slotsSettingsContainer');
+            
+            let html = '';
+            slots.forEach((slot, index) => {
+                const icon = slot.type === 'traffic' ? '⛔' : (slot.isEmergency ? '🧯' : '🚗');
+                const title = slot.type === 'traffic' ? 'Пробки' : (slot.isEmergency ? 'Экстренно' : `Окно ${index + 1}`);
+                
+                html += `
+                    <div class="settings-group">
+                        <div class="settings-group-title">
+                            <span>${icon} ${title}</span>
+                            ${slots.length > 1 ? `<button class="delete-slot-btn" onclick="deleteSlotConfig('${slot.id}')">🗑 Удалить</button>` : ''}
+                        </div>
+                        <div class="time-input-group">
+                            <label>Начало:</label>
+                            <input type="time" value="${slot.startTime}" onchange="updateSlotTime('${slot.id}', 'startTime', this.value)">
+                        </div>
+                        ${!slot.isEmergency ? `
+                            <div class="time-input-group">
+                                <label>Конец:</label>
+                                <input type="time" value="${slot.endTime}" onchange="updateSlotTime('${slot.id}', 'endTime', this.value)">
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // Рендер расписания
+        function renderSchedule() {
+            const schedule = getCurrentSchedule();
+            const container = document.getElementById('mainScreen');
+            
+            let html = '';
+            
+            slots.forEach(slot => {
+                const data = schedule.slots[slot.id];
+                
+                if (slot.type === 'traffic') {
+                    html += `
+                        <div class="slot-card traffic">
+                            <div style="font-size: 18px; font-weight: 700;">⛔ ${slot.startTime}–${slot.endTime} │ ПРОБКИ</div>
+                            <div style="font-size: 13px; margin-top: 5px; opacity: 0.9;">Новые адреса не беру</div>
+                        </div>
+                    `;
+                } else {
+                    if (data) {
+                        const phoneEscaped = data.phone.replace(/'/g, "\\'");
+                        const timeLabel = slot.isEmergency ? 
+                            `🧯 ${slot.startTime}+ Экстренно` : 
+                            `🚗 ${slot.startTime}–${slot.endTime}`;
+                        
+                        html += `
+                            <div class="slot-card filled">
+                                <div class="slot-header">
+                                    <div class="slot-time">${timeLabel}</div>
+                                    <div class="slot-status">${data.completed ? 'Выполнено' : 'Занято'}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <div class="label">Имя</div>
+                                    <div class="value">👤 ${data.name}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <div class="label">Район</div>
+                                    <div class="value">📍 ${data.area}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <div class="label">Телефон</div>
+                                    <div class="value">📞 ${data.phone}</div>
+                                </div>
+                                <div class="slot-info">
+                                    <div class="label">Проблема</div>
+                                    <div class="value">🔧 ${data.problem}</div>
+                                </div>
+                                ${data.readyEarlier ? '<div class="badge">✅ На отмену</div>' : '<div class="badge no">⬜ НЕТ</div>'}
+                                ${data.completed ? `<div class="badge" style="background: var(--success); margin-left: 8px;">💰 ${data.money}₽</div>` : ''}
+                                <div class="contact-buttons">
+                                    <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
+                                    <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
+                                    <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
+                                    <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
+                                </div>
+                                <div class="slot-actions">
+                                    ${!data.completed ? `<button class="btn btn-success" onclick="openCompleteModal('${slot.id}')">✅ Завершить</button>` : ''}
+                                    <button class="btn btn-danger" onclick="deleteSlotData('${slot.id}')">🗑 Удалить</button>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        const timeLabel = slot.isEmergency ? 
+                            `🧯 ${slot.startTime}+ Экстренно` : 
+                            `🚗 ${slot.startTime}–${slot.endTime}`;
+                        
+                        html += `
+                            <div class="slot-card">
+                                <div class="slot-header">
+                                    <div class="slot-time">${timeLabel}</div>
+                                    <div class="slot-status empty">Свободно</div>
+                                </div>
+                                <div class="empty-state">
+                                    <div class="icon">📭</div>
+                                    <div>Нет записи</div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+            });
+            
+            container.innerHTML = html;
+            renderWaitlist();
+        }
+
+        // Удаление записи из слота
+        function deleteSlotData(slotId) {
+            if (confirm('Удалить запись?')) {
+                const schedule = getCurrentSchedule();
+                delete schedule.slots[slotId];
+                saveAllSchedules();
+            }
+        }
+
+        // Завершение работы
+        function openCompleteModal(slotId) {
+            currentSlotToComplete = slotId;
+            document.getElementById('completeModal').classList.add('active');
+        }
+
+        function closeCompleteModal() {
+            document.getElementById('completeModal').classList.remove('active');
+            document.getElementById('completeForm').reset();
+            currentSlotToComplete = null;
+        }
+
+        document.getElementById('completeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const schedule = getCurrentSchedule();
+            const data = schedule.slots[currentSlotToComplete];
+            const money = parseInt(document.getElementById('completeMoney').value);
+            const comment = document.getElementById('completeComment').value;
+            
+            data.completed = true;
+            data.money = money;
+            data.completedAt = formatDateTime(new Date());
+            data.comment = comment;
+            
+            completedJobs.push({
+                ...data,
+                date: formatDate(currentDate),
+                slotId: currentSlotToComplete
+            });
+            
+            saveAllSchedules();
+            saveCompletedJobs();
+            closeCompleteModal();
+        });
+
+        // Лист ожидания
+        function renderWaitlist() {
+            const container = document.getElementById('waitlistContainer');
+            const schedule = getCurrentSchedule();
+            const waitlist = schedule.waitlist || [];
+            
+            if (waitlist.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <div>Список ожидания пуст</div>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = waitlist.map((item, index) => {
+                const phoneEscaped = item.phone.replace(/'/g, "\\'");
+                return `
+                <div class="waitlist-item">
+                    <div class="waitlist-header">
+                        <div>
+                            <div class="waitlist-name">${index + 1}️⃣ ${item.name}</div>
+                            <div style="font-size: 13px; color: var(--text-dim); margin-top: 4px;">📍 ${item.area}</div>
+                        </div>
+                        ${item.readyEarlier ? '<div class="badge">✅ Готов</div>' : '<div class="badge no">⬜ НЕТ</div>'}
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Телефон</div>
+                        <div class="value">📞 ${item.phone}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Проблема</div>
+                        <div class="value">🔧 ${item.problem}</div>
+                    </div>
+                    <div class="contact-buttons">
+                        <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
+                        <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
+                        <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
+                        <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
+                    </div>
+                    <div class="slot-actions">
+                        <button class="btn btn-primary" onclick="moveToSlot(${index})">📅 В слот</button>
+                        <button class="btn btn-danger" onclick="deleteWaitlist(${index})">🗑</button>
+                    </div>
+                </div>
+            `;
+            }).join('');
+        }
+
+        function deleteWaitlist(index) {
+            if (confirm('Удалить из листа ожидания?')) {
+                const schedule = getCurrentSchedule();
+                schedule.waitlist.splice(index, 1);
+                saveAllSchedules();
+            }
+        }
+
+        // Модалка добавления
+        function openAddModal() {
+            updateSlotOptions();
+            document.getElementById('slotSelect').value = '';
+            document.getElementById('slotWarning').style.display = 'none';
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('addForm').reset();
+            document.getElementById('slotWarning').style.display = 'none';
+        }
+
+        document.getElementById('addForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const slotId = document.getElementById('slotSelect').value;
+            const schedule = getCurrentSchedule();
+            
+            if (slotId !== 'waitlist' && schedule.slots[slotId]) {
+                alert('⚠️ Это окно уже занято! Выберите другое.');
+                return;
+            }
+            
+            const data = {
+                name: document.getElementById('clientName').value,
+                area: document.getElementById('clientArea').value,
+                phone: document.getElementById('clientPhone').value,
+                problem: document.getElementById('clientProblem').value,
+                readyEarlier: document.getElementById('readyEarlier').checked,
+                completed: false
+            };
+
+            if (slotId === 'waitlist') {
+                schedule.waitlist.push(data);
+            } else {
+                schedule.slots[slotId] = data;
+            }
+
+            saveAllSchedules();
+            closeAddModal();
+        });
+
+        function moveToSlot(index) {
+            const schedule = getCurrentSchedule();
+            const workSlots = slots.filter(s => s.type === 'work');
+            const freeSlots = workSlots.filter(s => !schedule.slots[s.id]);
+            
+            if (freeSlots.length === 0) {
+                alert('❌ Все слоты заняты! Освободите сначала.');
+                return;
+            }
+
+            const slotNames = {};
+            freeSlots.forEach(s => {
+                slotNames[s.id] = s.isEmergency ? 
+                    `${s.startTime}+ Экстренно` : 
+                    `${s.startTime}–${s.endTime}`;
+            });
+
+            let choice = prompt(`Выберите слот:\n${freeSlots.map((s, i) => `${i+1}. ${slotNames[s.id]}`).join('\n')}\n\nВведите номер:`);
+            
+            if (choice && choice > 0 && choice <= freeSlots.length) {
+                const targetSlot = freeSlots[choice - 1];
+                schedule.slots[targetSlot.id] = schedule.waitlist[index];
+                schedule.waitlist.splice(index, 1);
+                saveAllSchedules();
+                showScreen('main');
+            }
+        }
+
+        // Статистика
+        function changePeriod(period) {
+            currentPeriod = period;
+            document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderStats();
+        }
+
+        function renderStats() {
+            const now = new Date();
+            let jobs = [];
+            
+            if (currentPeriod === 'day') {
+                const today = formatDate(now);
+                jobs = completedJobs.filter(job => job.date === today);
+            } else if (currentPeriod === 'week') {
+                const weekAgo = new Date(now);
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                jobs = completedJobs.filter(job => new Date(job.completedAt) >= weekAgo);
+            } else if (currentPeriod === 'month') {
+                const monthAgo = new Date(now);
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
+                jobs = completedJobs.filter(job => new Date(job.completedAt) >= monthAgo);
+            }
+            
+            const totalTrips = jobs.length;
+            const totalMoney = jobs.reduce((sum, job) => sum + (job.money || 0), 0);
+            
+            document.getElementById('statTrips').textContent = totalTrips;
+            document.getElementById('statMoney').textContent = totalMoney + '₽';
+            
+            const details = document.getElementById('statDetails');
+            if (jobs.length === 0) {
+                details.innerHTML = '<div style="color: var(--text-dim); text-align: center; padding: 20px;">Нет данных</div>';
+            } else {
+                details.innerHTML = jobs.map(job => `
+                    <div style="padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <div style="font-weight: 600; margin-bottom: 4px;">${job.name} — ${job.money}₽</div>
+                        <div style="font-size: 12px; color: var(--text-dim);">${job.date} • ${job.area} • ${job.problem}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // История клиентов
+        function searchHistory() {
+            const query = document.getElementById('searchPhone').value.replace(/[^0-9]/g, '');
+            const container = document.getElementById('historyContainer');
+            
+            if (!query) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🔍</div>
+                        <div>Введите номер телефона</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            const results = completedJobs.filter(job => 
+                job.phone.replace(/[^0-9]/g, '').includes(query)
+            );
+            
+            if (results.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">❌</div>
+                        <div>Клиент не найден</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = results.map((job, index) => {
+                const phoneEscaped = job.phone.replace(/'/g, "\\'");
+                return `
+                <div class="history-item">
+                    <div class="history-date">${job.date}</div>
+                    <div class="history-name">${job.name}</div>
+                    <div class="slot-info">
+                        <div class="label">Телефон</div>
+                        <div class="value">📞 ${job.phone}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Район</div>
+                        <div class="value">📍 ${job.area}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Проблема</div>
+                        <div class="value">🔧 ${job.problem}</div>
+                    </div>
+                    <div class="slot-info">
+                        <div class="label">Сумма</div>
+                        <div class="value">💰 ${job.money}₽</div>
+                    </div>
+                    ${job.comment ? `
+                        <div class="slot-info">
+                            <div class="label">Комментарий</div>
+                            <div class="value">${job.comment}</div>
+                        </div>
+                    ` : ''}
+                    <div class="contact-buttons">
+                        <button class="contact-btn call" onclick="openContact('${phoneEscaped}', 'call')">${icons.phone}</button>
+                        <button class="contact-btn sms" onclick="openContact('${phoneEscaped}', 'sms')">${icons.sms}</button>
+                        <button class="contact-btn whatsapp" onclick="openContact('${phoneEscaped}', 'whatsapp')">${icons.whatsapp}</button>
+                        <button class="contact-btn telegram" onclick="openContact('${phoneEscaped}', 'telegram')">${icons.telegram}</button>
+                    </div>
+                    <div class="slot-actions">
+                        <button class="btn btn-danger" onclick="deleteHistory(${completedJobs.indexOf(job)})">🗑 Удалить</button>
+                    </div>
+                </div>
+            `;
+            }).join('');
+        }
+
+        function deleteHistory(index) {
+            if (confirm('Удалить из истории?')) {
+                completedJobs.splice(index, 1);
+                saveCompletedJobs();
+            }
+        }
+
+        // Экспорт данных
+        function exportData() {
+            const data = {
+                schedules: allSchedules,
+                completedJobs: completedJobs,
+                slots: slots,
+                exportDate: formatDateTime(new Date())
+            };
+            
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `график_выездов_${formatDate(new Date())}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Данные экспортированы!');
+        }
+
+        // Импорт данных
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (!importedData.schedules || !importedData.completedJobs) {
+                        alert('❌ Ошибка: неверный формат файла!');
+                        return;
+                    }
+
+                    if (confirm('⚠️ Импорт заменит все текущие данные!\n\nПродолжить?')) {
+                        allSchedules = importedData.schedules;
+                        completedJobs = importedData.completedJobs;
+                        if (importedData.slots) {
+                            slots = importedData.slots;
+                        }
+
+                        localStorage.setItem('allSchedules', JSON.stringify(allSchedules));
+                        localStorage.setItem('completedJobs', JSON.stringify(completedJobs));
+                        localStorage.setItem('slots', JSON.stringify(slots));
+
+                        renderSchedule();
+                        renderStats();
+                        renderSlotsSettings();
+                        updateSlotOptions();
+
+                        alert('✅ Данные успешно импортированы!');
+                    }
+                } catch (error) {
+                    alert('❌ Ошибка при чтении файла!\n\n' + error.message);
+                }
+            };
+            
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // Переключение экранов
+        function showScreen(screen) {
+            document.querySelectorAll('.container').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            
+            const dateNav = document.getElementById('dateNavigation');
+            const quickDays = document.getElementById('quickDays');
+            
+            if (screen === 'main') {
+                document.getElementById('mainScreen').style.display = 'block';
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+                dateNav.style.display = 'flex';
+                quickDays.style.display = 'flex';
+            } else if (screen === 'waitlist') {
+                document.getElementById('waitlistScreen').style.display = 'block';
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+                dateNav.style.display = 'flex';
+                quickDays.style.display = 'flex';
+            } else if (screen === 'stats') {
+                document.getElementById('statsScreen').style.display = 'block';
+                document.querySelectorAll('.nav-item')[2].classList.add('active');
+                dateNav.style.display = 'none';
+                quickDays.style.display = 'none';
+                renderStats();
+            } else if (screen === 'history') {
+                document.getElementById('historyScreen').style.display = 'block';
+                document.querySelectorAll('.nav-item')[3].classList.add('active');
+                dateNav.style.display = 'none';
+                quickDays.style.display = 'none';
+            } else if (screen === 'settings') {
+                document.getElementById('settingsScreen').style.display = 'block';
+                document.querySelectorAll('.nav-item')[4].classList.add('active');
+                dateNav.style.display = 'none';
+                quickDays.style.display = 'none';
+                renderSlotsSettings();
+            }
+        }
+
+        // Инициализация
+        updateDateDisplay();
+        renderSchedule();
+        renderQuickDays();
+        updateSlotOptions();
+        renderStats();
+        renderSlotsSettings();
+    </script>
+
+</body>
+</html>
