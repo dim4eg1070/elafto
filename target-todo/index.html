@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Finance Tracker | Digital Freelance</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.5);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
+        }
+
+        input, select, textarea {
+            background: rgba(15, 23, 42, 0.6) !important;
+            border: 1px solid #334155 !important;
+            color: white !important;
+        }
+        
+        input:focus, select:focus {
+            border-color: #38bdf8 !important;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+        }
+
+        .category-tag {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+
+        .category-target { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
+        .category-smm { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+        .category-design { background: rgba(236, 72, 153, 0.2); color: #ec4899; }
+        .category-other { background: rgba(148, 163, 184, 0.2); color: #94a3b8; }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 glass-card mx-4 mt-4 px-6 py-4 flex justify-between items-center mb-8 border-none shadow-lg">
+        <div class="flex items-center space-x-2">
+            <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
+                <i class="fas fa-layer-group text-white text-xl"></i>
+            </div>
+            <h1 class="text-2xl font-bold tracking-tight">Nexus <span class="gradient-text">Finance</span></h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span id="current-date" class="hidden md:block text-slate-400 text-sm"></span>
+            <button onclick="exportData()" class="p-2 text-slate-400 hover:text-white transition-colors" title="Экспорт CSV">
+                <i class="fas fa-file-export"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column: Summary & Charts -->
+        <div class="lg:col-span-8 space-y-8">
+            
+            <!-- Summary Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="glass-card p-6 flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-slate-400 text-sm font-medium uppercase tracking-wider">Баланс</span>
+                        <i class="fas fa-wallet text-cyan-400"></i>
+                    </div>
+                    <div class="text-3xl font-bold" id="total-balance">0 ₽</div>
+                </div>
+                <div class="glass-card p-6 flex flex-col justify-between border-l-4 border-l-emerald-500">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-slate-400 text-sm font-medium uppercase tracking-wider">Доходы</span>
+                        <i class="fas fa-arrow-up text-emerald-400"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-emerald-400" id="total-income">+0 ₽</div>
+                </div>
+                <div class="glass-card p-6 flex flex-col justify-between border-l-4 border-l-rose-500">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-slate-400 text-sm font-medium uppercase tracking-wider">Расходы</span>
+                        <i class="fas fa-arrow-down text-rose-400"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-rose-400" id="total-expense">-0 ₽</div>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="glass-card p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold">Аналитика по направлениям</h3>
+                    <select id="chart-view" class="bg-slate-800 text-xs rounded border-slate-700 px-2 py-1" onchange="updateChart()">
+                        <option value="income">Доходы</option>
+                        <option value="expense">Расходы</option>
+                    </select>
+                </div>
+                <div class="h-64 relative">
+                    <canvas id="financeChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="glass-card p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold">История операций</h3>
+                    <div class="flex space-x-2">
+                        <button onclick="filterTransactions('all')" class="text-xs px-3 py-1 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors">Все</button>
+                        <button onclick="filterTransactions('income')" class="text-xs px-3 py-1 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors">Доходы</button>
+                        <button onclick="filterTransactions('expense')" class="text-xs px-3 py-1 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors">Расходы</button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto custom-scrollbar" style="max-height: 400px;">
+                    <table class="w-full text-left">
+                        <thead class="text-xs text-slate-500 uppercase">
+                            <tr>
+                                <th class="pb-3 font-medium">Дата</th>
+                                <th class="pb-3 font-medium">Направление</th>
+                                <th class="pb-3 font-medium">Описание</th>
+                                <th class="pb-3 font-medium text-right">Сумма</th>
+                                <th class="pb-3 font-medium text-right">Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-list" class="divide-y divide-slate-800">
+                            <!-- Transactions will appear here -->
+                        </tbody>
+                    </table>
+                    <div id="no-transactions" class="text-center py-10 text-slate-500 hidden">
+                        Нет записей за выбранный период
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Add Transaction & Goal -->
+        <div class="lg:col-span-4 space-y-8">
+            
+            <!-- New Transaction Form -->
+            <div class="glass-card p-6">
+                <h3 class="text-lg font-semibold mb-6 flex items-center">
+                    <i class="fas fa-plus-circle mr-2 text-cyan-400"></i> Новая транзакция
+                </h3>
+                <form id="transaction-form" class="space-y-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">Тип</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button type="button" onclick="setType('income')" id="btn-type-income" class="py-2 rounded-lg border border-slate-700 bg-slate-800 text-sm font-medium transition-all hover:bg-emerald-900/30">Доход</button>
+                            <button type="button" onclick="setType('expense')" id="btn-type-expense" class="py-2 rounded-lg border border-slate-700 bg-slate-800 text-sm font-medium transition-all hover:bg-rose-900/30">Расход</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">Направление</label>
+                        <select id="category" class="w-full rounded-lg p-2.5 text-sm" required>
+                            <option value="Target">Таргет (Ads)</option>
+                            <option value="SMM">SMM / Контент</option>
+                            <option value="Design">Дизайн / UX</option>
+                            <option value="Other">Другое</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">Сумма (₽)</label>
+                        <input type="number" id="amount" class="w-full rounded-lg p-2.5 text-sm" placeholder="0.00" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">Описание</label>
+                        <input type="text" id="description" class="w-full rounded-lg p-2.5 text-sm" placeholder="Название проекта / клиента" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1 uppercase tracking-wider">Дата</label>
+                        <input type="date" id="date" class="w-full rounded-lg p-2.5 text-sm" required>
+                    </div>
+
+                    <button type="submit" class="w-full btn-primary py-3 rounded-lg font-semibold mt-4">
+                        Добавить в Nexus
+                    </button>
+                </form>
+            </div>
+
+            <!-- Freelance Tip -->
+            <div class="glass-card p-6 bg-gradient-to-br from-blue-600/20 to-cyan-500/10 border-blue-500/20">
+                <div class="flex items-start space-x-3">
+                    <i class="fas fa-lightbulb text-yellow-400 mt-1"></i>
+                    <div>
+                        <h4 class="font-medium text-sm text-blue-300">Nexus Совет</h4>
+                        <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            Не забывайте откладывать 13% (или 6% как самозанятый) от каждого дохода на налоги. Nexus поможет вам видеть чистую прибыль в конце месяца.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clear All Data (Optional/Dev) -->
+            <button onclick="clearAllData()" class="w-full py-2 text-xs text-slate-600 hover:text-rose-400 transition-colors">
+                <i class="fas fa-trash-alt mr-1"></i> Очистить все данные
+            </button>
+        </div>
+    </main>
+
+    <script>
+        // State Management
+        let transactions = JSON.parse(localStorage.getItem('nexus_transactions')) || [];
+        let currentType = 'income';
+        let chart = null;
+
+        // Init App
+        document.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+            document.getElementById('current-date').innerText = new Intl.DateTimeFormat('ru-RU', { dateStyle: 'long' }).format(new Date());
+            
+            setType('income');
+            updateUI();
+            initChart();
+        });
+
+        // UI Handlers
+        function setType(type) {
+            currentType = type;
+            const incBtn = document.getElementById('btn-type-income');
+            const expBtn = document.getElementById('btn-type-expense');
+            
+            if (type === 'income') {
+                incBtn.classList.add('border-emerald-500', 'bg-emerald-500/20', 'text-emerald-400');
+                expBtn.classList.remove('border-rose-500', 'bg-rose-500/20', 'text-rose-400');
+            } else {
+                expBtn.classList.add('border-rose-500', 'bg-rose-500/20', 'text-rose-400');
+                incBtn.classList.remove('border-emerald-500', 'bg-emerald-500/20', 'text-emerald-400');
+            }
+        }
+
+        // Add Transaction
+        document.getElementById('transaction-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const newTransaction = {
+                id: Date.now(),
+                type: currentType,
+                category: document.getElementById('category').value,
+                amount: parseFloat(document.getElementById('amount').value),
+                description: document.getElementById('description').value,
+                date: document.getElementById('date').value
+            };
+
+            transactions.unshift(newTransaction);
+            saveData();
+            updateUI();
+            e.target.reset();
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            setType('income');
+        });
+
+        function deleteTransaction(id) {
+            transactions = transactions.filter(t => t.id !== id);
+            saveData();
+            updateUI();
+        }
+
+        function saveData() {
+            localStorage.setItem('nexus_transactions', JSON.stringify(transactions));
+        }
+
+        function updateUI(filterType = 'all') {
+            const list = document.getElementById('transaction-list');
+            const noData = document.getElementById('no-transactions');
+            list.innerHTML = '';
+            
+            let filtered = transactions;
+            if (filterType !== 'all') {
+                filtered = transactions.filter(t => t.type === filterType);
+            }
+
+            if (filtered.length === 0) {
+                noData.classList.remove('hidden');
+            } else {
+                noData.classList.add('hidden');
+                filtered.forEach(t => {
+                    const row = document.createElement('tr');
+                    row.className = 'group hover:bg-slate-800/30 transition-colors';
+                    
+                    const amountClass = t.type === 'income' ? 'text-emerald-400' : 'text-rose-400';
+                    const amountPrefix = t.type === 'income' ? '+' : '-';
+                    const catClass = `category-${t.category.toLowerCase()}`;
+                    
+                    row.innerHTML = `
+                        <td class="py-4 text-xs text-slate-400">${t.date}</td>
+                        <td class="py-4">
+                            <span class="category-tag ${catClass}">${t.category}</span>
+                        </td>
+                        <td class="py-4 text-sm font-medium">${t.description}</td>
+                        <td class="py-4 text-sm font-bold text-right ${amountClass}">${amountPrefix}${t.amount.toLocaleString()} ₽</td>
+                        <td class="py-4 text-right">
+                            <button onclick="deleteTransaction(${t.id})" class="text-slate-600 hover:text-rose-500 transition-colors px-2">
+                                <i class="fas fa-trash-alt text-xs"></i>
+                            </button>
+                        </td>
+                    `;
+                    list.appendChild(row);
+                });
+            }
+
+            updateSummary();
+            updateChart();
+        }
+
+        function updateSummary() {
+            const income = transactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            const expense = transactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            const balance = income - expense;
+
+            document.getElementById('total-balance').innerText = `${balance.toLocaleString()} ₽`;
+            document.getElementById('total-income').innerText = `+${income.toLocaleString()} ₽`;
+            document.getElementById('total-expense').innerText = `-${expense.toLocaleString()} ₽`;
+        }
+
+        function filterTransactions(type) {
+            updateUI(type);
+        }
+
+        // Charts Logic
+        function initChart() {
+            const ctx = document.getElementById('financeChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Target', 'SMM', 'Design', 'Other'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: [
+                            '#38bdf8',
+                            '#a855f7',
+                            '#ec4899',
+                            '#94a3b8'
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#94a3b8',
+                                padding: 20,
+                                font: { size: 12 }
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        function updateChart() {
+            if (!chart) return;
+            
+            const viewType = document.getElementById('chart-view').value;
+            const categories = ['Target', 'SMM', 'Design', 'Other'];
+            
+            const data = categories.map(cat => {
+                return transactions
+                    .filter(t => t.type === viewType && t.category === cat)
+                    .reduce((sum, t) => sum + t.amount, 0);
+            });
+
+            chart.data.datasets[0].data = data;
+            chart.update();
+        }
+
+        function exportData() {
+            if (transactions.length === 0) return alert('Нет данных для экспорта');
+            
+            let csv = 'Date,Type,Category,Description,Amount\n';
+            transactions.forEach(t => {
+                csv += `${t.date},${t.type},${t.category},"${t.description}",${t.amount}\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `nexus-finance-${new Date().toISOString().split('T')[0]}.csv`);
+            a.click();
+        }
+
+        function clearAllData() {
+            if (confirm('Вы уверены, что хотите удалить все данные? Это действие необратимо.')) {
+                transactions = [];
+                saveData();
+                updateUI();
+            }
+        }
+    </script>
+</body>
+</html>
