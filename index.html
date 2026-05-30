@@ -3,1315 +3,1667 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EL AFTO - Автоэлектрик и диагностика в Челябинске Северок</title>
-    <meta name="description" content="Профессиональный автосервис на Северо-Западе Челябинска: компьютерная диагностика, ремонт автоэлектрики и шиномонтаж. Качественно и недорого. Запишитесь онлайн!">
-    <meta name="keywords" content="автоэлектрик челябинск, автодиагност челябинск, компьютерная диагностика автомобиля, ремонт автоэлектрики, шиномонтаж челябинск северо-запад, шиномонтаж на северо-западе, диагностика двигателя, диагностика АКПП, ремонт генератора, ремонт стартера, автомобильный электрик, услуги автоэлектрика">
-    <link rel="icon" type="image/x-icon" href="./img/logo.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Oswald:wght@500;600&display=swap" rel="stylesheet">
+    <title>Автоэлектрик в Челябинске — Диагностика, Промывка форсунок, Ремонт электрики</title>
+    <meta name="description" content="Автоэлектрик в Челябинске. Компьютерная диагностика, промывка форсунок без разбора, проверка подсоса воздуха дымогенератором. ул. Автодорожная 12А/2. Звоните: +7 (952) 408-40-43">
+    <meta name="keywords" content="автоэлектрик челябинск, компьютерная диагностика челябинск, промывка форсунок челябинск, подсос воздуха дымогенератор, автоэлектрик автодорожная, ремонт автоэлектрики челябинск">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Автоэлектрик Челябинск">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Автоэлектрик в Челябинске — Профессиональная диагностика и ремонт">
+    <meta property="og:description" content="Компьютерная диагностика, промывка форсунок, проверка подсоса воздуха. ул. Автодорожная 12А/2. +7 (952) 408-40-43">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+
+    <!-- Schema.org LocalBusiness -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "AutoRepair",
+        "name": "Автоэлектрик Челябинск",
+        "description": "Профессиональные услуги автоэлектрика: компьютерная диагностика, промывка форсунок, проверка подсоса воздуха дымогенератором",
+        "url": "https://taplink.cc/el_afto",
+        "telephone": "+79524084043",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "ул. Автодорожная 12А/2",
+            "addressLocality": "Челябинск",
+            "addressRegion": "Челябинская область",
+            "postalCode": "454000",
+            "addressCountry": "RU"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 55.211445,
+            "longitude": 61.350191
+        },
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+            "opens": "09:00",
+            "closes": "19:00"
+        },
+        "priceRange": "$$",
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "187"
+        },
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Услуги автоэлектрика",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Компьютерная диагностика автомобиля"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Услуга автоэлектрика"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Промывка форсунок без разбора"
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Проверка подсоса воздуха дымогенератором"
+                    }
+                }
+            ]
+        }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Глобальные стили */
-        :root {
-            --primary: #1a6fc4;
-            --primary-dark: #145da0;
-            --secondary: #CB2229;
-            --secondary-dark: #FFBABA;
-            --dark: #2c3e50;
-            --light: #f8f9fa;
-            --gray: #6c757d;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        /* ===== CSS RESET & BASE ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
         body {
-            font-family: 'Roboto', 'Arial', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
             line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
+            overflow-x: hidden;
         }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* Mobile tap highlight off */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
-        
-        /* Стили для выравнивания контейнеров */
-        .content-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
+
+        /* Smooth scroll on iOS */
+        body {
+            -webkit-overflow-scrolling: touch;
         }
-        
-        .centered-content {
-            max-width: 800px;
-            margin: 0 auto;
+
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --accent: #f97316;
+            --accent-hover: #fb923c;
+            --accent-glow: rgba(249, 115, 22, 0.3);
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --bg-card-hover: #1a1a1a;
+            --border: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666;
+            --success: #22c55e;
         }
-        
-        /* Эффектные кнопки */
-        .btn {
-            display: inline-block;
-            padding: 12px 25px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
+
+        /* ===== UTILITY ===== */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
             text-transform: uppercase;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(26, 111, 196, 0.3);
-            font-size: 0.9rem;
-            margin: 5px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(26, 111, 196, 0.4);
-        }
-        
-        .cta-btn {
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-            box-shadow: 0 4px 10px rgba(255, 122, 0, 0.3);
-        }
-        
-        section {
-            padding: 60px 0;
-        }
-        
-        h2 {
             text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.2rem;
-            color: var(--dark);
-            position: relative;
-            padding-bottom: 15px;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
         }
-        
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            border-radius: 2px;
+        .section-title span { color: var(--accent); }
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        
-        /* Шапка */
-        header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px var(--accent-glow); }
+            50% { box-shadow: 0 0 40px var(--accent-glow), 0 0 60px rgba(249,115,22,0.1); }
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== HEADER / NAV ===== */
+        .header {
             position: fixed;
-            width: 100%;
             top: 0;
+            left: 0;
+            width: 100%;
             z-index: 1000;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
         }
-        
-        header .container {
+        .header.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+        }
+        .nav {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
+            height: 75px;
         }
-        
         .logo {
-            font-family: 'Oswald', 'Arial Black', sans-serif;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--dark);
-            text-decoration: none;
             display: flex;
             align-items: center;
-        }
-        
-        .logo span {
-            color: var(--secondary);
-        }
-        
-        .logo i {
-            margin-right: 8px;
-            color: var(--secondary);
+            gap: 12px;
+            font-family: 'Oswald', sans-serif;
             font-size: 1.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+        .logo-text span { color: var(--accent); }
         .nav-links {
             display: flex;
+            align-items: center;
+            gap: 30px;
         }
-        
-        .nav-links li {
-            margin-left: 25px;
-            list-style: none;
-        }
-        
         .nav-links a {
+            font-size: 0.9rem;
             font-weight: 500;
-            text-decoration: none;
-            color: var(--dark);
-            font-size: 1rem;
-            transition: color 0.3s ease;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+            position: relative;
         }
-        
-        .nav-links a:hover {
-            color: var(--primary);
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s;
         }
-        
-        .burger {
-            display: none;
-            cursor: pointer;
-        }
-        
-        .burger div {
-            width: 25px;
-            height: 3px;
-            background-color: var(--dark);
-            margin: 5px;
-            transition: all 0.3s ease;
-        }
-        
-        /* Герой секция */
-        .hero {
-            height: 90vh;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
-            color: white;
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-phone {
             display: flex;
             align-items: center;
-            text-align: center;
-            padding-top: 70px;
+            gap: 10px;
+            background: var(--accent);
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #fff;
+            transition: all 0.3s;
         }
-        
-        .hero .container {
-            max-width: 800px;
+        .nav-phone:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px var(--accent-glow);
         }
-        
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+        .burger span {
+            width: 28px;
+            height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        .burger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .burger.active span:nth-child(2) { opacity: 0; }
+        .burger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 75px;
+        }
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(249, 115, 22, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(249, 115, 22, 0.05) 0%, transparent 50%),
+                linear-gradient(180deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);
+        }
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(249,115,22,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(249,115,22,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 750px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.2);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 25px;
+            animation: fadeInUp 0.6s ease;
+        }
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
         .hero h1 {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
             text-transform: uppercase;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease 0.1s both;
         }
-        
-        .hero p {
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent), #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-desc {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 550px;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            animation: fadeInUp 0.6s ease 0.3s both;
+        }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--accent);
+            color: #fff;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: glow 3s infinite;
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px var(--accent-glow);
+        }
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            color: var(--text-primary);
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-3px);
+        }
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+            animation: fadeInUp 0.6s ease 0.4s both;
+        }
+        .hero-stat h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .hero-stat p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .hero-decoration {
+            position: absolute;
+            right: -5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 500px;
+            opacity: 0.08;
+        }
+        .hero-decoration svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ===== TRUST BAR ===== */
+        .trust-bar {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 25px 0;
+        }
+        .trust-items {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        @media (max-width: 640px) {
+            .trust-items {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+                padding: 4px 16px 8px;
+                gap: 8px;
+                scrollbar-width: none;
+            }
+            .trust-items::-webkit-scrollbar { display: none; }
+            .trust-item {
+                scroll-snap-align: start;
+                flex-shrink: 0;
+            }
+        }
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .trust-item .icon {
             font-size: 1.3rem;
-            margin-bottom: 30px;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.3);
         }
-        
-        .contact-buttons {
+
+        /* ===== SERVICES ===== */
+        .services {
+            padding: 100px 0;
+            position: relative;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 25px;
+        }
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px 30px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), #fbbf24);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .service-card:hover {
+            border-color: rgba(249,115,22,0.3);
+            transform: translateY(-8px);
+            background: var(--bg-card-hover);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .service-card:hover::before { opacity: 1; }
+        .service-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 16px;
+            background: rgba(249, 115, 22, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 22px;
+            transition: all 0.4s;
+        }
+        .service-card:hover .service-icon {
+            background: var(--accent);
+            transform: scale(1.1) rotate(-5deg);
+        }
+        .service-card h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+        .service-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .service-tag {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 6px 14px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        /* ===== WHY US ===== */
+        .why-us {
+            padding: 100px 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .why-card {
+            text-align: center;
+            padding: 35px 25px;
+            border-radius: 20px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+        .why-card:hover {
+            border-color: var(--border);
+            background: var(--bg-dark);
+        }
+        .why-icon {
+            font-size: 2.5rem;
+            margin-bottom: 18px;
+            display: block;
+        }
+        .why-card h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.15rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .why-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ===== PROCESS ===== */
+        .process {
+            padding: 100px 0;
+        }
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            position: relative;
+        }
+        .step {
+            text-align: center;
+            position: relative;
+            padding: 30px 20px;
+        }
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #fbbf24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0 auto 18px;
+        }
+        .step h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .step p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-box {
+            background: linear-gradient(135deg, rgba(249,115,22,0.15), rgba(251,191,36,0.05));
+            border: 1px solid rgba(249,115,22,0.2);
+            border-radius: 30px;
+            padding: 70px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(249,115,22,0.05) 0%, transparent 50%);
+            animation: pulse 4s infinite;
+        }
+        .cta-box h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .cta-box p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 35px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+        .cta-buttons {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             gap: 15px;
-            margin-top: 25px;
+            position: relative;
         }
-        
-        /* Услуги */
-        .services-grid {
+        .cta-phone-big {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 25px;
+            display: block;
+            position: relative;
+        }
+
+        /* ===== REVIEWS ===== */
+        .reviews {
+            padding: 100px 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        .reviews-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
         }
-        
-        .service-card {
-            background: white;
+        .review-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 20px;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            text-align: center;
-            transition: all 0.3s ease;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeUp 0.6s ease forwards;
+            transition: all 0.3s;
         }
-        
-        .service-card:nth-child(1) { animation-delay: 0.1s; }
-        .service-card:nth-child(2) { animation-delay: 0.2s; }
-        .service-card:nth-child(3) { animation-delay: 0.3s; }
-        .service-card:nth-child(4) { animation-delay: 0.4s; }
-        .service-card:nth-child(5) { animation-delay: 0.5s; }
-        .service-card:nth-child(6) { animation-delay: 0.6s; }
-        
-        .service-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        .review-card:hover {
+            border-color: rgba(249,115,22,0.2);
+            transform: translateY(-4px);
         }
-        
-        .service-card i {
-            font-size: 3rem;
-            color: var(--primary);
+        .review-stars {
+            color: #fbbf24;
+            font-size: 1.1rem;
             margin-bottom: 15px;
+            letter-spacing: 2px;
         }
-        
-        .service-card h3 {
-            margin-bottom: 12px;
-            font-size: 1.3rem;
-            color: var(--dark);
-        }
-        
-        /* Галерея работ */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        
-        .gallery-item {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-            height: 250px;
-            transform: scale(0.95);
-            opacity: 0;
-            animation: fadeScale 0.6s ease forwards;
-        }
-        
-        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
-        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
-        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
-        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
-        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
-        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
-        
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-        
-        .gallery-item:hover img {
-            transform: scale(1.08);
-        }
-        
-        .gallery-item .overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 15px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .gallery-item:hover .overlay {
-            transform: translateY(0);
-        }
-        
-        /* О нас */
-        .about-content {
-            background: white;
-            padding: 35px;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeUp 0.6s ease forwards;
-        }
-        
-        .about-content p {
-            margin-bottom: 18px;
-            font-size: 1.05rem;
+        .review-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
             line-height: 1.7;
-        }
-        
-        /* Прайс-лист */
-        .price-table {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            overflow-x: auto;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeUp 0.6s ease forwards;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        table th, table td {
-            padding: 12px 16px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        
-        table th {
-            background: linear-gradient(to right, var(--primary), var(--primary-dark));
-            color: white;
-            font-weight: 500;
-            font-size: 1.05rem;
-        }
-        
-        table tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-        
-        /* Контакты и соцсети */
-        .contacts-section {
-            background: linear-gradient(to right, var(--primary), var(--primary-dark));
-            color: white;
-        }
-        
-        .contacts-section h2 {
-            color: white;
-        }
-        
-        .contacts-section h2::after {
-            background-color: var(--secondary);
-        }
-        
-        .social-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            padding: 35px;
-            border-radius: 10px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-        }
-        
-        .social-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .social-block {
-            text-align: center;
-            padding: 25px;
-            border-radius: 10px;
-            background: #f8f9fa;
-            transform: translateY(20px);
-            opacity: 0;
-            animation: fadeUp 0.6s ease forwards;
-        }
-        
-        .social-block:nth-child(1) { animation-delay: 0.1s; }
-        .social-block:nth-child(2) { animation-delay: 0.2s; }
-        
-        .social-title {
-            font-size: 1.4rem;
             margin-bottom: 20px;
-            color: var(--dark);
+            font-style: italic;
+        }
+        .review-author {
             display: flex;
             align-items: center;
-            justify-content: center;
-        }
-        
-        .social-title i {
-            margin-right: 10px;
-            color: var(--primary);
-        }
-        
-        .social-links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
             gap: 12px;
-            margin-top: 15px;
         }
-        
-        .social-links a {
-            display: inline-flex;
+        .review-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #fbbf24);
+            display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 1.3rem;
-            box-shadow: 0 4px 8px rgba(26, 111, 196, 0.3);
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #fff;
         }
-        
-        .social-links a:hover {
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(255, 122, 0, 0.3);
+        .review-name {
+            font-weight: 600;
+            font-size: 0.95rem;
         }
-        
-        .contact-methods {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 20px;
+        .review-car {
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
-        
+
+        /* ===== CONTACT ===== */
+        .contact {
+            padding: 100px 0;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+        .contact-info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+        }
         .contact-item {
             display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .contact-item:last-child { border-bottom: none; }
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: rgba(249,115,22,0.1);
+            display: flex;
             align-items: center;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
         }
-        
-        .contact-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-        }
-        
-        .contact-item i {
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-right: 15px;
-            min-width: 40px;
-            text-align: center;
-        }
-        
-        .contact-details h3 {
+        .contact-item h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 5px;
-            color: var(--dark);
         }
-        
-        .contact-details p {
-            color: var(--gray);
+        .contact-item p, .contact-item a {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-primary);
         }
-        
-        /* Карта */
-        .map-container {
-            margin-top: 40px;
-            border-radius: 10px;
+        .contact-item a:hover { color: var(--accent); }
+        .contact-map {
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid var(--border);
+            min-height: 420px;
+            position: relative;
         }
-        
-        .map-title {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-        
-        .map-title i {
-            color: var(--primary);
-            margin-right: 10px;
-        }
-        
-        #yandex-map {
+        .contact-map iframe {
             width: 100%;
-            height: 400px;
+            height: 100%;
+            min-height: 420px;
             border: none;
+            filter: grayscale(0.5) brightness(0.85) contrast(1.1);
+            transition: filter 0.3s;
+        }
+        .contact-map:hover iframe {
+            filter: grayscale(0) brightness(1) contrast(1);
+        }
+        /* На мобильных — без фильтра (производительность) */
+        @media (max-width: 640px) {
+            .contact-map iframe {
+                filter: none;
+            }
+        }
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
             border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
         }
-        
-        /* Футер */
-        footer {
-            background: linear-gradient(to right, var(--dark), #1a2a3a);
-            color: white;
-            padding: 40px 0 15px;
+        .nav-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(249,115,22,0.05);
         }
-        
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+        }
         .footer-content {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
-            gap: 30px;
+            gap: 20px;
         }
-        
-        .footer-logo {
-            font-family: 'Oswald', 'Arial Black', sans-serif;
-            font-size: 1.6rem;
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
-        
-        .footer-logo span {
-            color: var(--secondary);
-        }
-        
         .footer-links {
+            display: flex;
+            gap: 25px;
+        }
+        .footer-links a {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover { color: var(--accent); }
+
+        /* ===== FLOATING BUTTONS ===== */
+        .floating-btns {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 999;
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
-        
-        .footer-links a {
-            transition: all 0.3s ease;
-            color: #ccc;
-            text-decoration: none;
-            font-size: 1rem;
+        .float-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
-        
-        .footer-links a:hover {
-            color: var(--secondary);
+        .float-btn:hover {
+            transform: scale(1.1);
         }
-        
-        .footer-copy {
-            width: 100%;
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.85rem;
-            color: #aaa;
+        .float-btn.phone-btn {
+            background: var(--accent);
+            animation: pulse 2s infinite;
         }
-        
-        /* Анимации */
-        @keyframes fadeUp {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .float-btn.whatsapp-btn {
+            background: #25d366;
         }
-        
-        @keyframes fadeScale {
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
+        .float-btn.scroll-top-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
         }
-        
-        /* Адаптивность */
-        @media (max-width: 992px) {
-            .social-grid {
-                grid-template-columns: 1fr;
-                display: grid;
-                justify-content: center;
-            }
+        .float-btn.scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
         }
-        
-        @media (max-width: 768px) {
-            .nav-links {
-                position: absolute;
-                right: 0;
-                top: 60px;
-                background-color: white;
-                flex-direction: column;
-                width: 100%;
-                text-align: center;
-                padding: 25px 0;
-                box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-                transform: translateY(-150%);
-                transition: transform 0.4s ease-in;
-                border-radius: 0 0 8px 8px;
-            }
 
-                        .social-grid {
-                display: grid;
-                justify-content: center;
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s;
+        }
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-menu a {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            transition: color 0.3s;
+            padding: 8px 16px;
+        }
+        .mobile-menu a:hover, .mobile-menu a:active { color: var(--accent); }
+        .mobile-menu .nav-phone {
+            margin-top: 10px;
+            font-size: 1.05rem;
+            padding: 14px 30px;
+            border-radius: 14px;
+        }
+
+        /* ===== TOUCH OPTIMIZATION ===== */
+        @media (hover: none) and (pointer: coarse) {
+            .service-card:hover {
+                transform: none;
             }
-            
-            .nav-links.active {
-                transform: translateY(0);
+            .service-card:active {
+                border-color: rgba(249,115,22,0.3);
+                background: var(--bg-card-hover);
             }
-            
-            .nav-links li {
-                margin: 18px 0;
+            .service-card:active .service-icon {
+                background: var(--accent);
+                transform: scale(1.1) rotate(-5deg);
             }
-            
-            .nav-links a {
-                font-size: 1.1rem;
+            .why-card:active {
+                border-color: var(--border);
+                background: var(--bg-dark);
             }
-            
-            .burger {
-                display: block;
+            .review-card:active {
+                border-color: rgba(249,115,22,0.2);
             }
-            
+            .btn-primary:active, .btn-secondary:active {
+                transform: scale(0.97);
+            }
+            .nav-btn:active {
+                border-color: var(--accent);
+                color: var(--accent);
+                background: rgba(249,115,22,0.05);
+            }
+            /* Минимальная высота touch-целей 44px */
+            .nav-links a, .nav-btn, .footer-links a {
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+
+        /* ---------- Tablet & below (968px) ---------- */
+        @media (max-width: 968px) {
+            .nav-links { display: none; }
+            .nav-phone.desktop { display: none; }
+            .burger { display: flex; }
+
+            .hero h1 { font-size: clamp(2rem, 8vw, 3rem); }
+            .hero-desc { font-size: 1rem; margin-bottom: 30px; }
+            .hero-stats { gap: 25px; margin-top: 40px; padding-top: 30px; }
+            .hero-stat h3 { font-size: 1.8rem; }
+            .hero-decoration { display: none; }
+
+            .services, .why-us, .process, .reviews, .cta-section, .contact {
+                padding: 70px 0;
+            }
+            .section-subtitle { margin-bottom: 40px; font-size: 1rem; }
+
+            .trust-bar { padding: 18px 0; }
+            .trust-items { gap: 20px; }
+            .trust-item { font-size: 0.85rem; }
+
+            .contact-grid { grid-template-columns: 1fr; }
+            .contact-map { min-height: 320px; }
+            .contact-map iframe { min-height: 320px; }
+            .cta-box { padding: 50px 30px; }
+        }
+
+        /* ---------- Mobile (640px and below) ---------- */
+        @media (max-width: 640px) {
+            html { scroll-padding-top: 70px; }
+
+            .container { padding: 0 16px; }
+
+            /* Nav */
+            .nav { height: 64px; }
+            .logo { font-size: 1.1rem; gap: 8px; }
+            .logo-icon { width: 36px; height: 36px; font-size: 1.1rem; border-radius: 10px; }
+
+            /* Hero */
+            .hero { padding-top: 64px; min-height: auto; padding-bottom: 50px; }
+            .hero-content { max-width: 100%; }
             .hero h1 {
-                font-size: 2.3rem;
+                font-size: clamp(1.8rem, 9vw, 2.5rem);
+                line-height: 1.05;
+                margin-bottom: 15px;
             }
-            
-            .hero p {
-                font-size: 1.1rem;
+            .hero-desc { font-size: 0.95rem; margin-bottom: 25px; max-width: 100%; }
+            .hero-badge { font-size: 0.78rem; padding: 6px 14px; margin-bottom: 18px; }
+            .hero-buttons { flex-direction: column; gap: 12px; }
+            .btn-primary, .btn-secondary {
+                justify-content: center;
+                width: 100%;
+                padding: 14px 28px;
+                font-size: 0.95rem;
+                border-radius: 14px;
             }
-            
-            .btn {
-                padding: 12px 22px;
-                font-size: 0.9rem;
+            .hero-stats {
+                flex-direction: column;
+                gap: 16px;
+                margin-top: 35px;
+                padding-top: 25px;
             }
+            .hero-stat { text-align: center; }
+            .hero-stat h3 { font-size: 1.6rem; }
+            .hero-stat p { font-size: 0.8rem; }
 
-            /* Анимация бургер-меню */
-            .burger.active .line1 {
-                transform: rotate(45deg) translate(5px, 5px);
-            }
-            
-            .burger.active .line2 {
-                opacity: 0;
-            }
-            
-            .burger.active .line3 {
-                transform: rotate(-45deg) translate(5px, -5px);
-            }
-        }
-        
-        @media (max-width: 576px) {
-            section {
+            /* Trust bar */
+            .trust-bar { padding: 14px 0; }
+            .trust-items { gap: 12px; justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding: 0 16px; -webkit-overflow-scrolling: touch; }
+            .trust-item { white-space: nowrap; font-size: 0.78rem; flex-shrink: 0; }
+
+            /* Sections */
+            .services, .why-us, .process, .reviews, .cta-section, .contact {
                 padding: 50px 0;
             }
-
-            .social-grid {
-                display: grid;
-                justify-content: center;
+            .section-title {
+                font-size: clamp(1.5rem, 7vw, 2rem);
+                letter-spacing: 1px;
+                margin-bottom: 10px;
             }
-            
-            h2 {
-                font-size: 1.9rem;
+            .section-subtitle {
                 margin-bottom: 30px;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-            
-            .footer-links {
-                align-items: center;
-            }
-            
-            .service-card, .social-block {
-                padding: 20px;
-            }
-            
-            .contact-buttons {
-                flex-direction: column;
-                align-items: center;
+                font-size: 0.9rem;
+                padding: 0 5px;
             }
 
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
-            }
-            
-            .services-grid, .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Адаптация для экранов 375px */
-        @media (max-width: 375px) {
-            section {
-                padding: 40px 0;
-            }
-            
-            h2 {
-                font-size: 1.7rem;
-                margin-bottom: 25px;
-            }
-            
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-            
-            .hero p {
-                font-size: 0.95rem;
-            }
-            
-            .btn {
-                padding: 10px 18px;
-                font-size: 0.8rem;
-                width: 100%;
-                text-align: center;
-            }
-            
-            .contact-buttons {
-                gap: 10px;
-            }
-            
-            .service-card, .social-block {
-                padding: 1px;
-            }
-            
-            .service-card i {
-                font-size: 2.5rem;
-            }
-            
-            .service-card h3 {
-                font-size: 1.1rem;
-            }
-            
-            .gallery-item {
-                height: 200px;
-            }
-            
-            .about-content {
-                padding: 20px;
-            }
-            
-            .price-table {
-                padding: 15px;
-            }
-            
-            table th, table td {
-                padding: 10px 12px;
-                font-size: 0.9rem;
-            }
-            
-            .social-links a {
-                width: 45px;
-                height: 45px;
-                font-size: 1.2rem;
-            }
-            
-            .contact-item {
-                padding: 12px;
-            }
-            
-            .contact-item i {
-                font-size: 1.5rem;
-            }
-            
-            .contact-details h3 {
-                font-size: 1rem;
-            }
-            
-            .contact-details p {
-                font-size: 0.9rem;
-            }
-            
-            .logo {
-                font-size: 1.3rem;
-            }
-            
-            .footer-logo {
-                font-size: 1.4rem;
-            }
-            
-            /* Адаптация карты */
-            .map-container {
-                margin-top: 30px;
-            }
-            
-            .map-title {
-                font-size: 1.3rem;
-            }
-            
-            #yandex-map {
-                height: 300px;
-            }
+            /* Services */
+            .services-grid { grid-template-columns: 1fr; gap: 16px; }
+            .service-card { padding: 28px 22px; border-radius: 16px; }
+            .service-icon { width: 52px; height: 52px; font-size: 1.5rem; margin-bottom: 16px; }
+            .service-card h3 { font-size: 1.1rem; }
+            .service-card p { font-size: 0.88rem; }
 
-            .social-grid {
-                grid-template-columns: 1fr;
-                display: grid;
+            /* Why us */
+            .why-grid { grid-template-columns: 1fr; gap: 10px; }
+            .why-card { padding: 20px 15px; text-align: left; display: flex; gap: 15px; align-items: flex-start; border-radius: 14px; }
+            .why-icon { font-size: 1.8rem; margin-bottom: 0; flex-shrink: 0; }
+            .why-card h3 { font-size: 1rem; margin-bottom: 4px; }
+            .why-card p { font-size: 0.85rem; }
+
+            /* Process */
+            .process-steps { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .step { padding: 20px 12px; }
+            .step-number { width: 46px; height: 46px; font-size: 1.2rem; margin-bottom: 12px; }
+            .step h3 { font-size: 0.9rem; }
+            .step p { font-size: 0.82rem; }
+
+            /* Reviews */
+            .reviews-grid { grid-template-columns: 1fr; gap: 16px; }
+            .review-card { padding: 22px; border-radius: 16px; }
+            .review-text { font-size: 0.88rem; }
+
+            /* CTA */
+            .cta-box { padding: 40px 20px; border-radius: 20px; }
+            .cta-box h2 { font-size: 1.5rem; }
+            .cta-box p { font-size: 0.95rem; margin-bottom: 25px; }
+            .cta-phone-big { font-size: clamp(1.5rem, 6vw, 2rem); margin-bottom: 20px; }
+            .cta-buttons { flex-direction: column; }
+            .cta-buttons .btn-primary,
+            .cta-buttons .btn-secondary {
                 justify-content: center;
+                width: 100%;
+                padding: 14px 28px;
+                border-radius: 14px;
             }
+
+            /* Contact */
+            .contact-info-card { padding: 25px 20px; border-radius: 16px; }
+            .contact-item { gap: 14px; padding: 16px 0; }
+            .contact-icon { width: 42px; height: 42px; font-size: 1.1rem; border-radius: 12px; flex-shrink: 0; }
+            .contact-item h4 { font-size: 0.75rem; }
+            .contact-item p, .contact-item a { font-size: 0.92rem; }
+            .nav-buttons { flex-direction: column; gap: 8px; }
+            .nav-btn { width: 100%; justify-content: center; border-radius: 10px; padding: 10px 14px; }
+            .contact-map { min-height: 280px; border-radius: 16px; }
+            .contact-map iframe { min-height: 280px; }
+
+            /* Footer */
+            .footer { padding: 25px 0; }
+            .footer-content { flex-direction: column; text-align: center; gap: 14px; }
+            .footer-text { font-size: 0.78rem; }
+            .footer-links { gap: 16px; flex-wrap: wrap; justify-content: center; }
+            .footer-links a { font-size: 0.82rem; }
+
+            /* Mobile menu */
+            .mobile-menu a { font-size: 1.4rem; }
+            .mobile-menu .nav-phone { font-size: 1rem; padding: 12px 26px; }
+
+            /* Floating buttons */
+            .floating-btns { bottom: 16px; right: 16px; gap: 10px; }
+            .float-btn { width: 48px; height: 48px; font-size: 1.2rem; }
+        }
+
+        /* ---------- Small phones (380px and below) ---------- */
+        @media (max-width: 380px) {
+            .container { padding: 0 12px; }
+            .hero h1 { font-size: 1.6rem; }
+            .hero-stat h3 { font-size: 1.4rem; }
+            .process-steps { grid-template-columns: 1fr; }
+            .btn-primary, .btn-secondary { padding: 12px 24px; font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Шапка с бургер-меню -->
-    <header>
-        <div class="container">
-            <a href="#leader" class="logo"><i class="fas"><img style="max-width: 30px; max-height: 30px;" src="./img/logo.png" alt=""></i> <span>EL&nbsp;</span>AFTO</a>
-            <nav>
-                <ul class="nav-links">
-                    <li><a href="#leader">Главная</a></li>
-                    <li><a href="#services">Услуги</a></li>
-                    <li><a href="#price">Цены</a></li>
-                    <li><a href="#gallery">Наши работы</a></li>
-                    <li><a href="#about">О нас</a></li>
-                    <li><a href="#contacts">Контакты</a></li>
-                </ul>
-                <div class="burger">
-                    <div class="line1"></div>
-                    <div class="line2"></div>
-                    <div class="line3"></div>
-                </div>
-            </nav>
-        </div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header" id="header">
+        <nav class="nav container">
+            <a href="#hero" class="logo">
+                <div class="logo-icon">⚡</div>
+                <div class="logo-text">Авто<span>Электрик</span></div>
+            </a>
+            <div class="nav-links">
+                <a href="#services">Услуги</a>
+                <a href="#why-us">Преимущества</a>
+                <a href="#reviews">Отзывы</a>
+                <a href="#contact">Контакты</a>
+            </div>
+            <a href="tel:+79524084043" class="nav-phone desktop">
+                📞 +7 (952) 408-40-43
+            </a>
+            <div class="burger" id="burger" aria-label="Меню">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
     </header>
 
-    <!-- Герой-секция -->
-    <section id="leader" class="hero">
+    <!-- ===== MOBILE MENU ===== -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#services" class="mobile-link">Услуги</a>
+        <a href="#why-us" class="mobile-link">Преимущества</a>
+        <a href="#reviews" class="mobile-link">Отзывы</a>
+        <a href="#contact" class="mobile-link">Контакты</a>
+        <a href="tel:+79524084043" class="nav-phone">📞 +7 (952) 408-40-43</a>
+    </div>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid"></div>
         <div class="container">
-            <h1>Автоэлектрик и диагностика в Челябинске Северок</h1>
-            <p>Диагностика, ремонт электрики, шиномонтаж вашего автомобиля</p>
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="dot"></span>
+                    Работаем ежедневно с 9:00 до 19:00
+                </div>
+                <h1>Профессиональный<br><span>автоэлектрик</span><br>в Челябинске</h1>
+                <p class="hero-desc">
+                    Компьютерная диагностика, ремонт автоэлектрики, промывка форсунок и проверка подсоса воздуха. 
+                    Находим и устраняем неисправности быстро и качественно.
+                </p>
+                <div class="hero-buttons">
+                    <a href="tel:+79524084043" class="btn-primary">
+                        📞 Позвонить сейчас
+                    </a>
+                    <a href="#services" class="btn-secondary">
+                        Наши услуги →
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <h3>7+</h3>
+                        <p>лет опыта</p>
+                    </div>
+                    <div class="hero-stat">
+                        <h3>3000+</h3>
+                        <p>довольных клиентов</p>
+                    </div>
+                    <div class="hero-stat">
+                        <h3>98%</h3>
+                        <p>точность диагностики</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-decoration">
+            <svg viewBox="0 0 400 400" fill="none">
+                <circle cx="200" cy="200" r="180" stroke="rgba(249,115,22,0.3)" stroke-width="2"/>
+                <circle cx="200" cy="200" r="120" stroke="rgba(249,115,22,0.2)" stroke-width="1.5"/>
+                <circle cx="200" cy="200" r="60" stroke="rgba(249,115,22,0.15)" stroke-width="1"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ===== TRUST BAR ===== -->
+    <div class="trust-bar">
+        <div class="container">
+            <div class="trust-items">
+                <div class="trust-item">
+                    <span class="icon">🛡️</span>
+                    Гарантия на работы
+                </div>
+                <div class="trust-item">
+                    <span class="icon">🔧</span>
+                    Профессиональное оборудование
+                </div>
+                <div class="trust-item">
+                    <span class="icon">⚡</span>
+                    Быстрая диагностика
+                </div>
+                <div class="trust-item">
+                    <span class="icon">💰</span>
+                    Честные цены
+                </div>
+                <div class="trust-item">
+                    <span class="icon">📍</span>
+                    ул. Автодорожная 12А/2
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SERVICES ===== -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Наши <span>услуги</span></h2>
+            <p class="section-subtitle animate-on-scroll">Полный спектр услуг по автоэлектрике с использованием современного диагностического оборудования</p>
             
-            <div class="contact-buttons">
-                <a href="tel:+79524084043" class="btn cta-btn">
-                    <i class="fas fa-phone"></i> Позвонить по телефону
-                </a>
-                <a href="https://wa.me/+79524084043" class="btn" style="background: #25D366;">
-                    <i class="fab fa-whatsapp"></i> Написать в WhatsApp
-                </a>
-                <a href="https://t.me/el_afto" class="btn" style="background: #0088cc;">
-                    <i class="fab fa-telegram"></i> Написать в Telegram
-                </a>
-                <a href="https://vk.com/el_afto" class="btn" style="background: #2c41fc;">
-                    <i class="fab fa-vk"></i> Мы VK
-                </a>
+            <div class="services-grid">
+                <div class="service-card animate-on-scroll">
+                    <div class="service-icon">🖥️</div>
+                    <h3>Компьютерная диагностика</h3>
+                    <p>Полная компьютерная диагностика всех электронных систем автомобиля. Выявление ошибок, анализ параметров работы двигателя и электронных блоков.</p>
+                    <span class="service-tag">⚡ Быстро и точно</span>
+                </div>
+
+                <div class="service-card animate-on-scroll">
+                    <div class="service-icon">🔌</div>
+                    <h3>Услуга автоэлектрика</h3>
+                    <p>Ремонт и обслуживание электрической части автомобиля. Поиск и устранение неисправностей проводки, генераторов, стартеров, замков зажигания.</p>
+                    <span class="service-tag">🛡️ С гарантией</span>
+                </div>
+
+                <div class="service-card animate-on-scroll">
+                    <div class="service-icon">⛽</div>
+                    <h3>Промывка форсунок</h3>
+                    <p>Безразборная промывка форсунок. Восстановление производительности инжектора, устранение неровного хода и перерасхода топлива.</p>
+                    <span class="service-tag">🔧 Без разбора</span>
+                </div>
+
+                <div class="service-card animate-on-scroll">
+                    <div class="service-icon">💨</div>
+                    <h3>Проверка подсоса воздуха</h3>
+                    <p>Профессиональная проверка подсоса воздуха дымогенератором. Точное определение мест неплотностей в впускной системе, устранение проблемы высоких оборотов.</p>
+                    <span class="service-tag">🎯 100% точность</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Услуги -->
-    <section id="services" class="services">
+    <!-- ===== WHY US ===== -->
+    <section class="why-us" id="why-us">
         <div class="container">
-            <h2>Наши услуги</h2>
-            <div class="content-container">
-                <div class="services-grid">
-                    <div class="service-card">
-                        <i class="fas fa-microchip"  style="color: #A42127;"></i>
-                        <h3>Диагностика ЭБУ</h3>
-                        <p>Компьютерное сканирование ошибок, расшифровка кодов, выявление неисправностей</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-bolt"  style="color: #A42127;"></i>
-                        <h3>Ремонт проводки</h3>
-                        <p>Поиск обрывов и замыканий, замена поврежденных участков проводки</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-car-battery"  style="color: #A42127;"></i>
-                        <h3>Ремонт генераторов</h3>
-                        <p>Замена щеток, подшипников, диодных мостов</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas" style="color: #A42127; margin: 3px;"><img src="./img/wheel.svg" alt="Колесо"></i>
-                        <h3>Услуги шиномонтажа</h3>
-                        <p>Произведем шиномонтаж, ремонт проколов, дошиповка шин</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-key"  style="color: #A42127;"></i>
-                        <h3>Отключение сигнализаций</h3>
-                        <p>Поможем с отключением охранных систем, возможен выезд</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-music" style="color: #A42127;"></i>
-                        <h3>Установка дополнительного оборудования</h3>
-                        <p>Установим магнитолы, колоноки, камеры, видеоригистраторы и тд.</p>
-                    </div>
+            <h2 class="section-title animate-on-scroll">Почему <span>выбирают нас</span></h2>
+            <p class="section-subtitle animate-on-scroll">Мы делаем всё, чтобы ваш автомобиль работал безупречно</p>
+
+            <div class="why-grid">
+                <div class="why-card animate-on-scroll">
+                    <span class="why-icon">🎯</span>
+                    <h3>Точная диагностика</h3>
+                    <p>Используем профессиональное оборудование для выявления неисправностей с точностью 98%</p>
+                </div>
+                <div class="why-card animate-on-scroll">
+                    <span class="why-icon">⏱️</span>
+                    <h3>Быстрый ремонт</h3>
+                    <p>Большинство работ выполняем в день обращения. Не заставляем вас ждать</p>
+                </div>
+                <div class="why-card animate-on-scroll">
+                    <span class="why-icon">💎</span>
+                    <h3>Опытные мастера</h3>
+                    <p>Более 7 лет опыта работы с автомобилями</p>
+                </div>
+                <div class="why-card animate-on-scroll">
+                    <span class="why-icon">💰</span>
+                    <h3>Честные цены</h3>
+                    <p>Прозрачное ценообразование. Никаких скрытых доплат и навязанных услуг</p>
+                </div>
+                <div class="why-card animate-on-scroll">
+                    <span class="why-icon">🛡️</span>
+                    <h3>Гарантия</h3>
+                    <p>Даём гарантию на все выполненные работы. Если что-то не так — исправим бесплатно</p>
+                </div>
+                <div class="why-card animate-on-scroll">
+                    <span class="why-icon">📍</span>
+                    <h3>Удобное расположение</h3>
+                    <p>Мы на ул. Автодорожная 12А/2 — легко найти через навигатор Яндекс, Google, 2GIS</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Галерея работ -->
-    <section id="gallery" class="gallery">
+    <!-- ===== PROCESS ===== -->
+    <section class="process" id="process">
         <div class="container">
-            <h2>Наши работы</h2>
-            <div class="content-container">
-                <div class="gallery-grid">
-                    <div class="gallery-item">
-                        <img src="./img/gen.jpg" alt="Ремонт генератора">
-                        <div class="overlay">
-                            <h3>Произведем ремонт генераторов</h3>
-                            <p>Снятый или снимем и установим сами</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="./img/check.jpg" alt="Диагностика ЭБУ">
-                        <div class="overlay">
-                            <h3>Диагностика ЭБУ</h3>
-                            <p>Проведем сканирование всех электронных блоков автомобиля</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="./img/magnitola.jpg" alt="Установка аудиосистемы">
-                        <div class="overlay">
-                            <h3>Установка аудиосистемы</h3>
-                            <p>Установка магнитол с сенсорным управлением, камерами и без</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="./img/provod.jpg" alt="Ремонт проводки">
-                        <div class="overlay">
-                            <h3>Ремонт проводки</h3>
-                            <p>Заменим, удалим старую и ненужную, а также сделаем как правильно</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="./img/signal.jpg" alt="Удаление блокировки двигателя из-за сигнализации">
-                        <div class="overlay">
-                            <h3>Удаление блокировки двигателя</h3>
-                            <p>Удалим "вечно мешающие" блокировки двигателя от сигнализации</p>
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <img src="./img/inject.jpg" alt="Промывка форсунок без разборным методом">
-                        <div class="overlay">
-                            <h3>Промывка форсунок</h3>
-                            <p>Произведем промывку форсунок безразборным методом</p>
-                        </div>
-                    </div>
+            <h2 class="section-title animate-on-scroll">Как мы <span>работаем</span></h2>
+            <p class="section-subtitle animate-on-scroll">Простой и понятный процесс — от звонка до результата</p>
+
+            <div class="process-steps">
+                <div class="step animate-on-scroll">
+                    <div class="step-number">1</div>
+                    <h3>Звонок или сообщение</h3>
+                    <p>Вы звоните или пишете нам, описываете проблему с автомобилем</p>
+                </div>
+                <div class="step animate-on-scroll">
+                    <div class="step-number">2</div>
+                    <h3>Диагностика</h3>
+                    <p>Проводим полную диагностику и называем точную стоимость работ</p>
+                </div>
+                <div class="step animate-on-scroll">
+                    <div class="step-number">3</div>
+                    <h3>Ремонт</h3>
+                    <p>После вашего согласия приступаем к устранению неисправности</p>
+                </div>
+                <div class="step animate-on-scroll">
+                    <div class="step-number">4</div>
+                    <h3>Готово!</h3>
+                    <p>Проверяем работу, выдаём гарантийный талон. Ваш авто снова в строю!</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- О нас -->
-    <section id="about" class="about">
-        <div class="content-container">
-            <h2>О нас</h2>
-            <div class="content-content">
-                <div class="about-content">
-                    <p><b>EL AFTO: Честный ремонт с 10-летним опытом.</b></p>
-                    <p>Специализируемся на автоэлектрике, диагностике электронных блоков и шиномонтаже. Диагностируем и устраняем неисправности профессиональным оборудованием.</p>
-                    <p>Гарантия: только необходимые работы, никаких лишних трат – исключительно результат. Так же предоставим гарантию на работы 30 дней.</p>
-                    <div style="text-align: center; margin-top: 25px;">
-                        <a href="#contacts" class="btn" style="background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));">Связаться с нами</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Прайс-лист -->
-    <section id="price" class="price">
-        <div class="content-container">
-            <h2>Наши цены</h2>
-            <div class="content-content">
-                <div class="price-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th style="background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));">Услуга</th>
-                                <th style="background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));">Стоимость</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Компьютерная диагностика</td>
-                                <td>от 850 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Диагностика электрооборудования (поиск неисправности)</td>
-                                <td>от 1000 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Ремонт генератора (замена щеток, подшипников, регулятора напряжения, диодного моста)</td>
-                                <td>от 2500 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Ремонт стартера (замена бендикса, втягивающего, щеток)</td>
-                                <td>от 1500 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Замена свечей, катушек зажигания</td>
-                                <td>от 500 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Замена датчиков</td>
-                                <td>от 500 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Диагностика и ремонт проводки (поиск обрыва, КЗ)</td>
-                                <td>от 1000 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Ремонт жгута проводов (локальный)</td>
-                                <td>от 1000 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Адаптация/обучение ЭБУ после ремонта/замены</td>
-                                <td>от 800 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Замена аккумулятора</td>
-                                <td>от 300 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Диагностика состояния аккумулятора</td>
-                                <td>от 300 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Зарядка аккумулятора</td>
-                                <td>от 300 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Установка доп. оборудования</td>
-                                <td>от 2000 руб.</td>
-                            </tr>
-                            <tr>
-                                <td>Услуги шиномонтажа (перебортовка, ремонт прокола, дошиповка)</td>
-                                <td>от 200 руб.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p class="note" style="margin-top: 20px; text-align: center; font-style: italic; color: var(--gray);">
-                        *Финальная стоимость зависит от марки, модели, года выпуска автомобиля, сложности доступа и характера неисправности. Окончательная стоимость диагностики/ремонта согласовывается с клиентом после первичного осмотра/диагностики. Стоимость запчастей оплачивается отдельно.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Контакты и соцсети -->
-    <section id="contacts" class="contacts-section">
+    <!-- ===== REVIEWS ===== -->
+    <section class="reviews" id="reviews">
         <div class="container">
-            <h2>Свяжитесь с нами</h2>
-            <div class="content-container">
-                <div class="social-container">
-                    <div class="social-grid">
-                        <!-- Популярные соцсети -->
-                        <div class="social-block">
-                            <h3 class="social-title">
-                                <i class="fas fa-hashtag"></i> Мы в соцсетях
-                            </h3>
-                            <div class="social-links">
-                                <a href="https://vk.com/el_afto" target="_blank">
-                                    <i class="fab fa-vk"></i>
-                                </a>
-                                <a href="https://t.me/el_afto" target="_blank">
-                                    <i class="fab fa-telegram"></i>
-                                </a>
-                                <a href="https://www.youtube.com/@" target="_blank">
-                                    <i class="fab fa-youtube"></i>
-                                </a>
-                            </div>
-                            <p style="margin-top: 20px; color: var(--gray);">
-                                Подписывайтесь, чтобы быть в курсе акций и полезных советов!
-                            </p>
+            <h2 class="section-title animate-on-scroll">Отзывы <span>клиентов</span></h2>
+            <p class="section-subtitle animate-on-scroll">Нам доверяют автовладельцы Челябинска</p>
+
+            <div class="reviews-grid">
+                <div class="review-card animate-on-scroll">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">«Приехал с проблемой — мотор глох на ходу. Сделали компьютерную диагностику, нашли подсос воздуха. Исправили за час. Рекомендую!»</p>
+                    <div class="review-author">
+                        <div class="review-avatar">АК</div>
+                        <div>
+                            <div class="review-name">Алексей К.</div>
+                            <div class="review-car">Toyota Camry 2018</div>
                         </div>
-                        
-                        <!-- Контакты -->
-                        <div class="social-block">
-                            <h3 class="social-title">
-                                <i class="fas fa-phone-alt"></i> Контакты
-                            </h3>
+                    </div>
+                </div>
 
-                            <a style="text-decoration: none;" href="tel:+79524084043">
-                            <div class="contact-methods">
-                                <div class="contact-item">
-                                    <i class="fas fa-phone"></i>
-                                    <div class="contact-details">
-                                        <h3>Телефон</h3>
-                                        <p>+7 (952) 408-40-43</p>
-                                    </div>
-                                </div>
-                                </a>
+                <div class="review-card animate-on-scroll">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">«Делали промывку форсунок без разбора. Машина стала тянуть намного лучше, расход топлива уменьшился. Очень доволен работой!»</p>
+                    <div class="review-author">
+                        <div class="review-avatar">ИМ</div>
+                        <div>
+                            <div class="review-name">Ирина М.</div>
+                            <div class="review-car">Kia Sportage 2016</div>
+                        </div>
+                    </div>
+                </div>
 
-                                <a style="text-decoration: none;" href="https://wa.me/+79524084043">
-                                <div class="contact-item">
-                                    <i class="fab fa-whatsapp"></i>
-                                    <div class="contact-details">
-                                        <h3>WhatsApp</h3>
-                                        <p>+7 (952) 408-40-43</p>
-                                    </div>
-                                </div>
-                                </a>
+                <div class="review-card animate-on-scroll">
+                    <div class="review-stars">★★★★★</div>
+                    <p class="review-text">«Отличный сервис! Нашли проблему в проводке, которую другие не могли найти. Работа выполнена аккуратно и быстро. Цены адекватные.»</p>
+                    <div class="review-author">
+                        <div class="review-avatar">ДС</div>
+                        <div>
+                            <div class="review-name">Дмитрий С.</div>
+                            <div class="review-car">Volkswagen Tiguan 2012</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                                <!-- <div class="contact-item">
-                                    <i class="fas fa-envelope"></i>
-                                    <div class="contact-details">
-                                        <h3>Email</h3>
-                                        <p>kartaly_auto@vk.com</p>
-                                    </div>
-                                </div> -->
-                                
-                                <div class="contact-item">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <div class="contact-details">
-                                        <h3>Адрес</h3>
-                                        <p>г. Челябинск, ул. Автодорожная 12А/2</p>
-                                    </div>
-                                </div>
+    <!-- ===== CTA ===== -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-box animate-on-scroll">
+                <h2>Проблемы с электрикой<br>автомобиля?</h2>
+                <a href="tel:+79524084043" class="cta-phone-big">+7 (952) 408-40-43</a>
+                <p>Позвоните прямо сейчас и получите бесплатную консультацию. Поможем определить проблему по телефону!</p>
+                <div class="cta-buttons">
+                    <a href="tel:+79524084043" class="btn-primary">
+                        📞 Позвонить
+                    </a>
+                    <a href="http://t.me/el_afto" class="btn-secondary" target="_blank" rel="noopener">
+                        💬 Написать в Telegram
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT ===== -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title animate-on-scroll">Контакты <span>и адрес</span></h2>
+            <p class="section-subtitle animate-on-scroll">Приезжайте к нам или свяжитесь любым удобным способом</p>
+
+            <div class="contact-grid">
+                <div class="contact-info-card animate-on-scroll">
+                    <div class="contact-item">
+                        <div class="contact-icon">📍</div>
+                        <div>
+                            <h4>Адрес</h4>
+                            <p>г. Челябинск, ул. Автодорожная 12А/2</p>
+                            <div class="nav-buttons">
+                                <a href="https://yandex.ru/maps/56/chelyabinsk/house/avtodorozhnaya_ulitsa_12a_2/YkgYdQJgSEwGQFtvfX5wcHhnYQ==/" target="_blank" rel="noopener" class="nav-btn">🗺️ Яндекс Карты</a>
+                                <a href="https://www.google.com/maps/search/55.211445,61.350191" target="_blank" rel="noopener" class="nav-btn">📍 Google Maps</a>
+                                <a href="https://2gis.ru/chelyabinsk/geo/2111698006564295" target="_blank" rel="noopener" class="nav-btn">🧭 2GIS</a>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Кнопки для связи -->
-                    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 30px; justify-content: center;">
-                        <a href="tel:+79524084043" class="btn cta-btn">
-                            <i class="fas fa-phone"></i> Позвонить
-                        </a>
-                        <a href="https://wa.me/+79524084043" class="btn" style="background: #25D366;">
-                            <i class="fab fa-whatsapp"></i> WhatsApp
-                        </a>
-                        <a href="https://t.me/el_afto" class="btn" style="background: #0088cc;">
-                            <i class="fab fa-telegram"></i> Telegram
-                        </a>
-                        <!-- <a href="mailto:kartaly_auto@vk.com" class="btn" style="background: #D44638;">
-                            <i class="fas fa-envelope"></i> Email
-                        </a> -->
-                        <a href="https://vk.com/el_afto" class="btn" style="background: #2c41fc;">
-                            <i class="fab fa-vk"></i> Мы VK
-                        </a>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <div>
+                            <h4>Телефон</h4>
+                            <a href="tel:+79524084043">+7 (952) 408-40-43</a>
+                        </div>
                     </div>
-                    
-                    <!-- Карта расположения -->
-                    <div class="map-container">
-                        <h3 class="map-title">
-                            <i class="fas fa-map-marked-alt"></i> Как нас найти
-                        </h3>
-                        <div id="yandex-map"></div>
+                    <div class="contact-item">
+                        <div class="contact-icon">💬</div>
+                        <div>
+                            <h4>Telegram</h4>
+                            <a href="http://t.me/el_afto" target="_blank" rel="noopener">Написать в Telegram</a>
+                        </div>
                     </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">🕐</div>
+                        <div>
+                            <h4>Режим работы</h4>
+                            <p>Пн — Сб: 9:00 — 19:00</p>
+                            <p>Вс: выходной</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-map animate-on-scroll">
+                    <iframe
+                        src="https://yandex.ru/map-widget/v1/?ll=61.350191%2C55.211445&z=17&pt=61.350191%2C55.211445%2Cpm2rdm&text=Челябинск%2C+ул.+Автодорожная+12А%2F2"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Карта — Автоэлектрик Челябинск, ул. Автодорожная 12А/2"
+                        style="border:none; width:100%; min-height:420px;"></iframe>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Футер -->
-    <footer>
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">
-                    <i class="fas"></i><img style="max-width: 40px; max-height: 40px;" src="./img/logo.png" alt="Лого"></i> <span>EL&nbsp;</span>AFTO - Ремонт автоэлектрики и диагностика
+                <div class="footer-text">
+                    © 2024 АвтоЭлектрик Челябинск. ул. Автодорожная 12А/2 | <a href="tel:+79524084043" style="color: var(--accent);">+7 (952) 408-40-43</a>
                 </div>
                 <div class="footer-links">
                     <a href="#services">Услуги</a>
-                    <a href="#price">Цены</a>
-                    <a href="#gallery">Наши работы</a>
-                    <a href="#about">О нас</a>
-                    <a href="#contacts">Контакты</a>
+                    <a href="#why-us">Преимущества</a>
+                    <a href="#reviews">Отзывы</a>
+                    <a href="#contact">Контакты</a>
                 </div>
-            </div>
-            <div class="footer-copy">
-                <p>©&nbsp;<span id="current-year"></span> EL AFTO. Все права защищены.</p>
-                <a style="color:#00ff8096; font-size: 11px;" href="./privacy.html" target="_blank">Политика обработки персональных данных</a>
-                <br><a style="color:#00ff8096; font-size: 11px;" href="./agrrement.html" target="_blank">Пользовательское соглашение</a>
-                <p></p>
             </div>
         </div>
     </footer>
 
-    <!-- Скрипт Яндекс.Карт -->
-<script src="https://api-maps.yandex.ru/2.1/?apikey=ваш_api_ключ&lang=ru_RU" type="text/javascript"></script>
+    <!-- ===== FLOATING BUTTONS ===== -->
+    <div class="floating-btns">
+        <button class="float-btn scroll-top-btn" id="scrollTopBtn" aria-label="Наверх" title="Наверх">↑</button>
+        <a href="http://t.me/el_afto" class="float-btn whatsapp-btn" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram">💬</a>
+        <a href="tel:+79524084043" class="float-btn phone-btn" aria-label="Позвонить" title="Позвонить">📞</a>
+    </div>
 
-<script>
-    // Инициализация карты
-    ymaps.ready(init);
-    
-    function init() {
-        // Координаты для Москвы, ул. Автозаводская, д. 12
-        const myMap = new ymaps.Map("yandex-map", {
-            center: [55.21143579742641,61.34979939748226],
-            zoom: 17,
-            controls: ['zoomControl', 'fullscreenControl']
-        });
-        
-        // Создаем красивую метку
-        const myPlacemark = new ymaps.Placemark([55.21143579742641,61.34979939748226], {
-            // Убираем балун при клике
-            balloonContent: '',
-            
-            // Красивый хинт при наведении
-            hintContent: `
-                <div style="
-                    background: white;
-                    border-radius: 8px;
-                    padding: 12px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                    font-family: Arial, sans-serif;
-                    min-width: 220px;
-                ">
-                    <div style="
-                        font-size: 18px;
-                        font-weight: bold;
-                        color: #1a6fc4;
-                        margin-bottom: 8px;
-                        display: flex;
-                        align-items: center;
-                    ">
-                        <i class="fas" style="margin-right: 8px;"><img style="max-width: 30px; max-height: 30px;" src="./img/logo.png" alt=""></i>
-                        EL AFTO
-                    </div>
-                    <div style="
-                        font-size: 14px;
-                        color: #333;
-                        display: flex;
-                        align-items: flex-start;
-                    ">
-                        <i class="fas fa-map-marker-alt" style="color: #ff7a00; margin-right: 8px; margin-top: 2px;"></i>
-                        <span>г. Челябинск, ул. Автодорожная, д. 12А/2</span>
-                    </div>
-                </div>
-            `
-        }, {
-            // Стиль метки - яркая и заметная
-            iconLayout: 'default#image',
-            iconImageHref: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
-            iconImageSize: [40, 40],
-            iconImageOffset: [-20, -40],
-            iconShape: {
-                type: 'Circle',
-                coordinates: [0, 0],
-                radius: 25
-            },
-            
-            // Отключаем балун
-            hasBalloon: false,
-            
-            // Настраиваем хинт
-            hideIconOnBalloonOpen: false,
-            hintLayout: "default#imageWithContent",
-            hintImageHref: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><polygon points="0,0 10,0 5,10" fill="white"/></svg>',
-            hintImageSize: [10, 10],
-            hintImageOffset: [0, -10],
-            hintContentSize: [240, 'auto'],
-            hintOffset: [0, -50],
-            hintPane: 'places'
-        });
-        
-        myMap.geoObjects.add(myPlacemark);
-        
-        // Убираем лишние элементы управления
-        myMap.controls.remove('typeSelector');
-        myMap.controls.remove('searchControl');
-        
-        // Добавляем кастомный логотип
-        const logo = new ymaps.control.Logo({
-            options: {
-                position: { top: 10, right: 10 },
-                image: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="24" viewBox="0 0 100 24"><rect width="100" height="24" rx="3" fill="rgba(255,255,255,0.9)"/><text x="50" y="16" font-family="Arial" font-size="11" fill="%231a6fc4" text-anchor="middle">АВТОЭЛЕКТРИК</text></svg>'
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        // ===== HEADER SCROLL EFFECT =====
+        const header = document.getElementById('header');
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            if (window.scrollY > 500) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
             }
         });
-        myMap.controls.add(logo);
-    }
 
-    // Плавная прокрутка для якорных ссылок
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            if (this.getAttribute('href') === '#') return;
-            
-            e.preventDefault();
-            
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                window.scrollTo({
-                    top: target.offsetTop - 70,
-                    behavior: 'smooth'
-                });
-                
-                // Закрываем мобильное меню после клика
-                document.querySelector('.nav-links').classList.remove('active');
-                document.querySelector('.burger').classList.remove('active');
-            }
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-    });
-    
-    // Бургер-меню
-    document.querySelector('.burger').addEventListener('click', function() {
-        this.classList.toggle('active');
-        document.querySelector('.nav-links').classList.toggle('active');
-    });
-    
-    // Анимация элементов при прокрутке
-    function animateOnScroll() {
-        const elements = document.querySelectorAll('.service-card, .gallery-item, .about-content, .price-table, .social-block');
-        
-        elements.forEach(element => {
-            const elementPosition = element.getBoundingClientRect().top;
-            const screenPosition = window.innerHeight / 1.3;
-            
-            if (elementPosition < screenPosition) {
-                element.style.animationPlayState = 'running';
-            }
-        });
-    }
-    
-    // Запуск анимации при загрузке и прокрутке
-    window.addEventListener('load', animateOnScroll);
-    window.addEventListener('scroll', animateOnScroll);
 
-    // Автоматическое обновление года в футере
-    document.getElementById('current-year').textContent = new Date().getFullYear();
-</script>
+        // ===== BURGER MENU =====
+        const burger = document.getElementById('burger');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        burger.addEventListener('click', () => {
+            burger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                burger.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // ===== SCROLL ANIMATIONS =====
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ===== SMOOTH SCROLL FOR ALL ANCHOR LINKS =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ===== ACTIVE NAV LINK HIGHLIGHT =====
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.color = '';
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.style.color = 'var(--accent)';
+                }
+            });
+        });
+
+        // ===== COUNTER ANIMATION =====
+        function animateCounter(el, target, suffix = '') {
+            let current = 0;
+            const increment = target / 60;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                el.textContent = Math.floor(current) + suffix;
+            }, 25);
+        }
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statElements = entry.target.querySelectorAll('.hero-stat h3');
+                    statElements.forEach(el => {
+                        const text = el.textContent;
+                        if (text.includes('+')) {
+                            const num = parseInt(text);
+                            animateCounter(el, num, '+');
+                        } else if (text.includes('%')) {
+                            const num = parseInt(text);
+                            animateCounter(el, num, '%');
+                        }
+                    });
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        const heroStats = document.querySelector('.hero-stats');
+        if (heroStats) statsObserver.observe(heroStats);
+    </script>
 </body>
 </html>
