@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../img/logo-flash.svg">
+    <title>Коды неисправностей авто — Расшифровка OBD2 | </title>
+        <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+        })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110066671', 'ym');
+
+        ym(110066671, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/110066671" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    <meta name="description" content="Расшифровка кодов ошибок OBD2. Введите код неисправности и узнайте возможные причины и варианты ремонта. P0, P1, P2, P3, C, B, U коды.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --yellow: #FACC15;
+            --yellow-dark: #EAB308;
+            --yellow-glow: rgba(250, 204, 21, 0.15);
+            --bg-dark: #0F0F0F;
+            --bg-card: #1A1A1A;
+            --bg-card-hover: #222222;
+            --text: #F5F5F5;
+            --text-muted: #A3A3A3;
+            --border: #2A2A2A;
+
+            /* legacy aliases used across the file */
+            --bg: var(--bg-dark);
+            --surface: var(--bg-card);
+            --surface2: var(--bg-card-hover);
+            --accent: var(--yellow);
+            --accent-glow: var(--yellow-glow);
+            --accent2: var(--yellow-dark);
+            --red: #ef4444;
+            --green: #22c55e;
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-weight: 400;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        h1, h2, h3, h4, h5 { font-weight: 800; }
+
+        /* ── HEADER / NAV ── */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 11, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        .logo span { color: var(--accent); }
+        .nav { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+        .nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .nav a:hover, .nav a.active {
+            color: #fff;
+            background: var(--surface2);
+        }
+        .nav a.active { color: var(--accent); }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 101;
+        }
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            .nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: var(--surface);
+                flex-direction: column;
+                padding: 80px 24px 24px;
+                gap: 4px;
+                transition: right 0.3s;
+                border-left: 1px solid var(--border);
+            }
+            .nav.open { right: 0; }
+            .nav a { width: 100%; padding: 12px 16px; font-size: 1rem; }
+        }
+
+        /* ── SECTIONS ── */
+        .section { padding: 64px 20px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        .section-label {
+            display: inline-block;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 800;
+            color: #fff;
+            margin: 0 0 12px;
+            line-height: 1.2;
+        }
+        .section-title span { color: var(--accent); }
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 0 32px;
+        }
+
+        /* ── AD BLOCK ── */
+        .ad-block {
+            background: var(--surface2);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+        .ad-block-top {
+            background: linear-gradient(135deg, #1a1a1d 0%, #1f1f24 100%);
+            border: 1px solid var(--border);
+            min-height: 100px;
+            margin-top: 8px;
+        }
+
+        /* ── SEARCH / LOOKUP ── */
+        .lookup-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        .lookup-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: var(--accent-glow);
+            border-radius: 50%;
+            filter: blur(60px);
+            pointer-events: none;
+        }
+        .lookup-input-wrap {
+            display: flex;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .lookup-input {
+            flex: 1;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-size: 1.1rem;
+            color: #fff;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+        .lookup-input:focus { border-color: var(--accent); }
+        .lookup-input::placeholder { color: #3d3d42; text-transform: none; letter-spacing: 0; }
+
+        .btn {
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 16px 28px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            font-family: inherit;
+        }
+        .btn:hover { background: var(--yellow-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(250,204,21,0.35); }
+        .btn:active { transform: translateY(0); }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            padding: 14px 28px;
+            font-weight: 700;
+            font-size: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .btn-outline:hover { background: var(--accent); color: #000; }
+
+        @media (max-width: 600px) {
+            .lookup-input-wrap { flex-direction: column; }
+            .btn { width: 100%; text-align: center; }
+        }
+
+        /* ── CODE CATEGORIES QUICK LINKS ── */
+        .code-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .code-chip {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+        }
+        .code-chip:hover { color: #fff; border-color: var(--accent); background: rgba(245,158,11,0.1); }
+
+        /* ── RESULTS ── */
+        .result-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px;
+            margin-top: 24px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .result-card.show { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .result-code {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            color: var(--accent);
+            margin: 0 0 4px;
+        }
+        .result-system {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .system-P { background: rgba(245,158,11,0.15); color: var(--accent); }
+        .system-C { background: rgba(34,197,94,0.15); color: var(--green); }
+        .system-B { background: rgba(59,130,246,0.15); color: #3b82f6; }
+        .system-U { background: rgba(239,68,68,0.15); color: var(--red); }
+
+        .result-section { margin-top: 20px; }
+        .result-section h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 0 0 8px;
+        }
+        .result-section p, .result-section li {
+            color: var(--text);
+            margin: 0 0 6px;
+            font-size: 0.95rem;
+        }
+        .result-section ul { padding-left: 20px; margin: 0; }
+        .result-section ul li { margin-bottom: 4px; }
+        .result-section ul li::marker { color: var(--accent); }
+
+        .result-cta {
+            margin-top: 24px;
+            padding: 20px;
+            background: var(--surface2);
+            border-radius: var(--radius);
+            border-left: 3px solid var(--accent);
+        }
+        .result-cta p { margin: 0 0 12px; color: var(--text); }
+        .result-cta a { color: var(--accent); text-decoration: none; font-weight: 600; }
+        .result-cta a:hover { text-decoration: underline; }
+
+        .not-found {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-muted);
+        }
+        .not-found .icon { font-size: 3rem; margin-bottom: 12px; }
+
+        /* ── COMMON CODES TABLE ── */
+        .codes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+        }
+        .code-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+        .code-card:hover { border-color: var(--accent); background: var(--surface2); }
+        .code-card-code {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.95rem;
+            white-space: nowrap;
+            min-width: 55px;
+        }
+        .code-card-text { flex: 1; }
+        .code-card-text h4 { margin: 0 0 4px; font-size: 0.95rem; color: #fff; }
+        .code-card-text p { margin: 0; font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; }
+
+        @media (max-width: 600px) {
+            .codes-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── INFO BLOCKS ── */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+        .info-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+        }
+        .info-card .icon { font-size: 2.2rem; margin-bottom: 12px; }
+        .info-card h3 { font-size: 1.1rem; color: #fff; margin: 0 0 8px; }
+        .info-card p { font-size: 0.9rem; color: var(--text-muted); margin: 0; line-height: 1.5; }
+
+        /* ── FOOTER ── */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        /* ── BACK TO TOP ── */
+        .back-to-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #000;
+            font-size: 1.3rem;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            box-shadow: 0 4px 16px rgba(245,158,11,0.4);
+            transition: all 0.2s;
+        }
+        .back-to-top.show { display: flex; }
+        .back-to-top:hover { transform: translateY(-2px); }
+
+        /* scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-inner">
+        <a href="https://diagnost74.ru/index.html" class="logo">⚡ EL<span>AFTO</span></a>
+        <button class="hamburger" id="hamburger" aria-label="Меню">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="nav" id="nav">
+            <a href="https://diagnost74.ru/obd" class="active">Коды ошибок</a>
+            <a href="https://diagnost74.ru/index.html">Главная</a>
+            <a href="https://diagnost74.ru/index.html#problems">Услуги</a>
+            <a href="https://diagnost74.ru/index.html#prices">Цены</a>
+            <a href="https://diagnost74.ru/index.html#contacts">Контакты</a>
+            <a href="https://diagnost74.ru/partners">Партнеры</a>
+        </nav>
+    </div>
+</header>
+
+<!-- AD BLOCK TOP -->
+<section style="padding: 20px 20px 0;">
+    <div class="container">
+        <div class="ad-block ad-block-top">
+            <!-- 📢 РЕКЛАМА: Вставьте сюда ваш рекламный баннер или код -->
+            📢 Место для рекламы — здесь может быть ваш рекламный баннер (728×90 или адаптивный) пишите в ТГ @el_afto только город Челябинск
+        </div>
+    </div>
+</section>
+
+<!-- HERO / LOOKUP -->
+<section class="section" style="padding-top: 40px;">
+    <div class="container">
+        <span class="section-label">🔍 Диагностика</span>
+        <h1 class="section-title">Расшифровка кодов <span>неисправностей</span></h1>
+        <p class="section-desc">Введите OBD2 код ошибки (например, P0300, P0420, U0100) и узнайте возможные причины, симптомы и варианты устранения неисправности.</p>
+
+        <!-- Lookup -->
+        <div class="lookup-card">
+            <div class="lookup-input-wrap">
+                <input type="text" class="lookup-input" id="codeInput" placeholder="Введите код, например: P0300" maxlength="5" autocomplete="off">
+                <button class="btn" id="searchBtn">🔍 Найти</button>
+            </div>
+            <div class="code-chips">
+                <span style="color:var(--text-muted);font-size:0.8rem;padding:8px 0;">Частые коды:</span>
+                <button class="code-chip" data-code="P0300">P0300</button>
+                <button class="code-chip" data-code="P0420">P0420</button>
+                <button class="code-chip" data-code="P0171">P0171</button>
+                <button class="code-chip" data-code="P0172">P0172</button>
+                <button class="code-chip" data-code="P0011">P0011</button>
+                <button class="code-chip" data-code="P0016">P0016</button>
+                <button class="code-chip" data-code="P0401">P0401</button>
+                <button class="code-chip" data-code="P0335">P0335</button>
+                <button class="code-chip" data-code="P0340">P0340</button>
+                <button class="code-chip" data-code="P0700">P0700</button>
+                <button class="code-chip" data-code="U0100">U0100</button>
+                <button class="code-chip" data-code="C0035">C0035</button>
+                <button class="code-chip" data-code="B0028">B0028</button>
+            </div>
+        </div>
+
+        <!-- Result -->
+        <div class="result-card" id="resultCard">
+            <div id="resultContent"></div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" style="background:var(--surface);">
+    <div class="container">
+        <span class="section-label">📋 Как это работает</span>
+        <h2 class="section-title">Три шага <span>к диагностике</span></h2>
+        <p class="section-desc">Разобраться с кодом ошибки проще, чем кажется. Всё займёт меньше минуты.</p>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="icon">1️⃣</div>
+                <h3>Введите код</h3>
+                <p>Введите 5-значный код ошибки из OBD2 сканера в формате PXXXX, CXXXX, BXXXX или UXXXX.</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">2️⃣</div>
+                <h3>Изучите расшифровку</h3>
+                <p>Узнайте, что означает код, возможные причины и симптомы неисправности.</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">3️⃣</div>
+                <h3>Запишитесь на диагностику</h3>
+                <p>Если не уверены — звоните. Приеду с дилерским сканером Launch и найду реальную причину.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- COMMON CODES -->
+<section class="section">
+    <div class="container">
+        <span class="section-label">📊 Популярные коды</span>
+        <h2 class="section-title">Частые <span>ошибки</span></h2>
+        <p class="section-desc">Кликайте на код, чтобы увидеть расшифровку. Это самые распространённые коды, с которыми ко мне приезжают.</p>
+        <div class="codes-grid" id="commonCodes"></div>
+    </div>
+</section>
+
+<!-- WHAT CODES MEAN -->
+<section class="section" style="background:var(--surface);">
+    <div class="container">
+        <span class="section-label">💡 Обозначения</span>
+        <h2 class="section-title">Что означают <span>буквы кодов</span></h2>
+        <p class="section-desc">Первая буква кода указывает на систему автомобиля, в которой обнаружена неисправность.</p>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="icon">🟡</div>
+                <h3>P — Двигатель / КПП</h3>
+                <p>Powertrain. Ошибки двигателя, трансмиссии, топливной системы, зажигания, датчиков.</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🟢</div>
+                <h3>C — Шасси</h3>
+                <p>Chassis. Ошибки ABS, ESP, рулевого управления, подвески, тормозной системы.</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🔵</div>
+                <h3>B — Кузов</h3>
+                <p>Body. Ошибки подушек безопасности, климата, стеклоподъёмников, освещения, центрального замка.</p>
+            </div>
+            <div class="info-card">
+                <div class="icon">🔴</div>
+                <h3>U — Сеть / Связь</h3>
+                <p>Network. Ошибки CAN-шины, связи между блоками, проблемы с проводкой данных.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+    <div class="container">
+        <div class="lookup-card" style="text-align:center;">
+            <span class="section-label">⚡ Не уверены в причине?</span>
+            <h2 class="section-title" style="margin-bottom:8px;">Приеду и <span>разберусь или приму у себя в сервисе</span></h2>
+            <p style="color:var(--text-muted);max-width:500px;margin:0 auto 20px;">Дилерский сканер Launch, дымогенератор, эндоскоп. Нахожу реальные причины, а не просто стираю ошибки.</p>
+            <a href="tel:+79524084043" class="btn" style="display:inline-block;text-decoration:none;">📞 Позвонить: +7 (952) 408-40-43</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <p>© 2026 EL AFTO — Автоэлектрик Челябинск. Диагностика и ремонт авто.</p>
+        <p><a href="https://diagnost74.ru/index.html">← На главную</a> &nbsp;|&nbsp; <a href="tel:+79524084043">+7 (952) 408-40-43</a></p>
+    </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" aria-label="Наверх">↑</button>
+
+<script>
+// ── OBD2 Codes Database ──
+const CODE_DB = {
+    // P00xx - Fuel & Air Metering
+    "P0100": { desc: "Датчик массового расхода воздуха (MAF) — неисправность цепи", system: "P", causes: ["Загрязнение или неисправность датчика MAF", "Подсос воздуха после датчика", "Повреждение проводки или разъёма"], symptoms: ["Потеря мощности", "Плавающие обороты", "Повышенный расход топлива"], severity: "Средняя" },
+    "P0101": { desc: "Датчик массового расхода воздуха (MAF) — выход за пределы диапазона", system: "P", causes: ["Загрязнённый датчик MAF", "Засорённый воздушный фильтр", "Подсос воздуха во впуске"], symptoms: ["Вялый разгон", "Дёрганье при движении", "Чёрный дым из выхлопной"], severity: "Средняя" },
+    "P0102": { desc: "Датчик массового расхода воздуха (MAF) — низкий сигнал", system: "P", causes: ["Обрыв проводки датчика MAF", "Неисправность самого датчика", "Плохая масса датчика"], symptoms: ["Машина глохнет", "Провалы при нажатии газа", "Повышенный расход"], severity: "Высокая" },
+    "P0113": { desc: "Датчик температуры впускного воздуха (IAT) — высокий сигнал", system: "P", causes: ["Обрыв цепи датчика IAT", "Неисправный датчик", "Короткое замыкание на массу"], symptoms: ["Трудный запуск на холодную", "Нестабильный холостой ход"], severity: "Низкая" },
+    "P0115": { desc: "Датчик температуры охлаждающей жидкости (ECT) — неисправность цепи", system: "P", causes: ["Неисправный датчик температуры", "Обрыв проводки", "Плохой контакт в разъёме"], symptoms: ["Вентилятор работает постоянно", "Трудный запуск", "Некорректная работа ЭБУ"], severity: "Средняя" },
+    "P0120": { desc: "Датчик положения дроссельной заслонки (TPS) — неисправность", system: "P", causes: ["Износ датчика TPS", "Плохой контакт разъёма", "Сбита адаптация дросселя"], symptoms: ["Рывки при разгоне", "Плавают обороты", "Машина не реагирует на педаль газа"], severity: "Высокая" },
+    "P0121": { desc: "Датчик положения дроссельной заслонки (TPS) — диапазон/производительность", system: "P", causes: ["Изношенный датчик", "Загрязнение дроссельной заслонки", "Проблемы с проводкой"], symptoms: ["Задержка реакции на педаль газа", "Неравномерный холостой ход"], severity: "Средняя" },
+    "P0130": { desc: "Датчик кислорода (O2) Bank 1 Sensor 1 — неисправность цепи", system: "P", causes: ["Неисправный лямбда-зонд", "Обрыв или замыкание проводки", "Подсос воздуха в выхлопной системе"], symptoms: ["Повышенный расход топлива", "Горит Check Engine", "Неустойчивая работа двигателя"], severity: "Средняя" },
+    "P0135": { desc: "Датчик кислорода (O2) Bank 1 Sensor 1 — неисправность подогрева", system: "P", causes: ["Перегорел нагревательный элемент датчика", "Обрыв цепи подогрева", "Неисправность предохранителя"], symptoms: ["Долгий прогрев датчика", "Check Engine на холодную"], severity: "Средняя" },
+
+    // P01xx - Fuel Trim
+    "P0171": { desc: "Бедная смесь (Bank 1) — слишком много воздуха", system: "P", causes: ["Подсос воздуха во впускном коллекторе", "Засорённые форсунки", "Низкое давление топлива", "Неисправный датчик MAF", "Утечка вакуума"], symptoms: ["Плавающие обороты", "Потеря мощности", "Дёрганье при разгоне", "Повышенный расход"], severity: "Высокая" },
+    "P0172": { desc: "Богатая смесь (Bank 1) — слишком много топлива", system: "P", causes: ["Неисправный датчик MAF", "Завышенное давление топлива", "Негерметичные форсунки", "Неисправный датчик O2"], symptoms: ["Чёрный дым из выхлопной", "Повышенный расход", "Провалы мощности", "Запах бензина"], severity: "Высокая" },
+    "P0174": { desc: "Бедная смесь (Bank 2)", system: "P", causes: ["Подсос воздуха", "Засорённые форсунки Bank 2", "Низкое давление топлива"], symptoms: ["Потеря мощности", "Дёрганье", "Повышенный расход"], severity: "Высокая" },
+
+    // P02xx - Fuel & Air (Injector)
+    "P0201": { desc: "Форсунка цилиндра 1 — неисправность цепи", system: "P", causes: ["Обрыв проводки форсунки", "Неисправная форсунка", "Проблема с драйвером ЭБУ"], symptoms: ["Троение двигателя", "Пропуски зажигания", "Потеря мощности"], severity: "Высокая" },
+    "P0202": { desc: "Форсунка цилиндра 2 — неисправность цепи", system: "P", causes: ["Обрыв проводки", "Неисправная форсунка", "Плохой контакт разъёма"], symptoms: ["Троение", "Вибрация", "Потеря мощности"], severity: "Высокая" },
+    "P0203": { desc: "Форсунка цилиндра 3 — неисправность цепи", system: "P", causes: ["Обрыв проводки", "Неисправная форсунка"], symptoms: ["Троение двигателя", "Пропуски"], severity: "Высокая" },
+    "P0204": { desc: "Форсунка цилиндра 4 — неисправность цепи", system: "P", causes: ["Обрыв проводки", "Неисправная форсунка"], symptoms: ["Троение", "Вибрация"], severity: "Высокая" },
+
+    // P03xx - Ignition / Misfire
+    "P0300": { desc: "Случайные/множественные пропуски зажигания", system: "P", causes: ["Изношенные свечи зажигания", "Неисправные катушки зажигания", "Засорённые форсунки", "Низкая компрессия", "Подсос воздуха", "Некачественное топливо"], symptoms: ["Двигатель троит", "Вибрация на холостых", "Потеря мощности", "Повышенный расход топлива", "Рывки при разгоне"], severity: "Высокая" },
+    "P0301": { desc: "Пропуск зажигания — цилиндр 1", system: "P", causes: ["Неисправна свеча 1-го цилиндра", "Пробой катушки", "Низкая компрессия в цилиндре 1", "Проблема с форсункой цилиндра 1"], symptoms: ["Троение", "Вибрация", "Потеря тяги"], severity: "Высокая" },
+    "P0302": { desc: "Пропуск зажигания — цилиндр 2", system: "P", causes: ["Свеча зажигания цилиндра 2", "Катушка", "Форсунка", "Компрессия"], symptoms: ["Троение", "Мигающий Check Engine"], severity: "Высокая" },
+    "P0303": { desc: "Пропуск зажигания — цилиндр 3", system: "P", causes: ["Свеча / катушка / форсунка цилиндра 3", "Механическая проблема"], symptoms: ["Двигатель троит", "Потеря мощности"], severity: "Высокая" },
+    "P0304": { desc: "Пропуск зажигания — цилиндр 4", system: "P", causes: ["Свеча / катушка / форсунка цилиндра 4"], symptoms: ["Троение", "Вибрация"], severity: "Высокая" },
+    "P0325": { desc: "Датчик детонации (Knock Sensor) — неисправность цепи", system: "P", causes: ["Неисправный датчик детонации", "Обрыв проводки", "Плохой контакт"], symptoms: ["Детонация при разгоне", "Потеря мощности", "Check Engine"], severity: "Средняя" },
+    "P0335": { desc: "Датчик положения коленвала (CKP) — неисправность цепи", system: "P", causes: ["Неисправный датчик коленвала", "Обрыв проводки", "Повреждение задающего диска"], symptoms: ["Двигатель не заводится", "Глохнет на ходу", "Нет искры"], severity: "Критическая" },
+    "P0340": { desc: "Датчик положения распредвала (CMP) — неисправность цепи", system: "P", causes: ["Неисправный датчик распредвала", "Обрыв проводки", "Растянута цепь ГРМ"], symptoms: ["Трудный запуск", "Потеря мощности", "Двигатель глохнет"], severity: "Высокая" },
+
+    // P04xx - EGR / Emissions
+    "P0401": { desc: "Недостаточный поток EGR (рециркуляции выхлопных газов)", system: "P", causes: ["Засорённый клапан EGR", "Засорённые каналы EGR", "Неисправный датчик положения EGR", "Проблемы с вакуумной системой"], symptoms: ["Детонация под нагрузкой", "Повышенный расход", "Check Engine"], severity: "Средняя" },
+    "P0402": { desc: "Избыточный поток EGR", system: "P", causes: ["Заклинивший открытым клапан EGR", "Неисправный датчик DPFE", "Засорение системы"], symptoms: ["Двигатель глохнет на холостых", "Неровная работа", "Чёрный дым"], severity: "Средняя" },
+    "P0420": { desc: "Недостаточная эффективность катализатора (Bank 1)", system: "P", causes: ["Изношенный катализатор", "Пропуски зажигания повредили катализатор", "Утечка выхлопных газов", "Неисправный датчик O2"], symptoms: ["Check Engine", "Запах сероводорода", "Потеря мощности на верхах"], severity: "Средняя" },
+    "P0430": { desc: "Недостаточная эффективность катализатора (Bank 2)", system: "P", causes: ["Изношенный катализатор Bank 2", "Пропуски зажигания", "Утечка выхлопа"], symptoms: ["Check Engine", "Снижение мощности"], severity: "Средняя" },
+    "P0442": { desc: "Небольшая утечка в системе EVAP (пары топлива)", system: "P", causes: ["Ослаблена или не закрыта крышка бензобака", "Трещина в шлангах EVAP", "Неисправность адсорбера"], symptoms: ["Check Engine", "Запах бензина"], severity: "Низкая" },
+    "P0446": { desc: "Неисправность вентиляции системы EVAP", system: "P", causes: ["Засорённый угольный адсорбер", "Неисправный клапан продувки", "Засорённые трубки"], symptoms: ["Трудности при заправке", "Check Engine"], severity: "Средняя" },
+    "P0455": { desc: "Большая утечка в системе EVAP", system: "P", causes: ["Открытая или повреждённая крышка бензобака", "Треснувший шланг EVAP", "Неисправный угольный адсорбер"], symptoms: ["Запах топлива", "Check Engine"], severity: "Низкая" },
+
+    // P05xx - Idle / Speed
+    "P0500": { desc: "Датчик скорости автомобиля (VSS) — неисправность", system: "P", causes: ["Неисправный датчик скорости", "Обрыв проводки", "Повреждение шестерни привода"], symptoms: ["Не работает спидометр", "Рывки при переключении АКПП", "Check Engine + ABS"], severity: "Средняя" },
+    "P0505": { desc: "Неисправность системы холостого хода (IAC)", system: "P", causes: ["Засорённый клапан IAC", "Неисправный клапан холостого хода", "Подсос воздуха"], symptoms: ["Плавают обороты", "Глохнет на холостых", "Высокие обороты"], severity: "Средняя" },
+
+    // P06xx - ECM / Sensors
+    "P0601": { desc: "Ошибка контрольной суммы памяти ЭБУ", system: "P", causes: ["Сбой прошивки ЭБУ", "Повреждение блока управления", "Скачки напряжения"], symptoms: ["Двигатель не заводится", "Check Engine", "Различные сбои"], severity: "Критическая" },
+    "P0606": { desc: "Неисправность процессора ЭБУ", system: "P", causes: ["Внутренняя неисправность ЭБУ", "Попадание влаги", "Перегрев блока"], symptoms: ["Двигатель не работает", "Нет связи со сканером"], severity: "Критическая" },
+
+    // P07xx - Transmission
+    "P0700": { desc: "Неисправность системы управления АКПП", system: "P", causes: ["Общая ошибка коробки — нужна детальная диагностика", "Проблемы с соленоидами", "Низкий уровень масла АКПП"], symptoms: ["Аварийный режим АКПП", "Рывки при переключении", "Пробуксовка"], severity: "Высокая" },
+    "P0715": { desc: "Датчик скорости входного вала АКПП — неисправность", system: "P", causes: ["Неисправный датчик", "Обрыв проводки", "Загрязнение датчика"], symptoms: ["Жёсткие переключения", "Аварийный режим"], severity: "Средняя" },
+    "P0720": { desc: "Датчик скорости выходного вала — неисправность", system: "P", causes: ["Неисправный датчик", "Повреждение проводки"], symptoms: ["Некорректная работа спидометра", "Рывки АКПП"], severity: "Средняя" },
+    "P0740": { desc: "Гидротрансформатор — неисправность муфты блокировки", system: "P", causes: ["Неисправный соленоид TCC", "Износ гидротрансформатора", "Грязное масло АКПП"], symptoms: ["Рывки при блокировке ГТ", "Повышенный расход", "Вибрация на скорости"], severity: "Высокая" },
+
+    // P1xxx - Manufacturer Specific
+    "P1135": { desc: "Датчик O2 Bank 1 Sensor 1 — неисправность подогрева (Toyota)", system: "P", causes: ["Перегорел подогрев датчика", "Обрыв цепи", "Неисправность предохранителя EFI"], symptoms: ["Check Engine", "Повышенный расход"], severity: "Средняя" },
+    "P1130": { desc: "Датчик O2 — неисправность адаптивной коррекции (Ford)", system: "P", causes: ["Неисправный датчик", "Подсос воздуха", "Проблема с топливной системой"], symptoms: ["Check Engine", "Неровная работа"], severity: "Средняя" },
+
+    // Cxxxx - Chassis
+    "C0035": { desc: "Датчик скорости левого переднего колеса — неисправность", system: "C", causes: ["Неисправный датчик ABS", "Повреждение провода датчика", "Загрязнение магнитного кольца", "Зазор между датчиком и кольцом"], symptoms: ["Горит ABS", "Горит ESP", "Не работает спидометр (иногда)", "Ошибка системы стабилизации"], severity: "Высокая" },
+    "C0040": { desc: "Датчик скорости правого переднего колеса — неисправность", system: "C", causes: ["Неисправный датчик ABS", "Обрыв проводки", "Загрязнение"], symptoms: ["Горит ABS/ESP", "Отказ антиблокировочной системы"], severity: "Высокая" },
+    "C0050": { desc: "Датчик скорости правого заднего колеса — неисправность", system: "C", causes: ["Неисправный датчик", "Повреждение проводки", "Коррозия разъёма"], symptoms: ["ABS не работает", "ESP отключена"], severity: "Средняя" },
+    "C1200": { desc: "Блок ABS — внутренняя неисправность", system: "C", causes: ["Неисправность гидроблока ABS", "Проблемы с блоком управления ABS"], symptoms: ["Горит ABS", "Тормоза работают в обычном режиме"], severity: "Высокая" },
+
+    // Bxxxx - Body
+    "B0028": { desc: "Подушка безопасности водителя — низкое сопротивление", system: "B", causes: ["Неисправность подушки безопасности", "Проблема со спиральным шлейфом руля", "Плохой контакт разъёма"], symptoms: ["Горит лампа SRS/Airbag", "Подушка может не сработать"], severity: "Критическая" },
+    "B0081": { desc: "Датчик присутствия пассажира — неисправность", system: "B", causes: ["Неисправный датчик в сиденье", "Обрыв проводки", "Проблемы с блоком SRS"], symptoms: ["Горит индикатор Airbag", "Отключена подушка пассажира"], severity: "Высокая" },
+    "B1200": { desc: "Климат-контроль — внутренняя неисправность блока", system: "B", causes: ["Сбой блока климат-контроля", "Скачок напряжения", "Потеря калибровки"], symptoms: ["Не работает климат-контроль", "Заслонки не двигаются"], severity: "Средняя" },
+
+    // Uxxxx - Network
+    "U0100": { desc: "Потеря связи с ЭБУ двигателя (ECM/PCM)", system: "U", causes: ["Обрыв CAN-шины", "Неисправность блока ЭБУ", "Короткое замыкание в проводке", "Разряженный АКБ"], symptoms: ["Двигатель не заводится", "Не горят приборы", "Нет связи со сканером", "Check Engine + другие лампы"], severity: "Критическая" },
+    "U0121": { desc: "Потеря связи с блоком ABS", system: "U", causes: ["Обрыв CAN-шины к блоку ABS", "Неисправность блока ABS", "Проблемы с проводкой"], symptoms: ["Горит ABS/ESP", "Нет связи с блоком ABS"], severity: "Высокая" },
+    "U0140": { desc: "Потеря связи с блоком BCM (кузовная электроника)", system: "U", causes: ["Обрыв шины данных", "Неисправность BCM", "Скачок напряжения"], symptoms: ["Не работают стеклоподъёмники", "Не работает ЦЗ", "Проблемы с освещением"], severity: "Высокая" },
+    "U0155": { desc: "Потеря связи с комбинацией приборов", system: "U", causes: ["Обрыв CAN-шины", "Неисправность приборной панели", "Плохой контакт"], symptoms: ["Не работают приборы", "Стрелки на нуле"], severity: "Высокая" },
+    "U0401": { desc: "Некорректные данные от ЭБУ двигателя", system: "U", causes: ["Сбой прошивки ЭБУ", "Помехи в CAN-шине", "Проблема с согласованием блоков"], symptoms: ["Разные ошибки на панели", "Аварийный режим"], severity: "Высокая" },
+};
+
+// Also add Russian-specific / popular additions
+const EXTRA_CODES = {
+    "P0011": { desc: "Положение распредвала — слишком раннее открытие (Bank 1)", system: "P", causes: ["Низкий уровень масла", "Засорённый масляный канал", "Неисправный клапан VVT-i/VANOS", "Растянутая цепь ГРМ"], symptoms: ["Стук двигателя", "Потеря мощности", "Check Engine"], severity: "Высокая" },
+    "P0016": { desc: "Несоответствие положения коленвала и распредвала (Bank 1)", system: "P", causes: ["Перескок цепи/ремня ГРМ", "Неисправный датчик положения", "Растянутая цепь ГРМ"], symptoms: ["Трудный запуск", "Потеря мощности", "Двигатель троит"], severity: "Критическая" },
+    "P0087": { desc: "Низкое давление в топливной рампе", system: "P", causes: ["Засорённый топливный фильтр", "Неисправный ТНВД/бензонасос", "Утечка топлива", "Неисправный регулятор давления"], symptoms: ["Потеря мощности", "Двигатель глохнет", "Трудный запуск"], severity: "Высокая" },
+    "P0106": { desc: "Датчик абсолютного давления (MAP) — диапазон/производительность", system: "P", causes: ["Неисправный датчик MAP", "Подсос воздуха", "Засорённая вакуумная трубка"], symptoms: ["Потеря мощности", "Плавают обороты", "Дёрганье"], severity: "Средняя" },
+    "P0118": { desc: "Датчик температуры ОЖ — высокий уровень сигнала", system: "P", causes: ["Обрыв цепи датчика", "Неисправный датчик", "Плохая масса"], symptoms: ["Вентилятор работает постоянно", "Check Engine"], severity: "Средняя" },
+    "P0134": { desc: "Датчик O2 Bank 1 Sensor 1 — нет активности", system: "P", causes: ["Неисправный датчик", "Обрыв проводки", "Подсос воздуха"], symptoms: ["Check Engine", "Повышенный расход"], severity: "Средняя" },
+    "P0136": { desc: "Датчик O2 Bank 1 Sensor 2 — неисправность цепи", system: "P", causes: ["Неисправный датчик после катализатора", "Обрыв проводки"], symptoms: ["Check Engine"], severity: "Средняя" },
+    "P0141": { desc: "Датчик O2 Bank 1 Sensor 2 — неисправность подогрева", system: "P", causes: ["Перегорел подогрев датчика", "Обрыв цепи", "Неисправный предохранитель"], symptoms: ["Check Engine"], severity: "Средняя" },
+    "P0170": { desc: "Нарушение топливной коррекции (Bank 1)", system: "P", causes: ["Подсос воздуха", "Неисправный датчик MAF/MAP", "Проблемы с давлением топлива"], symptoms: ["Плавают обороты", "Повышенный расход", "Check Engine"], severity: "Высокая" },
+    "P0217": { desc: "Перегрев двигателя", system: "P", causes: ["Низкий уровень ОЖ", "Неисправный термостат", "Засорённый радиатор", "Неисправный вентилятор"], symptoms: ["Стрелка температуры в красной зоне", "Пар из-под капота", "Потеря мощности"], severity: "Критическая" },
+    "P0299": { desc: "Низкое давление наддува турбины", system: "P", causes: ["Утечка в интеркулере или патрубках", "Неисправный клапан N75", "Засорённый воздушный фильтр", "Износ турбины"], symptoms: ["Потеря мощности", "Свист при разгоне", "Повышенный расход"], severity: "Высокая" },
+    "P0351": { desc: "Катушка зажигания A — неисправность первичной цепи", system: "P", causes: ["Неисправная катушка", "Обрыв проводки", "Проблема с драйвером ЭБУ"], symptoms: ["Пропуски зажигания", "Троение"], severity: "Высокая" },
+    "P0352": { desc: "Катушка зажигания B — неисправность первичной цепи", system: "P", causes: ["Катушка", "Проводка"], symptoms: ["Троение", "Вибрация"], severity: "Высокая" },
+    "P0380": { desc: "Свечи накала — неисправность цепи (дизель)", system: "P", causes: ["Неисправные свечи накала", "Реле свечей накала", "Обрыв проводки"], symptoms: ["Трудный запуск на холодную", "Белый дым при запуске"], severity: "Средняя" },
+    "P0480": { desc: "Вентилятор охлаждения 1 — неисправность цепи", system: "P", causes: ["Неисправный вентилятор", "Обрыв проводки", "Неисправное реле", "Предохранитель"], symptoms: ["Перегрев в пробках", "Вентилятор не включается"], severity: "Высокая" },
+    "P0507": { desc: "Слишком высокие обороты холостого хода", system: "P", causes: ["Подсос воздуха", "Засорённый клапан IAC", "Залипание дроссельной заслонки"], symptoms: ["Высокие обороты на холостых", "Машина сама разгоняется"], severity: "Средняя" },
+    "P0562": { desc: "Низкое напряжение бортовой сети", system: "P", causes: ["Разряженный АКБ", "Неисправный генератор", "Плохой контакт клемм АКБ"], symptoms: ["Трудный запуск", "Тусклый свет", "Разные ошибки"], severity: "Высокая" },
+    "P0563": { desc: "Высокое напряжение бортовой сети", system: "P", causes: ["Неисправный регулятор напряжения генератора", "Скачок напряжения при запуске"], symptoms: ["Перегорают лампы", "Ошибки датчиков"], severity: "Высокая" },
+    "P0627": { desc: "Топливный насос — обрыв цепи управления", system: "P", causes: ["Неисправное реле бензонасоса", "Обрыв проводки", "Неисправный бензонасос"], symptoms: ["Двигатель не заводится", "Глохнет на ходу"], severity: "Критическая" },
+    "U0101": { desc: "Потеря связи с блоком TCM (АКПП)", system: "U", causes: ["Обрыв CAN-шины", "Неисправность блока АКПП"], symptoms: ["Аварийный режим АКПП", "Не переключаются передачи"], severity: "Критическая" },
+};
+
+// Expanded set of frequent codes seen on popular passenger cars.
+const POPULAR_CODES = {
+    "P0001": { desc: "Регулятор объёма топлива — обрыв цепи", system: "P", causes: ["Неисправный регулятор давления/объёма топлива", "Обрыв проводки", "Плохой контакт разъёма"], symptoms: ["Трудный запуск", "Потеря мощности", "Двигатель глохнет"], severity: "Высокая" },
+    "P0008": { desc: "Положение двигателя — несоответствие фаз ГРМ (Bank 1)", system: "P", causes: ["Растянута цепь ГРМ", "Перескок ремня/цепи", "Неисправность фазорегулятора"], symptoms: ["Плохой запуск", "Стук цепи", "Потеря тяги"], severity: "Критическая" },
+    "P0010": { desc: "Клапан управления фазами распредвала A — неисправность цепи", system: "P", causes: ["Неисправный клапан VVT", "Обрыв проводки", "Грязное масло"], symptoms: ["Потеря мощности", "Неровный холостой ход", "Check Engine"], severity: "Высокая" },
+    "P0012": { desc: "Положение распредвала A — слишком позднее (Bank 1)", system: "P", causes: ["Низкий уровень масла", "Засорён клапан VVT", "Растянута цепь ГРМ"], symptoms: ["Тупой разгон", "Плавающие обороты", "Повышенный расход"], severity: "Высокая" },
+    "P0013": { desc: "Клапан управления фазами распредвала B — неисправность цепи", system: "P", causes: ["Клапан VVT выпускного распредвала", "Обрыв проводки", "Плохой контакт"], symptoms: ["Потеря мощности", "Check Engine"], severity: "Средняя" },
+    "P0014": { desc: "Положение распредвала B — слишком раннее (Bank 1)", system: "P", causes: ["Клапан VVT заклинил", "Грязное масло", "Нарушение фаз ГРМ"], symptoms: ["Неровная работа", "Стук", "Расход топлива выше нормы"], severity: "Высокая" },
+    "P0021": { desc: "Положение распредвала A — слишком раннее (Bank 2)", system: "P", causes: ["Неисправность VVT Bank 2", "Масляное голодание", "Смещение фаз ГРМ"], symptoms: ["Потеря тяги", "Неровная работа", "Check Engine"], severity: "Высокая" },
+    "P0030": { desc: "Подогрев датчика кислорода Bank 1 Sensor 1 — неисправность цепи", system: "P", causes: ["Перегорел подогрев лямбда-зонда", "Обрыв проводки", "Предохранитель"], symptoms: ["Check Engine", "Повышенный расход на холодную"], severity: "Средняя" },
+    "P0031": { desc: "Подогрев датчика кислорода Bank 1 Sensor 1 — низкий сигнал", system: "P", causes: ["Короткое замыкание", "Повреждение проводки", "Неисправный датчик"], symptoms: ["Check Engine", "Расход выше нормы"], severity: "Средняя" },
+    "P0036": { desc: "Подогрев датчика кислорода Bank 1 Sensor 2 — неисправность цепи", system: "P", causes: ["Неисправность второго лямбда-зонда", "Обрыв цепи подогрева", "Плохой разъём"], symptoms: ["Check Engine"], severity: "Средняя" },
+    "P0051": { desc: "Подогрев датчика кислорода Bank 2 Sensor 1 — низкий сигнал", system: "P", causes: ["Неисправный датчик O2", "Замыкание проводки", "Проблема с предохранителем"], symptoms: ["Check Engine", "Повышенный расход"], severity: "Средняя" },
+    "P0073": { desc: "Датчик температуры наружного воздуха — высокий сигнал", system: "P", causes: ["Обрыв датчика наружной температуры", "Плохой контакт", "Повреждение проводки"], symptoms: ["Неверная температура на панели", "Некорректная работа климата"], severity: "Низкая" },
+    "P0093": { desc: "Обнаружена большая утечка топлива", system: "P", causes: ["Утечка в топливной магистрали", "Неисправный регулятор давления", "Проблема с форсункой"], symptoms: ["Запах топлива", "Падение давления", "Двигатель глохнет"], severity: "Критическая" },
+    "P0122": { desc: "Датчик положения дросселя TPS — низкий сигнал", system: "P", causes: ["Износ датчика TPS", "Короткое замыкание", "Плохая масса"], symptoms: ["Нет реакции на газ", "Аварийный режим", "Плавающие обороты"], severity: "Высокая" },
+    "P0123": { desc: "Датчик положения дросселя TPS — высокий сигнал", system: "P", causes: ["Обрыв цепи сигнала", "Неисправный TPS", "Плохой контакт"], symptoms: ["Высокие обороты", "Рывки", "Аварийный режим"], severity: "Высокая" },
+    "P0131": { desc: "Датчик O2 Bank 1 Sensor 1 — низкое напряжение", system: "P", causes: ["Бедная смесь", "Неисправный лямбда-зонд", "Подсос воздуха"], symptoms: ["Провалы", "Повышенный расход", "Check Engine"], severity: "Средняя" },
+    "P0132": { desc: "Датчик O2 Bank 1 Sensor 1 — высокое напряжение", system: "P", causes: ["Богатая смесь", "Неисправный датчик", "Форсунки переливают"], symptoms: ["Запах бензина", "Чёрный дым", "Повышенный расход"], severity: "Средняя" },
+    "P0133": { desc: "Датчик O2 Bank 1 Sensor 1 — медленный отклик", system: "P", causes: ["Старый лямбда-зонд", "Загрязнение датчика", "Утечка выхлопа"], symptoms: ["Расход топлива выше", "Вялый разгон"], severity: "Средняя" },
+    "P0137": { desc: "Датчик O2 Bank 1 Sensor 2 — низкое напряжение", system: "P", causes: ["Неисправный датчик после катализатора", "Утечка выхлопа", "Обрыв проводки"], symptoms: ["Check Engine"], severity: "Средняя" },
+    "P0138": { desc: "Датчик O2 Bank 1 Sensor 2 — высокое напряжение", system: "P", causes: ["Богатая смесь", "Неисправный датчик", "Замыкание сигнального провода"], symptoms: ["Check Engine", "Расход выше нормы"], severity: "Средняя" },
+    "P0150": { desc: "Датчик O2 Bank 2 Sensor 1 — неисправность цепи", system: "P", causes: ["Лямбда-зонд Bank 2", "Обрыв проводки", "Плохой контакт"], symptoms: ["Check Engine", "Повышенный расход"], severity: "Средняя" },
+    "P0155": { desc: "Подогрев датчика O2 Bank 2 Sensor 1 — неисправность", system: "P", causes: ["Перегорел нагреватель датчика", "Предохранитель", "Обрыв проводки"], symptoms: ["Check Engine на холодную"], severity: "Средняя" },
+    "P0161": { desc: "Подогрев датчика O2 Bank 2 Sensor 2 — неисправность", system: "P", causes: ["Неисправный датчик", "Обрыв цепи подогрева"], symptoms: ["Check Engine"], severity: "Средняя" },
+    "P0181": { desc: "Датчик температуры топлива A — диапазон/производительность", system: "P", causes: ["Неисправный датчик температуры топлива", "Плохой контакт", "Проводка"], symptoms: ["Трудный запуск", "Расход топлива выше"], severity: "Средняя" },
+    "P0190": { desc: "Датчик давления в топливной рампе — неисправность цепи", system: "P", causes: ["Датчик давления топлива", "Обрыв проводки", "Проблема питания датчика"], symptoms: ["Двигатель глохнет", "Плохой запуск", "Потеря мощности"], severity: "Высокая" },
+    "P0191": { desc: "Датчик давления топлива — диапазон/производительность", system: "P", causes: ["Нестабильное давление топлива", "Засорён фильтр", "Неисправный датчик"], symptoms: ["Рывки", "Провалы", "Трудный запуск"], severity: "Высокая" },
+    "P0193": { desc: "Датчик давления топлива — высокий сигнал", system: "P", causes: ["Обрыв сигнального провода", "Неисправный датчик", "Завышенное давление"], symptoms: ["Двигатель плохо запускается", "Check Engine"], severity: "Высокая" },
+    "P0234": { desc: "Передув турбины — давление наддува выше нормы", system: "P", causes: ["Заклинил актуатор турбины", "Неисправный клапан управления наддувом", "Засорены вакуумные трубки"], symptoms: ["Аварийный режим", "Рывок и пропадание тяги", "Свист турбины"], severity: "Высокая" },
+    "P0236": { desc: "Датчик давления наддува — диапазон/производительность", system: "P", causes: ["Неисправный MAP/Boost датчик", "Утечка воздуха", "Проблема с турбиной"], symptoms: ["Потеря мощности", "Аварийный режим"], severity: "Высокая" },
+    "P0237": { desc: "Датчик давления наддува — низкий сигнал", system: "P", causes: ["Обрыв проводки", "Неисправный датчик", "Короткое на массу"], symptoms: ["Нет тяги", "Check Engine"], severity: "Высокая" },
+    "P0238": { desc: "Датчик давления наддува — высокий сигнал", system: "P", causes: ["Замыкание сигнального провода", "Неисправный датчик", "Передув"], symptoms: ["Аварийный режим", "Провалы"], severity: "Высокая" },
+    "P0243": { desc: "Клапан управления турбиной Wastegate — неисправность цепи", system: "P", causes: ["Неисправный соленоид управления наддувом", "Обрыв проводки", "Проблема вакуума"], symptoms: ["Нет тяги", "Передув/недодув", "Аварийный режим"], severity: "Высокая" },
+    "P0261": { desc: "Форсунка цилиндра 1 — низкий сигнал цепи", system: "P", causes: ["Обрыв/короткое проводки", "Неисправная форсунка", "Плохой контакт"], symptoms: ["Троение", "Пропуски", "Потеря мощности"], severity: "Высокая" },
+    "P0264": { desc: "Форсунка цилиндра 2 — низкий сигнал цепи", system: "P", causes: ["Проводка форсунки", "Неисправная форсунка", "Проблема ЭБУ"], symptoms: ["Троение", "Вибрация"], severity: "Высокая" },
+    "P0315": { desc: "Система положения коленвала — адаптация не выполнена", system: "P", causes: ["Сброшены адаптации ЭБУ", "Замена датчика коленвала", "Проблема датчика CKP"], symptoms: ["Check Engine", "Неровная работа после ремонта"], severity: "Средняя" },
+    "P0336": { desc: "Датчик положения коленвала — диапазон/производительность", system: "P", causes: ["Неисправный датчик CKP", "Загрязнение задающего диска", "Проблема проводки"], symptoms: ["Глохнет", "Плохой запуск", "Нет оборотов на сканере"], severity: "Критическая" },
+    "P0341": { desc: "Датчик положения распредвала — диапазон/производительность", system: "P", causes: ["Неисправный датчик CMP", "Нарушение фаз ГРМ", "Проблема проводки"], symptoms: ["Трудный запуск", "Потеря мощности"], severity: "Высокая" },
+    "P0353": { desc: "Катушка зажигания C — неисправность первичной цепи", system: "P", causes: ["Неисправная катушка", "Проводка", "Драйвер ЭБУ"], symptoms: ["Троение", "Пропуски зажигания"], severity: "Высокая" },
+    "P0354": { desc: "Катушка зажигания D — неисправность первичной цепи", system: "P", causes: ["Катушка зажигания", "Обрыв проводки", "Плохой контакт"], symptoms: ["Троение", "Вибрация двигателя"], severity: "Высокая" },
+    "P0355": { desc: "Катушка зажигания E — неисправность первичной цепи", system: "P", causes: ["Неисправная катушка", "Проводка", "ЭБУ"], symptoms: ["Пропуски", "Потеря тяги"], severity: "Высокая" },
+    "P0356": { desc: "Катушка зажигания F — неисправность первичной цепи", system: "P", causes: ["Неисправная катушка", "Проводка", "Плохой контакт"], symptoms: ["Троение", "Мигающий Check Engine"], severity: "Высокая" },
+    "P0365": { desc: "Датчик положения распредвала B Bank 1 — неисправность цепи", system: "P", causes: ["Датчик CMP B", "Обрыв проводки", "Нарушение фаз"], symptoms: ["Плохой запуск", "Потеря мощности"], severity: "Высокая" },
+    "P0421": { desc: "Эффективность прогрева катализатора ниже порога", system: "P", causes: ["Старый катализатор", "Неисправный датчик O2", "Пропуски зажигания"], symptoms: ["Check Engine", "Запах выхлопа"], severity: "Средняя" },
+    "P0440": { desc: "Система EVAP — общая неисправность", system: "P", causes: ["Крышка бензобака", "Клапан продувки", "Адсорбер", "Утечка шлангов"], symptoms: ["Check Engine", "Запах бензина"], severity: "Низкая" },
+    "P0441": { desc: "Система EVAP — неправильный поток продувки", system: "P", causes: ["Клапан продувки EVAP", "Засорён адсорбер", "Проблемы с вакуумом"], symptoms: ["Check Engine", "Трудный запуск после заправки"], severity: "Низкая" },
+    "P0443": { desc: "Клапан продувки EVAP — неисправность цепи", system: "P", causes: ["Неисправный клапан продувки", "Обрыв проводки", "Предохранитель"], symptoms: ["Check Engine", "Запах топлива"], severity: "Средняя" },
+    "P0449": { desc: "Клапан вентиляции EVAP — неисправность цепи", system: "P", causes: ["Клапан вентиляции адсорбера", "Проводка", "Коррозия разъёма"], symptoms: ["Check Engine", "Проблемы при заправке"], severity: "Средняя" },
+    "P0456": { desc: "Очень маленькая утечка EVAP", system: "P", causes: ["Крышка бензобака", "Микротрещина шланга", "Клапан EVAP"], symptoms: ["Обычно только Check Engine"], severity: "Низкая" },
+    "P0460": { desc: "Датчик уровня топлива — неисправность цепи", system: "P", causes: ["Датчик в баке", "Поплавок", "Проводка"], symptoms: ["Неверный уровень топлива", "Стрелка скачет"], severity: "Низкая" },
+    "P0463": { desc: "Датчик уровня топлива — высокий сигнал", system: "P", causes: ["Обрыв датчика уровня", "Неисправный поплавок", "Проводка"], symptoms: ["Бак показывает полный", "Неверный запас хода"], severity: "Низкая" },
+    "P0496": { desc: "EVAP — продувка при неподходящих условиях", system: "P", causes: ["Клапан продувки завис открыт", "Неисправный адсорбер", "Подсос паров топлива"], symptoms: ["Трудный запуск после заправки", "Плавают обороты"], severity: "Средняя" },
+    "P0520": { desc: "Датчик давления масла — неисправность цепи", system: "P", causes: ["Неисправный датчик давления масла", "Проводка", "Низкое давление масла"], symptoms: ["Горит лампа масла", "Check Engine"], severity: "Высокая" },
+    "P0521": { desc: "Датчик давления масла — диапазон/производительность", system: "P", causes: ["Датчик давления масла", "Загрязнение масла", "Реально низкое давление"], symptoms: ["Лампа масла", "Шум двигателя"], severity: "Высокая" },
+    "P0522": { desc: "Датчик давления масла — низкий сигнал", system: "P", causes: ["Низкое давление масла", "Неисправный датчик", "Замыкание на массу"], symptoms: ["Лампа давления масла", "Риск повреждения двигателя"], severity: "Критическая" },
+    "P0523": { desc: "Датчик давления масла — высокий сигнал", system: "P", causes: ["Обрыв провода", "Неисправный датчик", "Скачок напряжения"], symptoms: ["Лампа масла", "Check Engine"], severity: "Высокая" },
+    "P0530": { desc: "Датчик давления кондиционера — неисправность цепи", system: "P", causes: ["Датчик давления A/C", "Мало фреона", "Проводка"], symptoms: ["Не включается кондиционер", "Вентилятор работает странно"], severity: "Низкая" },
+    "P0571": { desc: "Выключатель стоп-сигналов / круиз-контроль — неисправность", system: "P", causes: ["Лягушка тормоза", "Плохой контакт", "Проводка"], symptoms: ["Не работает круиз", "Не горят стоп-сигналы", "Ошибка ESP"], severity: "Средняя" },
+    "P0615": { desc: "Реле стартера — неисправность цепи", system: "P", causes: ["Реле стартера", "Обрыв проводки", "Проблема замка зажигания"], symptoms: ["Стартер не крутит", "Щелчки при запуске"], severity: "Критическая" },
+    "P0641": { desc: "Опорное напряжение датчиков A — обрыв цепи", system: "P", causes: ["Короткое в одном из датчиков", "Проводка 5V", "Неисправность ЭБУ"], symptoms: ["Много ошибок датчиков", "Аварийный режим"], severity: "Критическая" },
+    "P0650": { desc: "Лампа Check Engine — неисправность цепи", system: "P", causes: ["Перегорела лампа", "Проводка приборной панели", "Неисправность панели"], symptoms: ["Не горит Check Engine при включении зажигания"], severity: "Средняя" },
+    "P0685": { desc: "Главное реле питания ЭБУ — обрыв цепи", system: "P", causes: ["Главное реле", "Питание ЭБУ", "Плохая масса"], symptoms: ["Двигатель не заводится", "Нет связи с ЭБУ"], severity: "Критическая" },
+    "P0691": { desc: "Вентилятор охлаждения 1 — низкий сигнал цепи", system: "P", causes: ["Реле вентилятора", "Обрыв проводки", "Неисправный вентилятор"], symptoms: ["Перегрев в пробках", "Вентилятор не включается"], severity: "Высокая" },
+    "P0692": { desc: "Вентилятор охлаждения 1 — высокий сигнал цепи", system: "P", causes: ["Замыкание проводки", "Реле вентилятора залипло", "Проблема блока управления"], symptoms: ["Вентилятор работает постоянно", "Check Engine"], severity: "Средняя" },
+    "P0750": { desc: "Соленоид переключения A АКПП — неисправность", system: "P", causes: ["Соленоид АКПП", "Грязное масло", "Проводка гидроблока"], symptoms: ["Рывки АКПП", "Аварийный режим", "Не переключает передачи"], severity: "Высокая" },
+    "P0753": { desc: "Соленоид переключения A АКПП — электрическая неисправность", system: "P", causes: ["Обрыв соленоида", "Проводка АКПП", "Блок TCM"], symptoms: ["Жёсткие переключения", "Аварийный режим"], severity: "Высокая" },
+    "P0755": { desc: "Соленоид переключения B АКПП — неисправность", system: "P", causes: ["Соленоид B", "Гидроблок", "Масло АКПП"], symptoms: ["Толчки", "Нет некоторых передач"], severity: "Высокая" },
+    "P0758": { desc: "Соленоид переключения B АКПП — электрическая неисправность", system: "P", causes: ["Обрыв проводки", "Неисправный соленоид", "TCM"], symptoms: ["Аварийный режим", "Рывки"], severity: "Высокая" },
+    "P0760": { desc: "Соленоид переключения C АКПП — неисправность", system: "P", causes: ["Соленоид C", "Гидроблок", "Низкий уровень масла"], symptoms: ["Плохие переключения", "Пробуксовка"], severity: "Высокая" },
+    "P0765": { desc: "Соленоид переключения D АКПП — неисправность", system: "P", causes: ["Соленоид D", "Грязное масло АКПП", "Проводка"], symptoms: ["Толчки", "Аварийный режим"], severity: "Высокая" },
+    "P0776": { desc: "Соленоид давления B АКПП — производительность/залипание", system: "P", causes: ["Соленоид давления", "Гидроблок загрязнён", "Износ АКПП"], symptoms: ["Пинки АКПП", "Пробуксовка", "Аварийный режим"], severity: "Высокая" },
+    "P0780": { desc: "Ошибка переключения передач АКПП", system: "P", causes: ["Соленоиды АКПП", "Гидроблок", "Низкий уровень масла", "Износ фрикционов"], symptoms: ["Пробуксовка", "Пинки", "Не переключает"], severity: "Высокая" },
+    "P0841": { desc: "Датчик давления трансмиссионной жидкости — диапазон", system: "P", causes: ["Датчик давления АКПП", "Низкий уровень масла", "Проблема гидроблока"], symptoms: ["Аварийный режим", "Толчки"], severity: "Высокая" },
+    "P0868": { desc: "Низкое давление трансмиссионной жидкости", system: "P", causes: ["Низкий уровень масла АКПП", "Износ насоса", "Утечка", "Гидроблок"], symptoms: ["Пробуксовка", "Пинки", "Перегрев АКПП"], severity: "Критическая" },
+    "P0894": { desc: "Пробуксовка компонентов трансмиссии", system: "P", causes: ["Износ фрикционов", "Низкое давление масла", "Неисправность гидроблока"], symptoms: ["Обороты растут, машина плохо едет", "Запах гари", "Аварийный режим"], severity: "Критическая" },
+    "P0965": { desc: "Соленоид давления B АКПП — диапазон/производительность", system: "P", causes: ["Соленоид давления", "Проводка", "Грязное масло"], symptoms: ["Пинки АКПП", "Аварийный режим"], severity: "Высокая" },
+    "P0973": { desc: "Соленоид переключения A АКПП — низкий сигнал", system: "P", causes: ["Короткое на массу", "Соленоид", "Проводка"], symptoms: ["Не переключает передачи", "Толчки"], severity: "Высокая" },
+    "P0980": { desc: "Соленоид переключения C АКПП — цепь управления высокая", system: "P", causes: ["Обрыв цепи", "Неисправный соленоид", "TCM"], symptoms: ["Аварийный режим АКПП"], severity: "Высокая" },
+    "P1101": { desc: "Датчик MAF — сигнал вне ожидаемого диапазона", system: "P", causes: ["Загрязнён MAF", "Подсос воздуха", "Засорён воздушный фильтр"], symptoms: ["Плавающие обороты", "Провалы", "Расход выше нормы"], severity: "Средняя" },
+    "P1120": { desc: "Датчик положения педали газа — неисправность", system: "P", causes: ["Датчик педали", "Проводка", "Плохой контакт"], symptoms: ["Аварийный режим", "Не реагирует на газ"], severity: "Высокая" },
+    "P1121": { desc: "Датчик положения дросселя/педали — несоответствие", system: "P", causes: ["Дроссельная заслонка", "Педаль газа", "Адаптация"], symptoms: ["Аварийный режим", "Обороты ограничены"], severity: "Высокая" },
+    "P1155": { desc: "Подогрев датчика A/F Bank 2 Sensor 1 (часто Toyota)", system: "P", causes: ["Неисправный A/F датчик", "Предохранитель", "Проводка"], symptoms: ["Check Engine", "Повышенный расход"], severity: "Средняя" },
+    "P1251": { desc: "Неисправность системы управления турбиной (часто Toyota diesel)", system: "P", causes: ["Клапан управления турбиной", "Вакуумные трубки", "Актуатор турбины"], symptoms: ["Нет тяги", "Аварийный режим"], severity: "Высокая" },
+    "P1300": { desc: "Система зажигания — неисправность цепи воспламенителя", system: "P", causes: ["Катушка/модуль зажигания", "Проводка", "ЭБУ"], symptoms: ["Не заводится", "Троит", "Нет искры"], severity: "Критическая" },
+    "P1349": { desc: "Система VVT — неисправность (часто Toyota)", system: "P", causes: ["Клапан VVT-i", "Сетка клапана забита", "Грязное масло", "Фазорегулятор"], symptoms: ["Плохой разгон", "Неровный холостой ход"], severity: "Высокая" },
+    "P1602": { desc: "Пропадание питания ЭБУ / низкое напряжение (часто VAG)", system: "P", causes: ["Снимали аккумулятор", "Плохие клеммы", "Просадка напряжения", "Питание ЭБУ"], symptoms: ["Ошибки после разряда АКБ", "Трудный запуск"], severity: "Средняя" },
+    "P1604": { desc: "Ошибка запуска двигателя", system: "P", causes: ["Слабый АКБ", "Датчик коленвала", "Топливо", "Иммобилайзер"], symptoms: ["Долго крутит стартер", "Не заводится"], severity: "Высокая" },
+    "P2002": { desc: "Эффективность сажевого фильтра DPF ниже порога", system: "P", causes: ["Забит DPF", "Не проходит регенерация", "Датчик дифференциального давления"], symptoms: ["Нет тяги", "Расход выше", "Аварийный режим"], severity: "Высокая" },
+    "P2004": { desc: "Заслонка впускного коллектора — застряла открытой", system: "P", causes: ["Механизм вихревых заслонок", "Актуатор", "Нагар во впуске"], symptoms: ["Потеря тяги снизу", "Check Engine"], severity: "Средняя" },
+    "P2006": { desc: "Заслонка впускного коллектора — застряла закрытой", system: "P", causes: ["Заклинили заслонки", "Неисправный привод", "Нагар"], symptoms: ["Плохой разгон", "Дымность"], severity: "Средняя" },
+    "P2015": { desc: "Датчик положения заслонок впускного коллектора — диапазон", system: "P", causes: ["Износ механизма заслонок", "Датчик положения", "Нагар"], symptoms: ["Check Engine", "Потеря мощности"], severity: "Средняя" },
+    "P2017": { desc: "Датчик положения заслонок впускного коллектора — высокий сигнал", system: "P", causes: ["Обрыв цепи", "Датчик положения", "Привод заслонок"], symptoms: ["Check Engine", "Неровная тяга"], severity: "Средняя" },
+    "P2096": { desc: "После катализатора смесь слишком бедная (Bank 1)", system: "P", causes: ["Подсос воздуха", "Утечка выхлопа", "Лямбда-зонд", "Топливная система"], symptoms: ["Check Engine", "Провалы", "Расход выше"], severity: "Средняя" },
+    "P2101": { desc: "Электронная дроссельная заслонка — диапазон/производительность", system: "P", causes: ["Загрязнение дросселя", "Неисправный привод", "Проводка", "Адаптация"], symptoms: ["Аварийный режим", "Обороты ограничены"], severity: "Высокая" },
+    "P2119": { desc: "Дроссельная заслонка — ошибка положения закрытия", system: "P", causes: ["Грязная заслонка", "Неисправный привод", "Нужна адаптация"], symptoms: ["Плавают обороты", "Не заводится без газа", "Аварийный режим"], severity: "Высокая" },
+    "P2122": { desc: "Датчик положения педали газа D — низкий сигнал", system: "P", causes: ["Датчик педали", "Короткое на массу", "Проводка"], symptoms: ["Нет тяги", "Аварийный режим"], severity: "Высокая" },
+    "P2127": { desc: "Датчик положения педали газа E — низкий сигнал", system: "P", causes: ["Датчик педали", "Проводка", "Плохой контакт"], symptoms: ["Ограничение оборотов", "Не реагирует на газ"], severity: "Высокая" },
+    "P2135": { desc: "Несоответствие датчиков положения дросселя/педали", system: "P", causes: ["Дроссельная заслонка", "Педаль газа", "Проводка", "Адаптация"], symptoms: ["Аварийный режим", "Потеря реакции на газ"], severity: "Высокая" },
+    "P2177": { desc: "Слишком бедная смесь вне холостого хода (Bank 1)", system: "P", causes: ["Подсос воздуха", "MAF", "Давление топлива", "Форсунки"], symptoms: ["Провалы при разгоне", "Потеря мощности"], severity: "Высокая" },
+    "P2187": { desc: "Слишком бедная смесь на холостом ходу (Bank 1)", system: "P", causes: ["Подсос воздуха", "Клапан PCV", "MAF", "Форсунки"], symptoms: ["Плавают обороты", "Глохнет на холостых"], severity: "Высокая" },
+    "P2195": { desc: "Датчик O2/A/F завис на бедной смеси (Bank 1 Sensor 1)", system: "P", causes: ["Подсос воздуха", "Неисправный A/F датчик", "Низкое давление топлива"], symptoms: ["Check Engine", "Провалы"], severity: "Средняя" },
+    "P2196": { desc: "Датчик O2/A/F завис на богатой смеси (Bank 1 Sensor 1)", system: "P", causes: ["Форсунки переливают", "Датчик A/F", "Высокое давление топлива"], symptoms: ["Запах бензина", "Расход выше"], severity: "Средняя" },
+    "P2263": { desc: "Система турбонаддува — производительность", system: "P", causes: ["Утечка наддува", "Турбина", "Актуатор", "Клапан управления"], symptoms: ["Нет тяги", "Аварийный режим", "Свист"], severity: "Высокая" },
+    "P2270": { desc: "Датчик O2 Bank 1 Sensor 2 завис на бедной смеси", system: "P", causes: ["Неисправный задний лямбда-зонд", "Утечка выхлопа", "Проводка"], symptoms: ["Check Engine"], severity: "Средняя" },
+    "P242F": { desc: "Сажевый фильтр DPF — превышено накопление золы", system: "P", causes: ["DPF забит золой", "Короткие поездки", "Большой расход масла"], symptoms: ["Нет тяги", "Регенерация не помогает", "Аварийный режим"], severity: "Высокая" },
+    "P2452": { desc: "Датчик дифференциального давления DPF — неисправность цепи", system: "P", causes: ["Датчик давления DPF", "Трубки забиты сажей", "Проводка"], symptoms: ["Ошибка DPF", "Регенерация не запускается"], severity: "Высокая" },
+    "P2453": { desc: "Датчик дифференциального давления DPF — диапазон/производительность", system: "P", causes: ["Забиты трубки датчика", "Неисправный датчик", "DPF забит"], symptoms: ["Нет тяги", "Повышенный расход"], severity: "Высокая" },
+    "P2463": { desc: "DPF — чрезмерное накопление сажи", system: "P", causes: ["Не проходит регенерация", "Датчик давления DPF", "Короткие поездки", "Неисправные форсунки"], symptoms: ["Аварийный режим", "Дымность", "Большой расход"], severity: "Высокая" },
+    "P0A80": { desc: "Гибридная батарея — требуется замена аккумуляторного блока", system: "P", causes: ["Износ ячеек HV-батареи", "Разбалансировка модулей", "Проблема датчиков батареи"], symptoms: ["Горит ошибка гибридной системы", "Машина плохо едет на электротяге", "Повышенный расход"], severity: "Высокая" },
+    "C0110": { desc: "Насос ABS — неисправность цепи", system: "C", causes: ["Насос ABS", "Реле/предохранитель", "Проводка блока ABS"], symptoms: ["Горит ABS", "ABS не работает"], severity: "Высокая" },
+    "C0121": { desc: "Реле клапанов ABS — неисправность", system: "C", causes: ["Реле ABS", "Гидроблок", "Питание блока ABS"], symptoms: ["Горит ABS/ESP", "Ошибка тормозной системы"], severity: "Высокая" },
+    "C0131": { desc: "Датчик давления тормозной системы — неисправность", system: "C", causes: ["Датчик давления", "Блок ABS", "Проводка"], symptoms: ["Горит ABS/ESP", "Система стабилизации отключена"], severity: "Высокая" },
+    "C0200": { desc: "Датчик скорости правого переднего колеса — цепь", system: "C", causes: ["Датчик ABS", "Проводка", "Магнитное кольцо"], symptoms: ["Горит ABS", "ESP отключена"], severity: "Высокая" },
+    "C0210": { desc: "Датчик скорости правого заднего колеса — цепь", system: "C", causes: ["Датчик ABS", "Разъём", "Ступичный подшипник с магнитным кольцом"], symptoms: ["ABS не работает", "Ошибка стабилизации"], severity: "Средняя" },
+    "C0215": { desc: "Датчик скорости левого заднего колеса — цепь", system: "C", causes: ["Датчик ABS", "Проводка", "Коррозия разъёма"], symptoms: ["Горит ABS/ESP"], severity: "Средняя" },
+    "C0221": { desc: "Датчик скорости левого переднего колеса — цепь", system: "C", causes: ["Датчик ABS", "Проводка", "Повреждение кольца"], symptoms: ["Горит ABS", "Срабатывает ABS на малой скорости"], severity: "Средняя" },
+    "C0245": { desc: "Датчик скорости колеса — частотная ошибка", system: "C", causes: ["Загрязнение кольца ABS", "Неверный зазор", "Датчик"], symptoms: ["ABS срабатывает без причины", "ESP отключается"], severity: "Средняя" },
+    "C0265": { desc: "Реле электронного тормозного управления — неисправность", system: "C", causes: ["Блок ABS", "Плохая пайка реле", "Питание блока"], symptoms: ["Горит ABS", "Ошибка тормозной системы"], severity: "Высокая" },
+    "C0561": { desc: "Система стабилизации отключена из-за ошибки другого блока", system: "C", causes: ["Ошибка двигателя", "Ошибка АКПП", "ABS получил некорректные данные"], symptoms: ["Горит ESP/Traction", "Стабилизация отключена"], severity: "Средняя" },
+    "C1234": { desc: "Датчик скорости колеса — неисправность сигнала", system: "C", causes: ["Датчик ABS", "Проводка", "Магнитное кольцо"], symptoms: ["Горит ABS", "Не работает ESP"], severity: "Средняя" },
+    "C1241": { desc: "Низкое или высокое напряжение питания ABS", system: "C", causes: ["Слабый аккумулятор", "Генератор", "Плохая масса"], symptoms: ["ABS/ESP горит после запуска", "Ошибки напряжения"], severity: "Средняя" },
+    "C1252": { desc: "Насос ABS/ESP — мотор работает слишком долго", system: "C", causes: ["Гидроаккумулятор", "Насос ABS", "Утечка давления"], symptoms: ["Горит ABS", "Шум насоса"], severity: "Высокая" },
+    "C1256": { desc: "Низкое давление в гидроаккумуляторе тормозной системы", system: "C", causes: ["Гидроаккумулятор", "Насос ABS", "Утечка тормозной жидкости"], symptoms: ["Писк тормозной системы", "Горит ABS/VSC"], severity: "Критическая" },
+    "C1288": { desc: "Датчик давления тормозной жидкости — неисправность", system: "C", causes: ["Датчик давления", "Блок ABS", "Проводка"], symptoms: ["ESP отключена", "Горит ABS"], severity: "Высокая" },
+    "C1290": { desc: "Датчик угла поворота руля — неисправность", system: "C", causes: ["Сбита калибровка", "Неисправный датчик руля", "Проводка"], symptoms: ["Горит ESP", "Стабилизация работает некорректно"], severity: "Средняя" },
+    "C1336": { desc: "Не выполнена калибровка датчика замедления/ускорения", system: "C", causes: ["Сброшены адаптации", "Замена блока ABS", "Датчик ускорения"], symptoms: ["Горит VSC/ESP", "Нужна калибровка"], severity: "Средняя" },
+    "C1401": { desc: "Датчик скорости переднего колеса — обрыв/короткое", system: "C", causes: ["Датчик ABS", "Разъём", "Проводка"], symptoms: ["ABS не работает", "ESP отключена"], severity: "Средняя" },
+    "C1405": { desc: "Датчик скорости заднего колеса — обрыв/короткое", system: "C", causes: ["Датчик ABS", "Проводка", "Ступица"], symptoms: ["Горит ABS", "Стабилизация отключена"], severity: "Средняя" },
+    "B0010": { desc: "Подушка безопасности водителя — цепь воспламенителя", system: "B", causes: ["Шлейф руля", "Разъём SRS", "Подушка безопасности"], symptoms: ["Горит Airbag", "SRS может не сработать"], severity: "Критическая" },
+    "B0012": { desc: "Подушка безопасности пассажира — цепь воспламенителя", system: "B", causes: ["Разъём подушки", "Проводка SRS", "Блок SRS"], symptoms: ["Горит Airbag", "Подушка пассажира отключена"], severity: "Критическая" },
+    "B0013": { desc: "Боковая подушка безопасности — цепь", system: "B", causes: ["Разъём под сиденьем", "Боковая подушка", "Проводка"], symptoms: ["Горит SRS/Airbag"], severity: "Критическая" },
+    "B0019": { desc: "Преднатяжитель ремня безопасности — цепь", system: "B", causes: ["Разъём преднатяжителя", "Проводка", "Преднатяжитель"], symptoms: ["Горит Airbag", "Ремень может не сработать"], severity: "Критическая" },
+    "B0051": { desc: "Датчик ремня безопасности — неисправность", system: "B", causes: ["Замок ремня", "Проводка под сиденьем", "Блок SRS"], symptoms: ["Горит индикатор ремня", "Ошибка Airbag"], severity: "Средняя" },
+    "B0100": { desc: "Датчик фронтального удара — неисправность", system: "B", causes: ["Датчик удара", "Проводка", "Коррозия разъёма"], symptoms: ["Горит Airbag", "SRS отключена"], severity: "Критическая" },
+    "B1000": { desc: "Блок кузовной электроники — внутренняя ошибка", system: "B", causes: ["Сбой BCM", "Влага в блоке", "Просадка напряжения"], symptoms: ["Не работает свет/ЦЗ", "Ошибки кузовной электроники"], severity: "Высокая" },
+    "B1015": { desc: "Неверная конфигурация блока SRS/BCM", system: "B", causes: ["Замена блока без кодировки", "Сбой памяти", "Неверная комплектация"], symptoms: ["Горит Airbag", "Часть функций недоступна"], severity: "Высокая" },
+    "B1023": { desc: "Датчик освещённости/дождя — неисправность", system: "B", causes: ["Датчик на стекле", "Проводка", "Некорректная установка стекла"], symptoms: ["Не работает авто-свет", "Не работают авто-дворники"], severity: "Низкая" },
+    "B1049": { desc: "Привод заслонки отопителя — неисправность", system: "B", causes: ["Моторедуктор заслонки", "Калибровка климата", "Проводка"], symptoms: ["Дует не туда", "Щелчки в панели", "Не регулируется температура"], severity: "Средняя" },
+    "B1325": { desc: "Низкое напряжение питания кузовного блока", system: "B", causes: ["Слабый АКБ", "Генератор", "Плохая масса"], symptoms: ["Ошибки по многим блокам", "Мигает свет"], severity: "Средняя" },
+    "B1342": { desc: "Блок управления кузовом/ABS — внутренняя неисправность", system: "B", causes: ["Неисправный блок", "Влага", "Сбой памяти"], symptoms: ["Постоянная ошибка блока", "Функции не работают"], severity: "Высокая" },
+    "B1441": { desc: "Датчик солнечной активности климат-контроля — неисправность", system: "B", causes: ["Датчик солнца", "Проводка", "Блок климата"], symptoms: ["Климат работает некорректно"], severity: "Низкая" },
+    "B1600": { desc: "Иммобилайзер — ключ не распознан", system: "B", causes: ["Чип ключа", "Антенна иммобилайзера", "Сбой синхронизации"], symptoms: ["Двигатель не заводится", "Мигает иммобилайзер"], severity: "Критическая" },
+    "B1800": { desc: "Цепь подушки безопасности водителя — обрыв", system: "B", causes: ["Шлейф руля", "Разъём подушки", "Проводка"], symptoms: ["Горит Airbag"], severity: "Критическая" },
+    "B1811": { desc: "Цепь подушки безопасности водителя — короткое", system: "B", causes: ["Шлейф руля", "Повреждение проводки", "Блок SRS"], symptoms: ["Горит Airbag"], severity: "Критическая" },
+    "B1821": { desc: "Цепь подушки безопасности пассажира — обрыв", system: "B", causes: ["Разъём пассажирской подушки", "Проводка", "Блок SRS"], symptoms: ["Горит Airbag"], severity: "Критическая" },
+    "B1900": { desc: "Подушка безопасности — цепь датчика/воспламенителя", system: "B", causes: ["Разъёмы SRS", "Шлейф", "Проводка", "Блок SRS"], symptoms: ["Горит Airbag", "SRS отключена"], severity: "Критическая" },
+    "U0001": { desc: "Высокоскоростная CAN-шина — неисправность", system: "U", causes: ["Короткое в CAN-шине", "Обрыв проводов CAN", "Неисправный блок в сети"], symptoms: ["Много ошибок связи", "Авто не заводится", "Нет связи со сканером"], severity: "Критическая" },
+    "U0073": { desc: "Шина связи блока управления отключена", system: "U", causes: ["Замыкание CAN", "Неисправный модуль", "Плохое питание блока"], symptoms: ["Ошибки сразу в нескольких блоках", "Аварийный режим"], severity: "Критическая" },
+    "U0102": { desc: "Потеря связи с блоком раздаточной коробки", system: "U", causes: ["Проводка CAN", "Блок раздатки", "Питание блока"], symptoms: ["Не работает полный привод", "Горит 4WD"], severity: "Высокая" },
+    "U0103": { desc: "Потеря связи с блоком выбора передач", system: "U", causes: ["Селектор АКПП", "CAN-шина", "Питание модуля"], symptoms: ["Не видит положение селектора", "АКПП в аварии"], severity: "Высокая" },
+    "U0109": { desc: "Потеря связи с блоком топливного насоса", system: "U", causes: ["Блок управления насосом", "Проводка", "Питание"], symptoms: ["Двигатель не заводится", "Нет давления топлива"], severity: "Критическая" },
+    "U0114": { desc: "Потеря связи с блоком управления сцеплением/4WD", system: "U", causes: ["CAN-шина", "Блок полного привода", "Питание/масса"], symptoms: ["Не работает полный привод", "Ошибка трансмиссии"], severity: "Высокая" },
+    "U0126": { desc: "Потеря связи с датчиком угла поворота руля", system: "U", causes: ["Датчик угла руля", "CAN-шина", "Калибровка"], symptoms: ["Горит ESP", "Стабилизация отключена"], severity: "Средняя" },
+    "U0131": { desc: "Потеря связи с блоком электроусилителя руля", system: "U", causes: ["Блок ЭУР", "Питание ЭУР", "CAN-шина"], symptoms: ["Тяжёлый руль", "Горит ошибка усилителя"], severity: "Высокая" },
+    "U0151": { desc: "Потеря связи с блоком SRS/Airbag", system: "U", causes: ["Блок SRS", "Питание блока", "CAN-шина"], symptoms: ["Горит Airbag", "Нет связи с SRS"], severity: "Критическая" },
+    "U0164": { desc: "Потеря связи с блоком климат-контроля", system: "U", causes: ["Блок климата", "Проводка CAN/LIN", "Питание"], symptoms: ["Не работает климат", "Нет индикации"], severity: "Средняя" },
+    "U0167": { desc: "Потеря связи с модулем иммобилайзера", system: "U", causes: ["Иммобилайзер", "Антенна ключа", "Проводка связи"], symptoms: ["Не заводится", "Ключ не распознан"], severity: "Критическая" },
+    "U0184": { desc: "Потеря связи с магнитолой/медиа-блоком", system: "U", causes: ["Магнитола", "CAN-шина", "Питание"], symptoms: ["Не работает мультимедиа", "Ошибки в BCM"], severity: "Низкая" },
+    "U0235": { desc: "Потеря связи с блоком круиз-контроля/адаптивного радара", system: "U", causes: ["Радар", "Проводка", "Питание", "CAN-шина"], symptoms: ["Не работает круиз", "Ошибка ассистентов"], severity: "Средняя" },
+    "U0415": { desc: "Некорректные данные от блока ABS", system: "U", causes: ["Ошибка ABS", "Датчик скорости колеса", "CAN-помехи"], symptoms: ["Горит ESP/ABS", "Аварийный режим"], severity: "Высокая" },
+    "U0416": { desc: "Некорректные данные от блока стабилизации", system: "U", causes: ["Ошибка ESP", "Датчик угла руля", "Датчик ускорения"], symptoms: ["ESP отключена", "Ошибка помощи на подъёме"], severity: "Средняя" },
+    "U0422": { desc: "Некорректные данные от блока кузовной электроники", system: "U", causes: ["Сбой BCM", "Неверная кодировка", "CAN-помехи"], symptoms: ["Сбои света/замков", "Ошибки связи"], severity: "Средняя" },
+    "U1000": { desc: "Ошибка CAN-связи (часто Nissan/Infiniti)", system: "U", causes: ["Плохая масса", "Коррозия разъёмов", "Проблема CAN-шины"], symptoms: ["Много ошибок", "Периодические отказы электроники"], severity: "Высокая" },
+    "U1001": { desc: "CAN-связь — некорректный сигнал", system: "U", causes: ["CAN-шина", "Неисправный модуль", "Питание блока"], symptoms: ["Ошибки связи", "Плавающие неисправности"], severity: "Высокая" },
+    "U1900": { desc: "Ошибка CAN-связи между блоками (часто Ford/Mazda)", system: "U", causes: ["Разъёмы CAN", "Плохая масса", "Неисправный блок"], symptoms: ["Ошибки ABS/приборки/двигателя", "Периодические сбои"], severity: "Высокая" }
+};
+
+// Merge databases
+Object.assign(CODE_DB, EXTRA_CODES, POPULAR_CODES);
+
+// ── DOM Elements ──
+const codeInput = document.getElementById('codeInput');
+const searchBtn = document.getElementById('searchBtn');
+const resultCard = document.getElementById('resultCard');
+const resultContent = document.getElementById('resultContent');
+const commonCodesEl = document.getElementById('commonCodes');
+const hamburger = document.getElementById('hamburger');
+const nav = document.getElementById('nav');
+const backToTop = document.getElementById('backToTop');
+
+// ── Lookup Function ──
+function lookupCode(raw) {
+    let code = raw.trim().toUpperCase().replace(/\s/g, '');
+    // Normalize: support regular and hex-style DTCs like P0300 and P0A80.
+    if (code.length > 0 && !code.match(/^[PCBU][0-3A-F][0-9A-F]{3}$/)) {
+        // Try to auto-correct common mistakes
+        if (code.match(/^[PCBU][0-9A-F]{3}$/)) {
+            code = code[0] + '0' + code.slice(1); // P300 -> P0300
+        }
+    }
+    return code;
+}
+
+function showResult(code) {
+    const entry = CODE_DB[code];
+    if (!entry) {
+        resultContent.innerHTML = `
+            <div class="not-found">
+                <div class="icon">🔍</div>
+                <h3 style="color:#fff;margin:0 0 8px;">Код <span style="color:var(--accent)">${code}</span> не найден в базе</h3>
+                <p>Возможно, это специфический код конкретного производителя (P1xxx, B1xxx и т.д.).</p>
+                <p style="margin-top:12px;">Позвоните мне — считаю код дилерским сканером Launch и точно определю причину.</p>
+                <a href="tel:+79524084043" class="btn-outline" style="display:inline-block;text-decoration:none;margin-top:12px;">📞 Позвонить: +7 (952) 408-40-43</a>
+            </div>`;
+        resultCard.classList.add('show');
+        resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        return;
+    }
+
+    const systemClass = `system-${entry.system}`;
+    const systemNames = { P: 'Двигатель / КПП (Powertrain)', C: 'Шасси (Chassis)', B: 'Кузов (Body)', U: 'Сеть / Связь (Network)' };
+    const severityColors = { 'Низкая': 'var(--green)', 'Средняя': 'var(--accent)', 'Высокая': 'var(--accent2)', 'Критическая': 'var(--red)' };
+
+    resultContent.innerHTML = `
+        <p class="result-code">${code}</p>
+        <span class="result-system ${systemClass}">${systemNames[entry.system] || entry.system}</span>
+        <h3 style="color:#fff;font-size:1.3rem;margin:4px 0 16px;">${entry.desc}</h3>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+            <span style="padding:6px 12px;border-radius:20px;font-size:0.8rem;font-weight:600;background:rgba(255,255,255,0.05);color:${severityColors[entry.severity] || 'var(--text)'};">
+                ⚡ Серьёзность: ${entry.severity}
+            </span>
+        </div>
+
+        <div class="result-section">
+            <h4>🔧 Возможные причины</h4>
+            <ul>${entry.causes.map(c => `<li>${c}</li>`).join('')}</ul>
+        </div>
+        <div class="result-section">
+            <h4>⚠️ Симптомы</h4>
+            <ul>${entry.symptoms.map(s => `<li>${s}</li>`).join('')}</ul>
+        </div>
+
+        <div class="result-cta">
+            <p><strong>⚡ Нужна диагностика в Челябинске?</strong></p>
+            <p style="font-size:0.9rem;">Считаю ошибки дилерским сканером Launch, найду реальную причину, а не просто сотру код. Цена диагностики — от 1 500 ₽.</p>
+            <a href="tel:+79524084043">📞 +7 (952) 408-40-43</a>
+        </div>
+    `;
+    resultCard.classList.add('show');
+    resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function handleSearch() {
+    const raw = codeInput.value;
+    if (!raw.trim()) return;
+    const code = lookupCode(raw);
+    showResult(code);
+}
+
+// ── Event Listeners ──
+searchBtn.addEventListener('click', handleSearch);
+codeInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') handleSearch();
+});
+
+// Quick chips
+document.querySelectorAll('.code-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+        const code = chip.dataset.code;
+        codeInput.value = code;
+        showResult(code);
+    });
+});
+
+// ── Render Common Codes ──
+const commonList = [
+    'P0300','P0420','P0171','P0172','P0011','P0016','P0087','P0100',
+    'P0101','P0106','P0118','P0120','P0122','P0130','P0133','P0135',
+    'P0141','P0191','P0217','P0234','P0299','P0335','P0340','P0401',
+    'P0440','P0442','P0455','P0456','P0480','P0500','P0562','P0700',
+    'P0740','P0750','P0868','P1101','P1602','P2002','P2015','P2135','P0A80',
+    'C0035','C0040','C0110','C1241','B0028','B1600','U0100','U0101',
+    'U0121','U0126','U0151','U1000'
+];
+commonList.forEach(code => {
+    const entry = CODE_DB[code];
+    if (!entry) return;
+    const card = document.createElement('div');
+    card.className = 'code-card';
+    card.innerHTML = `
+        <div class="code-card-code">${code}</div>
+        <div class="code-card-text">
+            <h4>${entry.desc}</h4>
+            <p>${entry.causes[0]}</p>
+        </div>
+    `;
+    card.addEventListener('click', () => {
+        codeInput.value = code;
+        showResult(code);
+    });
+    commonCodesEl.appendChild(card);
+});
+
+// ── Mobile Menu ──
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    nav.classList.toggle('open');
+});
+// Close menu on link click
+nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        nav.classList.remove('open');
+    });
+});
+
+// ── Back to Top ──
+window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('show', window.scrollY > 400);
+});
+backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ── Auto-focus input on load ──
+codeInput.focus();
+
+// ── Handle URL params (allow direct links like ?code=P0300) ──
+const urlParams = new URLSearchParams(window.location.search);
+const urlCode = urlParams.get('code');
+if (urlCode) {
+    const code = lookupCode(urlCode);
+    codeInput.value = code;
+    showResult(code);
+}
+</script>
+
+</body>
+</html>
