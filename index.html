@@ -1666,7 +1666,7 @@
     <div class="container">
         <p style="margin-bottom: 8px;">⚡ <strong>EL<span style="color: var(--yellow);">AFTO</span></strong> — Автоэлектрик в Челябинске</p>
         <p>Челябинск, Автодорожная 12А/2 · 8-952-408-40-43 · ПН-ПТ 10:00–18:00</p>
-        <p style="margin-top: 12px; font-size: 12px; color: #555;">© 2026 Все права защищены. Автоэлектрик Челябинск — диагностика и ремонт электрики авто.</p>
+        <p style="margin-top: 12px; font-size: 12px; color: #555;">© 2026 Все права защищены. Автоэлектрик Челябинск — диагностика и ремонт электрики авто. <p style="margin-top: 12px; font-size: 12px; color: #555;">Самозанятый Федотов Д.Е. | ИНН 740706581626 | <a href="https://diagnost74.ru/privacy" target="_blank">Политика конфеденциальности</a></p></p>
     </div>
 </footer>
 
@@ -1747,6 +1747,198 @@
         });
     });
 </script>
+
+<!-- Уведомление о Cookie -->
+<style>
+  .cookie-banner {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #1a1a2e;
+    color: #ffffff;
+    padding: 15px 20px;
+    z-index: 99999;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    animation: slideUp 0.5s ease-out;
+  }
+
+  .cookie-banner.show {
+    display: flex;
+  }
+
+  .cookie-banner p {
+    margin: 0;
+    flex: 1;
+    min-width: 250px;
+  }
+
+  .cookie-banner a {
+    color: #4fc3f7;
+    text-decoration: underline;
+  }
+
+  .cookie-banner a:hover {
+    color: #81d4fa;
+  }
+
+  .cookie-btn-accept {
+    background-color: #4CAF50;
+    color: #ffffff;
+    border: none;
+    padding: 10px 25px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .cookie-btn-accept:hover {
+    background-color: #45a049;
+  }
+
+  .cookie-btn-decline {
+    background-color: transparent;
+    color: #aaaaaa;
+    border: 1px solid #aaaaaa;
+    padding: 10px 25px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .cookie-btn-decline:hover {
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Мобильная адаптация */
+  @media (max-width: 600px) {
+    .cookie-banner {
+      flex-direction: column;
+      text-align: center;
+      padding: 15px;
+      gap: 10px;
+    }
+
+    .cookie-banner p {
+      font-size: 13px;
+      min-width: auto;
+    }
+
+    .cookie-buttons {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .cookie-btn-accept,
+    .cookie-btn-decline {
+      flex: 1;
+      padding: 12px 15px;
+    }
+  }
+</style>
+
+<div class="cookie-banner" id="cookieBanner">
+  <p>
+    🍪 Мы используем файлы cookie и сервис Яндекс.Метрика для улучшения работы сайта.
+    Оставаясь на сайте, вы соглашаетесь с
+    <a href="https://diagnost74.ru/privacy" target="_blank">Политикой конфиденциальности</a>.
+  </p>
+  <div class="cookie-buttons">
+    <button class="cookie-btn-accept" id="cookieAccept">Принять</button>
+    <button class="cookie-btn-decline" id="cookieDecline">Отклонить</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var banner = document.getElementById('cookieBanner');
+    var acceptBtn = document.getElementById('cookieAccept');
+    var declineBtn = document.getElementById('cookieDecline');
+
+    // Проверяем, давал ли пользователь ответ раньше
+    var cookieConsent = localStorage.getItem('cookieConsent');
+
+    if (!cookieConsent) {
+      // Показываем баннер через 1 секунду после загрузки
+      setTimeout(function () {
+        banner.classList.add('show');
+      }, 1000);
+    } else if (cookieConsent === 'accepted') {
+      // Если уже принял — загружаем Метрику
+      loadYandexMetrika();
+    }
+    // Если отклонил — ничего не делаем (Метрика не загружается)
+
+    // Кнопка «Принять»
+    acceptBtn.addEventListener('click', function () {
+      localStorage.setItem('cookieConsent', 'accepted');
+      banner.classList.remove('show');
+      loadYandexMetrika();
+    });
+
+    // Кнопка «Отклонить»
+    declineBtn.addEventListener('click', function () {
+      localStorage.setItem('cookieConsent', 'declined');
+      banner.classList.remove('show');
+      // Метрика НЕ загружается
+    });
+
+    // Функция загрузки Яндекс.Метрики
+    function loadYandexMetrika() {
+      // ============================================
+      // ЗАМЕНИТЕ 12345678 НА ВАШ НОМЕР СЧЁТЧИКА!
+      // ============================================
+      (function (m, e, t, r, i, k, a) {
+        m[i] = m[i] || function () {
+          (m[i].a = m[i].a || []).push(arguments);
+        };
+        m[i].l = 1 * new Date();
+        for (var j = 0; j < document.scripts.length; j++) {
+          if (document.scripts[j].src === r) return;
+        }
+        k = e.createElement(t);
+        a = e.getElementsByTagName(t)[0];
+        k.async = 1;
+        k.src = r;
+        a.parentNode.insertBefore(k, a);
+      })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+
+      ym(110055088, 'init', {
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+        webvisor: true
+      });
+    }
+  })();
+</script>
+<!-- /Уведомление о Cookie -->
 
 </body>
 </html>
