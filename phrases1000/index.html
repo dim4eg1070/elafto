@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1000 английских фраз — голосовой тренажёр</title>
+  <link rel="stylesheet" href="css/style.css?v=5">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">🎤</div>
+        <div>1000 фраз</div>
+      </div>
+      <nav class="nav">
+        <a data-route="home" href="#home"><span class="ico">🏠</span> Главная</a>
+        <a data-route="learn" href="#learn"><span class="ico">📚</span> Учить</a>
+        <a data-route="review" href="#review"><span class="ico">🔁</span> Повторение</a>
+        <a data-route="train" href="#train"><span class="ico">🎯</span> Тренировка</a>
+        <a data-route="catalog" href="#catalog"><span class="ico">📖</span> Каталог</a>
+        <a data-route="favorites" href="#favorites"><span class="ico">⭐</span> Избранное</a>
+        <a data-route="stats" href="#stats"><span class="ico">📊</span> Статистика</a>
+        <a data-route="settings" href="#settings"><span class="ico">⚙️</span> Настройки</a>
+        <a data-route="help" href="#help"><span class="ico">❓</span> Помощь</a>
+      </nav>
+      <div class="sidebar-footer">
+        Голосовой тренажёр английских фраз. Прогресс хранится в браузере.
+      </div>
+    </aside>
+
+    <div style="flex:1;min-width:0">
+      <header class="topbar">
+        <div class="title">🎤 1000 фраз</div>
+        <div class="actions">
+          <button class="icon-btn" id="btn-theme" title="Тема">🌓</button>
+        </div>
+      </header>
+
+      <main class="main">
+        <section class="view active" id="view-home"></section>
+        <section class="view" id="view-learn"></section>
+        <section class="view" id="view-review"></section>
+        <section class="view" id="view-train"></section>
+        <section class="view" id="view-catalog"></section>
+        <section class="view" id="view-favorites"></section>
+        <section class="view" id="view-stats"></section>
+        <section class="view" id="view-settings"></section>
+        <section class="view" id="view-help"></section>
+        <section class="view" id="view-session"></section>
+      </main>
+    </div>
+  </div>
+
+  <nav class="mobile-nav">
+    <div class="inner">
+      <a data-route="home" href="#home"><span class="ico">🏠</span>Главная</a>
+      <a data-route="learn" href="#learn"><span class="ico">📚</span>Учить</a>
+      <a data-route="review" href="#review"><span class="ico">🔁</span>Повтор</a>
+      <a data-route="catalog" href="#catalog"><span class="ico">📖</span>Каталог</a>
+      <a data-route="settings" href="#settings"><span class="ico">⚙️</span>Ещё</a>
+    </div>
+  </nav>
+
+  <script src="js/phrases.js?v=5"></script>
+  <script src="js/storage.js?v=5"></script>
+  <script src="js/speech.js?v=5"></script>
+  <script src="js/app.js?v=5"></script>
+</body>
+</html>
