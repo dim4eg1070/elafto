@@ -466,7 +466,7 @@ body.lesson-mode main{padding-bottom:20px;}
 
 <script>
 /* ============================================================
-   DATA
+   DATA — 100 слов по 10 мирам
    ============================================================ */
 const W = (en, ru, emoji, topic, example, exRu) => ({
   id: en.replace(/\s/g,'_').toLowerCase(),
@@ -616,7 +616,6 @@ const WORLDS = [
   }
 ];
 
-/* Stories (TZ section 12-14) */
 const STORIES = [
   { id:'balloon', worldId:'colors', title:"Finn's Red Balloon", titleRu:'Красный шарик Фина',
     emoji:'🎈', scenes:[
@@ -687,12 +686,12 @@ let state = null;
 
 function defaultState(){
   return {
-    profile: null,           // {nickname, avatar, ageBand}
+    profile: null,
     stars: 0,
-    stickers: [],            // [worldId...]
-    progress: {},            // {worldId: {done:[0,1,2,3]}}
-    words: {},               // {wordId: {correct, seen}}
-    daily: {},               // {'YYYY-MM-DD': {minutes, lessons}}
+    stickers: [],
+    progress: {},
+    words: {},
+    daily: {},
     settings: { sound:true, dailyGoal:15, reminders:false }
   };
 }
@@ -714,7 +713,7 @@ function save(){
    ============================================================ */
 let audioCtx = null;
 function beep(freq, dur, type='sine', vol=0.07){
-  if(!state.settings.sound) return;
+  if(!state || !state.settings.sound) return;
   try{
     if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
     const osc = audioCtx.createOscillator();
@@ -731,7 +730,7 @@ const soundBad = ()=> beep(200,.18,'triangle',.05);
 const soundWin = ()=> [523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.16),i*100));
 
 function speak(text, lang='en-US', rate=0.9){
-  if(!state.settings.sound) return;
+  if(!state || !state.settings.sound) return;
   if(!('speechSynthesis' in window)) return;
   try{
     window.speechSynthesis.cancel();
@@ -837,7 +836,6 @@ function buildFinalTasks(world, story){
     return tasks;
   }
 
-  // World-specific final missions
   if(world.id === 'hello'){
     tasks.push(
       {type:'build_phrase', target:'Hello friend', ru:'Привет, друг', distractors:['goodbye','happy']},
@@ -897,13 +895,13 @@ function buildFinalTasks(world, story){
 }
 
 /* ============================================================
-   ROUTER + TOPBAR
+   ROUTER
    ============================================================ */
 let currentScreen = null;
 let currentParams = {};
 
 function goHome(){
-  if(!state.profile){ goTo('welcome'); return; }
+  if(!state || !state.profile){ goTo('welcome'); return; }
   goTo('map');
 }
 function goTo(screen, params={}){
@@ -1058,8 +1056,9 @@ function goWorld(worldId){
    ============================================================ */
 function renderWorld(el, worldId){
   const world = WORLDS.find(w=>w.id===worldId);
+  if(!world){ goMap(); return; }
   const lessons = buildLessons(world);
-  const done = state.progress[world.id]?.done || [];
+  const done = (state.progress[world.id] && state.progress[world.id].done) || [];
   const prog = Math.round(done.length/4*100);
 
   el.innerHTML = `
@@ -1098,8 +1097,10 @@ let taskLocked = false;
 
 function goLesson(worldId, lessonIndex){
   const world = WORLDS.find(w=>w.id===worldId);
+  if(!world) return;
   const lessons = buildLessons(world);
   const lesson = lessons[lessonIndex];
+  if(!lesson) return;
   lessonSession = {
     world, lesson, lessonIndex,
     tasks: lesson.tasks,
@@ -1123,7 +1124,7 @@ function updateLessonProgress(){
 function setCharacterMsg(msg, character='finn'){
   const bar = document.getElementById('character-bar');
   if(!bar) return;
-  const c = CHARACTERS[character];
+  const c = CHARACTERS[character] || CHARACTERS.finn;
   bar.innerHTML = `<div class="char">${c.emoji}</div><div class="msg">${msg}</div>`;
 }
 
@@ -1134,31 +1135,11 @@ function showFeedback(text, ok){
   fb.textContent = text;
 }
 
-function advanceLesson(correct){
-  if(taskLocked) return;
-  taskLocked = true;
-  if(correct !== null && correct !== undefined){
-    lessonSession.scored++;
-    if(correct){
-      lessonSession.correct++;
-      soundOk();
-    } else {
-      soundBad();
-    }
-  }
-  setTimeout(()=>{
-    taskLocked = false;
-    lessonSession.index++;
-    if(lessonSession.index >= lessonSession.tasks.length){
-      finishLesson();
-    } else {
-      renderLesson();
-    }
-  }, 700);
-}
-
+/* ✔ FIXED: renderLesson умеет работать без явного el */
 function renderLesson(el){
-  if(!lessonSession){ goMap(); return; }
+  if(!el) el = document.querySelector('#app .screen');
+  if(!el || !lessonSession){ goMap(); return; }
+
   const task = lessonSession.tasks[lessonSession.index];
   if(!task){ finishLesson(); return; }
 
@@ -1174,6 +1155,7 @@ function renderLesson(el){
   updateLessonProgress();
 
   const card = el.querySelector('#task-card');
+  if(!card){ goMap(); return; }
 
   if(task.type === 'learn_card') taskLearnCard(card, task);
   else if(task.type === 'listen_and_choose') taskListenChoose(card, task);
@@ -1184,6 +1166,40 @@ function renderLesson(el){
   else if(task.type === 'count') taskCount(card, task);
   else if(task.type === 'speak_practice') taskSpeakPractice(card, task);
   else if(task.type === 'story') taskStory(card, task);
+}
+
+/* ✔ FIXED: advanceLesson явно находит экран и передаёт в renderLesson */
+function advanceLesson(correct){
+  if(taskLocked) return;
+  taskLocked = true;
+
+  if(correct !== null && correct !== undefined){
+    lessonSession.scored++;
+    if(correct){
+      lessonSession.correct++;
+      soundOk();
+    } else {
+      soundBad();
+    }
+  }
+
+  setTimeout(()=>{
+    taskLocked = false;
+    if(!lessonSession){ goMap(); return; }
+    lessonSession.index++;
+
+    if(lessonSession.index >= lessonSession.tasks.length){
+      finishLesson();
+    } else {
+      const el = document.querySelector('#app .screen');
+      if(el){
+        if('speechSynthesis' in window) try{ window.speechSynthesis.cancel(); }catch(e){}
+        renderLesson(el);
+      } else {
+        goMap();
+      }
+    }
+  }, 700);
 }
 
 /* ============================================================
@@ -1229,7 +1245,6 @@ function taskListenChoose(container, task){
       if(btn.classList.contains('disabled')) return;
       if(btn.dataset.id === w.id){
         btn.classList.add('correct');
-        // Track word mastery
         if(!state.words[w.id]) state.words[w.id] = {correct:0, seen:0};
         state.words[w.id].seen++;
         if(mistakes === 0) state.words[w.id].correct++;
@@ -1252,12 +1267,13 @@ function taskListenChoose(container, task){
 
 function taskSpell(container, task){
   const w = task.word;
-  const letters = w.en.replace(/\s/g,'').split('');
+  const cleanWord = w.en.replace(/\s/g,'');
+  const letters = cleanWord.split('');
   const pool = letters.map((l,i)=>({l, id:i}));
   let shuffledPool = shuffle(pool);
-  if(w.en.length > 1){
+  if(cleanWord.length > 1){
     for(let t=0;t<8;t++){
-      if(shuffledPool.map(x=>x.l).join('') !== letters.join('')) break;
+      if(shuffledPool.map(x=>x.l).join('') !== cleanWord) break;
       shuffledPool = shuffle(pool);
     }
   }
@@ -1273,7 +1289,7 @@ function taskSpell(container, task){
       <button class="speak-btn" id="speak-word" aria-label="Прослушать слово">🔊</button>
       <div class="word-ru">${esc(w.ru)}</div>
       <div class="spell-slots" id="slots">
-        ${w.en.replace(/\s/g,'').split('').map((_,i)=>{
+        ${cleanWord.split('').map((_,i)=>{
           const t = answer[i];
           return `<div class="spell-slot ${t?'filled':''}" data-i="${i}">${t?esc(t.l):''}</div>`;
         }).join('')}
@@ -1303,7 +1319,7 @@ function taskSpell(container, task){
         answer.push(t);
         beep(520,.05);
         render();
-        if(answer.length === w.en.replace(/\s/g,'').length){
+        if(answer.length === cleanWord.length){
           checkSpell();
         }
       };
@@ -1311,12 +1327,9 @@ function taskSpell(container, task){
   }
   function checkSpell(){
     const attempt = answer.map(a=>a.l).join('');
-    const target = w.en.replace(/\s/g,'');
-    if(attempt === target){
+    if(attempt === cleanWord){
       const fb = container.querySelector('#feedback');
-      fb.className = 'feedback show ok';
-      fb.textContent = '🎉 Правильно!';
-      // Word mastery
+      if(fb){ fb.className = 'feedback show ok'; fb.textContent = '🎉 Правильно!'; }
       if(!state.words[w.id]) state.words[w.id] = {correct:0, seen:0};
       state.words[w.id].seen++;
       if(mistakes === 0) state.words[w.id].correct++;
@@ -1326,8 +1339,7 @@ function taskSpell(container, task){
     } else {
       mistakes++;
       const fb = container.querySelector('#feedback');
-      fb.className = 'feedback show bad';
-      fb.textContent = '😊 Почти! Попробуй ещё';
+      if(fb){ fb.className = 'feedback show bad'; fb.textContent = '😊 Почти! Попробуй ещё'; }
       soundBad();
       setTimeout(()=>{
         shuffledPool = [...shuffledPool, ...answer];
@@ -1383,9 +1395,7 @@ function taskMatchPairs(container, task){
           selectedWord = null;
           if(matched === pairs.length){
             const fb = container.querySelector('#feedback');
-            fb.className = 'feedback show ok';
-            fb.textContent = '🎉 Все пары найдены!';
-            // Mark words
+            if(fb){ fb.className = 'feedback show ok'; fb.textContent = '🎉 Все пары найдены!'; }
             pairs.forEach(w=>{
               if(!state.words[w.id]) state.words[w.id] = {correct:0, seen:0};
               state.words[w.id].seen++;
@@ -1421,9 +1431,9 @@ function taskWhatMissing(container, task){
 
   setTimeout(()=>{
     const show = container.querySelector('#show');
+    if(!show) return;
     show.innerHTML = display.map(w=>`<span style="opacity:${w.id===missing.id?'0':'1'}; transition:opacity .4s;">${w.emoji}</span>`).join('');
     setTimeout(()=>{
-      // Show options
       const opts = shuffle(words);
       container.innerHTML = `
         <div class="word-ru" style="margin-bottom:14px; font-size:16px;">Что исчезло?</div>
@@ -1456,7 +1466,7 @@ function taskWhatMissing(container, task){
 
 function taskBuildPhrase(container, task){
   const targetWords = task.target.split(' ');
-  const allTiles = shuffle([...targetWords, ...(task.distractors||[])]);
+  let allTiles = shuffle([...targetWords, ...(task.distractors||[])]);
   let answer = [];
   let mistakes = 0;
 
@@ -1480,7 +1490,6 @@ function taskBuildPhrase(container, task){
       <div class="feedback" id="feedback"></div>
     `;
     container.querySelector('#speak-target').onclick = ()=> speak(task.target);
-    // Slot click = return tile
     container.querySelectorAll('.phrase-slot').forEach(s=>{
       s.onclick = ()=>{
         const i = +s.dataset.i;
@@ -1507,15 +1516,13 @@ function taskBuildPhrase(container, task){
   function checkPhrase(){
     if(answer.join(' ') === task.target){
       const fb = container.querySelector('#feedback');
-      fb.className = 'feedback show ok';
-      fb.textContent = '🎉 Правильно!';
+      if(fb){ fb.className = 'feedback show ok'; fb.textContent = '🎉 Правильно!'; }
       speak(task.target);
       advanceLesson(mistakes === 0);
     } else {
       mistakes++;
       const fb = container.querySelector('#feedback');
-      fb.className = 'feedback show bad';
-      fb.textContent = '😊 Почти! Попробуй ещё';
+      if(fb){ fb.className = 'feedback show bad'; fb.textContent = '😊 Почти! Попробуй ещё'; }
       soundBad();
       setTimeout(()=>{
         allTiles.push(...answer);
@@ -1583,7 +1590,6 @@ function taskSpeakPractice(container, task){
 function taskStory(container, task){
   const story = task.story;
   let sceneIdx = 0;
-  let qIdx = 0;
 
   setCharacterMsg('Читаем историю вместе.', 'oli');
   renderScene();
@@ -1596,9 +1602,10 @@ function taskStory(container, task){
         <div class="story-en">${esc(scene.en)}</div>
         <div class="story-ru">${esc(scene.ru)}</div>
       </div>
+      <div style="text-align:center; color:var(--text-soft); font-weight:700; font-size:14px;">Сцена ${sceneIdx+1} из ${story.scenes.length}</div>
       <div class="story-nav">
         <button id="speak-scene">🔊 Слушать</button>
-        <button class="primary" id="next-scene">Дальше →</button>
+        <button class="primary" id="next-scene">${sceneIdx === story.scenes.length-1 ? 'К вопросам →' : 'Дальше →'}</button>
       </div>
     `;
     container.querySelector('#speak-scene').onclick = ()=> speak(scene.en);
@@ -1606,7 +1613,7 @@ function taskStory(container, task){
       sceneIdx++;
       if(sceneIdx >= story.scenes.length){
         if(story.questions && story.questions.length){
-          renderQuestion();
+          renderQuestion(0, 0);
         } else {
           advanceLesson(null);
         }
@@ -1617,7 +1624,11 @@ function taskStory(container, task){
     setTimeout(()=>speak(scene.en), 300);
   }
 
-  function renderQuestion(){
+  function renderQuestion(qIdx, correctCount){
+    if(qIdx >= story.questions.length){
+      advanceLesson(correctCount === story.questions.length);
+      return;
+    }
     const q = story.questions[qIdx];
     container.innerHTML = `
       <div class="word-ru" style="font-size:15px;">Вопрос ${qIdx+1} из ${story.questions.length}</div>
@@ -1627,19 +1638,20 @@ function taskStory(container, task){
       </div>
       <div class="feedback" id="feedback"></div>
     `;
-    let mistakes = 0;
+    let answered = false;
     container.querySelectorAll('.opt-word').forEach(b=>{
       b.onclick = ()=>{
-        if(b.classList.contains('disabled')) return;
+        if(answered) return;
         if(b.dataset.opt === q.answer){
+          answered = true;
           b.classList.add('correct');
           container.querySelectorAll('.opt-word').forEach(x=>{ if(x!==b) x.classList.add('disabled'); });
           showFeedback('🎉 Правильно!', true);
-          advanceLesson(mistakes === 0);
+          soundOk();
+          setTimeout(()=>renderQuestion(qIdx+1, correctCount+1), 900);
         } else {
           b.classList.add('wrong');
           setTimeout(()=>b.classList.remove('wrong'), 500);
-          mistakes++;
           soundBad();
           showFeedback('Попробуй ещё раз', false);
         }
@@ -1653,6 +1665,7 @@ function taskStory(container, task){
    ============================================================ */
 function finishLesson(){
   const s = lessonSession;
+  if(!s){ goMap(); return; }
   const pct = s.scored > 0 ? s.correct / s.scored : 1;
   let stars = 1;
   if(pct >= 0.8) stars = 3;
@@ -1666,14 +1679,12 @@ function finishLesson(){
     state.progress[wid].done.push(s.lessonIndex);
   }
 
-  // Update daily stats
   const today = new Date().toISOString().slice(0,10);
   if(!state.daily[today]) state.daily[today] = {minutes:0, lessons:0};
   const mins = Math.max(1, Math.round((Date.now()-s.startTime)/60000));
   state.daily[today].minutes += mins;
   state.daily[today].lessons += 1;
 
-  // Award sticker if world complete
   let stickerEarned = false;
   if(state.progress[wid].done.length >= 4 && !state.stickers.includes(wid)){
     state.stickers.push(wid);
@@ -1683,7 +1694,9 @@ function finishLesson(){
   save();
   soundWin();
 
-  goTo('reward', {stars, stickerEarned, worldId:wid, lessonIndex:s.lessonIndex, correct:s.correct, scored:s.scored});
+  const params = {stars, stickerEarned, worldId:wid, lessonIndex:s.lessonIndex, correct:s.correct, scored:s.scored};
+  lessonSession = null;
+  goTo('reward', params);
   launchConfetti();
 }
 
@@ -1691,8 +1704,9 @@ function finishLesson(){
    SCREEN: REWARD
    ============================================================ */
 function renderReward(el, params){
-  const { stars, stickerEarned, worldId, lessonIndex, correct, scored } = params;
-  const world = WORLDS.find(w=>w.id===worldId);
+  params = params || {};
+  const stars = params.stars || 0;
+  const { stickerEarned, worldId, lessonIndex, correct = 0, scored = 0 } = params;
   const starHTML = [1,2,3].map(i=>`<span class="${i<=stars?'':'off'}">⭐</span>`).join('');
   const stickerWorld = stickerEarned ? WORLDS.find(w=>w.id===worldId) : null;
 
@@ -1738,7 +1752,7 @@ function renderDictionary(el){
   el.innerHTML = `
     <h2 class="section-title">📖 Словарь</h2>
     <div class="topic-pills">
-      ${topics.map(t=>`<button class="pill ${dictTopic===t.id?'active':''}" onclick="dictTopic='${t.id}';renderDictionary(document.getElementById('app').firstElementChild)">${t.emoji} ${esc(t.name)}</button>`).join('')}
+      ${topics.map(t=>`<button class="pill ${dictTopic===t.id?'active':''}" onclick="dictTopic='${t.id}';renderDictionary(document.querySelector('#app .screen'))">${t.emoji} ${esc(t.name)}</button>`).join('')}
     </div>
     <div class="word-grid">
       ${filtered.map(w=>{
@@ -1802,12 +1816,12 @@ function openStory(storyId){
 }
 
 /* ============================================================
-   SCREEN: STORY PLAYER
+   SCREEN: STORY PLAYER (из меню «Истории»)
    ============================================================ */
 function renderStoryPlayer(el, storyId){
   const story = STORIES.find(s=>s.id===storyId);
+  if(!story){ goStories(); return; }
   let sceneIdx = 0;
-  const qResults = [];
 
   el.innerHTML = `
     <button class="back-btn" onclick="goStories()">← Истории</button>
@@ -1818,6 +1832,7 @@ function renderStoryPlayer(el, storyId){
   function renderScene(){
     const scene = story.scenes[sceneIdx];
     const card = document.getElementById('story-card');
+    if(!card) return;
     card.innerHTML = `
       <div class="story-scene">
         <div class="story-emoji">${scene.emoji}</div>
@@ -1834,7 +1849,7 @@ function renderStoryPlayer(el, storyId){
     card.querySelector('#next').onclick = ()=>{
       sceneIdx++;
       if(sceneIdx >= story.scenes.length){
-        renderQuestion();
+        renderQuestion(0, 0);
       } else {
         renderScene();
       }
@@ -1842,60 +1857,52 @@ function renderStoryPlayer(el, storyId){
     setTimeout(()=>speak(scene.en), 300);
   }
 
-  function renderQuestion(){
+  function renderQuestion(qIdx, correctCount){
     const card = document.getElementById('story-card');
-    let qIdx = 0;
-    let correctCount = 0;
-    renderQ();
-    function renderQ(){
-      if(qIdx >= story.questions.length){
-        // Done
-        card.innerHTML = `
-          <div class="reward" style="box-shadow:none; padding:20px;">
-            <div class="reward-emoji">🎉</div>
-            <h2 class="reward-title">История прочитана!</h2>
-            <div class="reward-sub">Правильных ответов: ${correctCount} из ${story.questions.length}</div>
-            <div class="reward-actions" style="margin-top:20px;">
-              <button class="primary-btn" style="margin:0;" onclick="goStories()">📚 К историям</button>
-            </div>
-          </div>
-        `;
-        return;
-      }
-      const q = story.questions[qIdx];
+    if(!card) return;
+    if(qIdx >= story.questions.length){
       card.innerHTML = `
-        <div style="color:var(--text-soft); font-weight:700; margin-bottom:8px;">Вопрос ${qIdx+1} из ${story.questions.length}</div>
-        <div style="font-family:'Baloo 2',sans-serif; font-size:22px; font-weight:700; margin:14px 0; color:var(--navy);">${esc(q.q)}</div>
-        <div class="options-grid" id="opts" style="grid-template-columns:1fr 1fr;">
-          ${shuffle(q.options).map(o=>`<button class="opt-word" data-opt="${esc(o)}">${esc(o)}</button>`).join('')}
+        <div class="reward" style="box-shadow:none; padding:20px;">
+          <div class="reward-emoji">🎉</div>
+          <h2 class="reward-title">История прочитана!</h2>
+          <div class="reward-sub">Правильных ответов: ${correctCount} из ${story.questions.length}</div>
+          <div class="reward-actions" style="margin-top:20px;">
+            <button class="primary-btn" style="margin:0;" onclick="goStories()">📚 К историям</button>
+          </div>
         </div>
-        <div class="feedback" id="feedback"></div>
       `;
-      let answered = false;
-      card.querySelectorAll('.opt-word').forEach(b=>{
-        b.onclick = ()=>{
-          if(answered) return;
-          if(b.dataset.opt === q.answer){
-            answered = true;
-            b.classList.add('correct');
-            card.querySelectorAll('.opt-word').forEach(x=>{ if(x!==b) x.classList.add('disabled'); });
-            correctCount++;
-            soundOk();
-            const fb = card.querySelector('#feedback');
-            fb.className = 'feedback show ok';
-            fb.textContent = '🎉 Правильно!';
-            setTimeout(()=>{ qIdx++; renderQ(); }, 900);
-          } else {
-            b.classList.add('wrong');
-            setTimeout(()=>b.classList.remove('wrong'), 500);
-            soundBad();
-            const fb = card.querySelector('#feedback');
-            fb.className = 'feedback show bad';
-            fb.textContent = 'Попробуй ещё раз';
-          }
-        };
-      });
+      return;
     }
+    const q = story.questions[qIdx];
+    card.innerHTML = `
+      <div style="color:var(--text-soft); font-weight:700; margin-bottom:8px;">Вопрос ${qIdx+1} из ${story.questions.length}</div>
+      <div style="font-family:'Baloo 2',sans-serif; font-size:22px; font-weight:700; margin:14px 0; color:var(--navy);">${esc(q.q)}</div>
+      <div class="options-grid" id="opts" style="grid-template-columns:1fr 1fr;">
+        ${shuffle(q.options).map(o=>`<button class="opt-word" data-opt="${esc(o)}">${esc(o)}</button>`).join('')}
+      </div>
+      <div class="feedback" id="feedback"></div>
+    `;
+    let answered = false;
+    card.querySelectorAll('.opt-word').forEach(b=>{
+      b.onclick = ()=>{
+        if(answered) return;
+        if(b.dataset.opt === q.answer){
+          answered = true;
+          b.classList.add('correct');
+          card.querySelectorAll('.opt-word').forEach(x=>{ if(x!==b) x.classList.add('disabled'); });
+          soundOk();
+          const fb = card.querySelector('#feedback');
+          if(fb){ fb.className = 'feedback show ok'; fb.textContent = '🎉 Правильно!'; }
+          setTimeout(()=>renderQuestion(qIdx+1, correctCount+1), 900);
+        } else {
+          b.classList.add('wrong');
+          setTimeout(()=>b.classList.remove('wrong'), 500);
+          soundBad();
+          const fb = card.querySelector('#feedback');
+          if(fb){ fb.className = 'feedback show bad'; fb.textContent = 'Попробуй ещё раз'; }
+        }
+      };
+    });
   }
 }
 
@@ -1944,7 +1951,6 @@ function openParentPanel(){
   const today = new Date().toISOString().slice(0,10);
   const todayData = state.daily[today] || {minutes:0, lessons:0};
 
-  // Week
   let weekMinutes = 0, weekDays = 0;
   for(let i=0; i<7; i++){
     const d = new Date(); d.setDate(d.getDate()-i);
@@ -1953,7 +1959,6 @@ function openParentPanel(){
     if(rec && rec.minutes > 0){ weekMinutes += rec.minutes; weekDays++; }
   }
 
-  // Words breakdown
   const allWords = WORLDS.flatMap(w=>w.words);
   let known=0, learning=0, nw=0;
   allWords.forEach(w=>{
@@ -1962,7 +1967,6 @@ function openParentPanel(){
     else if(st === 'learning') learning++;
     else nw++;
   });
-  // Recommendation: list up to 5 learning/new words
   const recWords = allWords.filter(w=>{
     const st = wordStatus(w.id);
     return st === 'learning' || st === 'new';
