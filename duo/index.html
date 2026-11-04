@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>English Trainer</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap');
+:root{--green:#58cc02;--green-d:#46a302;--blue:#1cb0f6;--blue-d:#1899d6;--orange:#ff9600;--orange-d:#e08600;--red:#ff4b4b;--red-d:#e43d3d;--gray:#e5e5e5;--gray-d:#afafaf;--text:#3c3c3c;--muted:#afafaf;--bg:#fff;--bg-alt:#f7f7f7}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+body{margin:0;font-family:'Nunito',-apple-system,sans-serif;background:var(--bg);color:var(--text);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+.screen{display:none;flex-direction:column;height:100%;overflow:hidden}
+.screen.active{display:flex}
+.scrollable{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1}
+button{font-family:inherit;cursor:pointer;border:none}
+.btn{width:100%;padding:16px;border-radius:16px;font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;transition:all .08s}
+.btn:active{transform:translateY(3px)}
+.btn-primary{background:var(--green);color:#fff;box-shadow:0 4px 0 var(--green-d)}
+.btn-primary:active{box-shadow:0 1px 0 var(--green-d)}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 4px 0 var(--blue-d)}
+.btn-blue:active{box-shadow:0 1px 0 var(--blue-d)}
+.btn-gray{background:#fff;color:var(--gray-d);box-shadow:0 4px 0 var(--gray);border:2px solid var(--gray)}
+.btn-gray:active{box-shadow:0 1px 0 var(--gray)}
+.btn:disabled{opacity:.4;pointer-events:none}
+.home-header{padding:24px 20px;background:linear-gradient(135deg,#58cc02 0%,#1cb0f6 100%);color:#fff}
+.home-title{font-size:26px;font-weight:900;margin:0 0 4px}
+.home-sub{font-size:14px;opacity:.9}
+.stats-row{display:flex;gap:10px;padding:15px 20px;background:#fff;border-bottom:2px solid var(--gray)}
+.stat-chip{flex:1;text-align:center;padding:10px 6px;background:var(--bg-alt);border-radius:12px}
+.stat-chip .val{font-size:22px;font-weight:900}
+.stat-chip .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700}
+.progress-section{padding:20px 20px 15px}
+.progress-label{display:flex;justify-content:space-between;font-size:13px;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.progress-bar-big{height:16px;background:var(--gray);border-radius:8px;overflow:hidden}
+.progress-bar-fill{height:100%;width:0%;background:var(--green);border-radius:8px;transition:width .3s}
+.due-card{margin:0 20px 15px;padding:16px;border-radius:16px;background:linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%);border:2px solid var(--orange);box-shadow:0 3px 0 var(--orange-d);display:flex;align-items:center;gap:12px}
+.due-card.all-clear{background:#f0fbe0;border-color:var(--green);box-shadow:0 3px 0 var(--green-d)}
+.due-info{flex:1}
+.due-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#b86b00}
+.due-count{font-size:20px;font-weight:900;margin-top:2px}
+.due-card.all-clear .due-label{color:var(--green-d)}
+.due-btn{padding:12px 16px;border-radius:12px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;background:var(--orange);color:#fff;box-shadow:0 3px 0 var(--orange-d)}
+.due-btn:active{transform:translateY(2px);box-shadow:none}
+.due-card.all-clear .due-btn{display:none}
+.home-actions{padding:0 20px 20px}
+.start-btn{padding:22px;font-size:18px}
+.bottom-nav{display:flex;border-top:2px solid var(--gray);background:#fff;padding-bottom:env(safe-area-inset-bottom)}
+.nav-btn{flex:1;padding:10px 4px;background:none;text-align:center;font-size:10px;font-weight:700;color:var(--muted)}
+.nav-btn.active{color:var(--blue)}
+.nav-btn .icon{font-size:20px;display:block;margin-bottom:2px}
+.learn-header{padding:15px 20px;display:flex;align-items:center;gap:12px;border-bottom:2px solid var(--gray)}
+.close-btn{font-size:24px;color:var(--gray-d);font-weight:900;background:none;padding:0 6px}
+.progress-container{flex:1;height:16px;background:var(--gray);border-radius:8px;overflow:hidden}
+.progress-bar{height:100%;width:0%;background:var(--green);border-radius:8px;transition:width .3s}
+.learn-counter{font-weight:800;color:var(--gray-d);font-size:14px}
+.learn-body{flex:1;display:flex;flex-direction:column;align-items:center;padding:20px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.card{background:#fff;border:2px solid var(--gray);border-radius:20px;padding:26px 20px 18px;width:100%;max-width:420px;box-shadow:0 4px 0 var(--gray);cursor:pointer;text-align:center;transition:transform .08s}
+.card:active{transform:translateY(2px);box-shadow:0 2px 0 var(--gray)}
+.play-icon{font-size:44px;margin-bottom:10px;display:inline-block;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.english-phrase{font-size:25px;font-weight:900;margin:6px 0;line-height:1.3}
+.transcription{font-size:15px;color:var(--muted);font-style:italic;margin-bottom:16px}
+.translation{font-size:20px;font-weight:800;color:var(--green);min-height:26px;opacity:0;transition:opacity .3s}
+.translation.show{opacity:1}
+.level-bar{display:flex;gap:5px;justify-content:center;margin-top:14px;padding-top:12px;border-top:1px solid var(--gray)}
+.level-dot{width:14px;height:6px;border-radius:3px;background:var(--gray)}
+.level-dot.filled{background:var(--green)}
+.level-hint{font-size:11px;color:var(--muted);margin-top:6px;font-weight:700;letter-spacing:.3px}
+.btn-mic{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:420px;margin:14px auto 0;padding:15px;border-radius:16px;background:var(--blue);color:#fff;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;box-shadow:0 4px 0 var(--blue-d);transition:all .1s}
+.btn-mic:active{transform:translateY(3px);box-shadow:0 1px 0 var(--blue-d)}
+.btn-mic.recording{background:var(--red);box-shadow:0 4px 0 var(--red-d);animation:listening 1.2s infinite}
+@keyframes listening{0%,100%{box-shadow:0 4px 0 var(--red-d),0 0 0 0 rgba(255,75,75,.4)}50%{box-shadow:0 4px 0 var(--red-d),0 0 0 12px rgba(255,75,75,0)}}
+.mic-icon{font-size:20px}
+.pron-result{max-width:420px;margin:12px auto 0;display:none;width:100%}
+.pron-result.show{display:block}
+.pron-card{background:#fff;border:2px solid var(--gray);border-radius:16px;padding:14px;text-align:center}
+.pron-score-big{font-size:42px;font-weight:900;line-height:1;margin-bottom:4px}
+.pron-score-excellent{color:var(--green)}.pron-score-good{color:#7ed321}.pron-score-middle{color:var(--orange)}.pron-score-bad{color:var(--red)}
+.pron-label{font-size:14px;font-weight:700;margin-bottom:10px}
+.pron-heard{font-size:13px;color:var(--muted);padding:8px 12px;background:var(--bg-alt);border-radius:10px;margin-top:8px;text-align:left}
+.pron-heard strong{color:var(--text)}
+.pron-missed{margin-top:8px;font-size:13px;padding:8px 12px;background:#fff5f5;border-radius:10px;text-align:left;line-height:1.6}
+.missed-word{color:var(--red);text-decoration:line-through;background:rgba(255,75,75,.1);padding:0 2px;border-radius:3px}
+.pron-error{color:var(--red);font-size:14px;font-weight:700;padding:10px;text-align:center;background:#fff5f5;border-radius:10px}
+.learn-footer{padding:15px 20px;padding-bottom:max(15px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px}
+.rating-row{display:none;gap:10px}
+.rating-row.show{display:flex}
+.rating-btn{flex:1;padding:18px 10px;border-radius:16px;font-size:16px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.3px}
+.rating-again{background:var(--orange);box-shadow:0 4px 0 var(--orange-d)}
+.rating-good{background:var(--green);box-shadow:0 4px 0 var(--green-d)}
+.rating-btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.end-screen{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;text-align:center}
+.end-emoji{font-size:80px;margin-bottom:20px}
+.end-title{font-size:28px;font-weight:900;margin-bottom:10px}
+.end-sub{font-size:16px;color:var(--muted);margin-bottom:25px}
+.end-stats{display:flex;gap:15px;margin-bottom:25px;width:100%;max-width:400px}
+.end-stat{flex:1;background:var(--bg-alt);padding:15px;border-radius:16px}
+.end-stat .v{font-size:28px;font-weight:900}
+.end-stat .l{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase}
+.end-stat.good .v{color:var(--green)}.end-stat.bad .v{color:var(--orange)}
+.stats-header{padding:20px;background:var(--bg-alt)}
+.stats-header h2{margin:0;font-size:22px;font-weight:900}
+.stats-header p{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.back-btn{background:none;font-size:22px;color:var(--gray-d);font-weight:900;padding:0 6px 0 0}
+.stats-section{padding:15px 20px;border-bottom:2px solid var(--gray)}
+.stats-section h3{font-size:14px;text-transform:uppercase;color:var(--muted);margin:0 0 12px;letter-spacing:1px}
+.stats-big{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat-card{background:var(--bg-alt);padding:16px;border-radius:14px}
+.stat-card .v{font-size:32px;font-weight:900}
+.stat-card .l{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase}
+.ach-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--bg-alt);border-radius:20px;margin:4px 4px 4px 0;font-size:13px;font-weight:700}
+.ach-badge.locked{opacity:.35}
+.settings-item{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:2px solid var(--gray);cursor:pointer;background:#fff}
+.settings-item:active{background:var(--bg-alt)}
+.settings-icon{font-size:24px;width:32px;text-align:center}
+.settings-body{flex:1}
+.settings-body .t{font-size:16px;font-weight:800}
+.settings-body .s{font-size:13px;color:var(--muted);margin-top:2px}
+.settings-arrow{color:var(--gray-d);font-size:20px}
+.pills-row{display:flex;gap:8px;padding:0 20px;flex-wrap:wrap}
+.pill{padding:10px 18px;border-radius:12px;border:2px solid var(--gray);background:#fff;font-size:14px;font-weight:800;color:var(--text)}
+.pill.selected{background:var(--blue);color:#fff;border-color:var(--blue);box-shadow:0 3px 0 var(--blue-d)}
+.voice-section-title{padding:14px 20px 8px;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.voice-item{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--gray);background:#fff;cursor:pointer;transition:background .1s}
+.voice-item:active{background:var(--bg-alt)}
+.voice-item.selected{background:#f0fbe0}
+.voice-item.selected .voice-name{color:var(--green-d)}
+.voice-play{width:40px;height:40px;border-radius:50%;background:var(--blue);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 0 var(--blue-d)}
+.voice-play:active{transform:translateY(2px);box-shadow:none}
+.voice-info{flex:1;min-width:0}
+.voice-name{font-size:15px;font-weight:800}
+.voice-lang{font-size:12px;color:var(--muted);margin-top:2px}
+.voice-check{font-size:22px;color:var(--green);flex-shrink:0;visibility:hidden}
+.voice-item.selected .voice-check{visibility:visible}
+#loadingMsg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);color:#fff;align-items:center;justify-content:center;font-size:18px;font-weight:800;z-index:1000;text-align:center;padding:20px}
+</style>
+</head>
+<body>
+<div id="loadingMsg">Читаем PDF...</div>
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+<div class="home-header">
+<div class="home-title">Привет! 👋</div>
+<div class="home-sub" id="homeGreeting">Готов учить английский?</div>
+</div>
+<div class="stats-row">
+<div class="stat-chip"><div class="val" id="statStreak">0</div><div class="lbl">🔥 Серия</div></div>
+<div class="stat-chip"><div class="val" id="statLearned">0</div><div class="lbl">⭐ Изучено</div></div>
+<div class="stat-chip"><div class="val" id="statToday">0</div><div class="lbl">📅 Сегодня</div></div>
+</div>
+<div class="scrollable">
+<div class="progress-section">
+<div class="progress-label"><span>Общий прогресс</span><span id="overallCount">0 / 0</span></div>
+<div class="progress-bar-big"><div class="progress-bar-fill" id="overallFill"></div></div>
+</div>
+<div class="due-card" id="dueCard">
+<div class="due-info">
+<div class="due-label" id="dueLabel">📅 К повторению сегодня</div>
+<div class="due-count" id="dueCount">0 фраз</div>
+</div>
+<button class="due-btn" id="dueBtn" onclick="startDueSession()">Повторить</button>
+</div>
+<div class="home-actions">
+<button class="btn btn-primary start-btn" onclick="startSession()">🚀 Учить</button>
+</div>
+</div>
+<div class="bottom-nav">
+<button class="nav-btn active" onclick="nav('home')"><span class="icon">🏠</span>Главная</button>
+<button class="nav-btn" onclick="nav('stats')"><span class="icon">📊</span>Статистика</button>
+<button class="nav-btn" onclick="nav('settings')"><span class="icon">⚙️</span>Настройки</button>
+</div>
+</div>
+
+<!-- LEARN -->
+<div class="screen" id="screen-learn">
+<div class="learn-header">
+<button class="close-btn" onclick="exitSession()">✕</button>
+<div class="progress-container"><div class="progress-bar" id="learnProgress"></div></div>
+<div class="learn-counter" id="learnCounter">0/10</div>
+</div>
+<div class="learn-body">
+<div class="card" id="phraseCard" onclick="speakCurrentPhrase()">
+<div class="play-icon">🔊</div>
+<div class="english-phrase" id="enText">—</div>
+<div class="transcription" id="trText"></div>
+<div class="translation" id="ruText"></div>
+<div class="level-bar" id="levelBar"></div>
+<div class="level-hint" id="levelHint"></div>
+</div>
+<button class="btn-mic" id="micBtn" onclick="toggleRecording()">
+<span class="mic-icon" id="micIcon">🎤</span>
+<span id="micText">Произнести</span>
+</button>
+<div class="pron-result" id="pronResult"></div>
+</div>
+<div class="learn-footer">
+<div class="rating-row" id="ratingRow">
+<button class="rating-btn rating-again" onclick="ratePhrase('again')">Учить ещё</button>
+<button class="rating-btn rating-good" onclick="ratePhrase('good')">Запомнил</button>
+</div>
+<button class="btn btn-gray" id="btnReveal" onclick="revealTranslation()">Показать перевод</button>
+</div>
+</div>
+
+<!-- END -->
+<div class="screen" id="screen-end">
+<div class="end-screen">
+<div class="end-emoji" id="endEmoji">🎉</div>
+<div class="end-title">Сессия завершена!</div>
+<div class="end-sub" id="endSub">Отличная работа!</div>
+<div class="end-stats">
+<div class="end-stat good"><div class="v" id="endGood">0</div><div class="l">Запомнил</div></div>
+<div class="end-stat bad"><div class="v" id="endBad">0</div><div class="l">Учить ещё</div></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:400px;">
+<button class="btn btn-blue" id="btnRepeatFailed" onclick="repeatFailed()" style="display:none;">Повторить</button>
+<button class="btn btn-primary" onclick="startSession()">Ещё сессию</button>
+<button class="btn btn-gray" onclick="goHome()">На главную</button>
+</div>
+</div>
+</div>
+
+<!-- STATS -->
+<div class="screen" id="screen-stats">
+<div class="stats-header"><h2>📊 Статистика</h2></div>
+<div class="scrollable">
+<div class="stats-section">
+<h3>Общее</h3>
+<div class="stats-big">
+<div class="stat-card"><div class="v" id="statsLearned">0</div><div class="l">Изучено</div></div>
+<div class="stat-card"><div class="v" id="statsLearning">0</div><div class="l">В процессе</div></div>
+<div class="stat-card"><div class="v" id="statsNew">0</div><div class="l">Новых</div></div>
+<div class="stat-card"><div class="v" id="statsStreak">0</div><div class="l">🔥 Серия дней</div></div>
+</div>
+</div>
+<div class="stats-section"><h3>Достижения</h3><div id="achievements"></div></div>
+</div>
+<div class="bottom-nav">
+<button class="nav-btn" onclick="nav('home')"><span class="icon">🏠</span>Главная</button>
+<button class="nav-btn active" onclick="nav('stats')"><span class="icon">📊</span>Статистика</button>
+<button class="nav-btn" onclick="nav('settings')"><span class="icon">⚙️</span>Настройки</button>
+</div>
+</div>
+
+<!-- SETTINGS -->
+<div class="screen" id="screen-settings">
+<div class="stats-header"><h2>⚙️ Настройки</h2></div>
+<div class="scrollable">
+<div class="settings-item" onclick="openVoicePicker()">
+<div class="settings-icon">🎙️</div>
+<div class="settings-body"><div class="t">Выбрать голос</div><div class="s" id="currentVoiceName">Загрузка...</div></div>
+<div class="settings-arrow">›</div>
+</div>
+<div class="settings-item" onclick="document.getElementById('pdfInput').click()">
+<div class="settings-icon">📁</div>
+<div class="settings-body"><div class="t">Загрузить другой PDF</div><div class="s">Заменит текущие фразы</div></div>
+<div class="settings-arrow">›</div>
+</div>
+<input type="file" id="pdfInput" accept=".pdf" style="display:none;" onchange="handlePdfUpload(event)">
+<div class="stats-section" style="border-bottom:2px solid var(--gray);">
+<h3>Размер сессии</h3>
+<div class="pills-row" style="padding:0;" id="sizePills"></div>
+</div>
+<div class="settings-item" onclick="resetStats()">
+<div class="settings-icon">📊</div>
+<div class="settings-body"><div class="t">Сбросить статистику</div><div class="s">Счётчики и серия</div></div>
+<div class="settings-arrow">›</div>
+</div>
+<div class="settings-item" onclick="resetProgress()">
+<div class="settings-icon">🔄</div>
+<div class="settings-body"><div class="t">Сбросить прогресс</div><div class="s">Все фразы станут новыми</div></div>
+<div class="settings-arrow">›</div>
+</div>
+<div class="settings-item" onclick="resetPhrases()">
+<div class="settings-icon">🗑️</div>
+<div class="settings-body"><div class="t">Восстановить 1000 фраз</div><div class="s">Сбросить к встроенным</div></div>
+<div class="settings-arrow">›</div>
+</div>
+<div class="settings-item" onclick="alert('Версия 4.0\n\n• 1000 фраз встроены — не нужно загружать PDF\n• Интервальное повторение (SRS)\n• Микрофон + оценка произношения\n• Выбор голоса')">
+<div class="settings-icon">ℹ️</div>
+<div class="settings-body"><div class="t">О приложении</div><div class="s">Версия 4.0</div></div>
+<div class="settings-arrow">›</div>
+</div>
+</div>
+<div class="bottom-nav">
+<button class="nav-btn" onclick="nav('home')"><span class="icon">🏠</span>Главная</button>
+<button class="nav-btn" onclick="nav('stats')"><span class="icon">📊</span>Статистика</button>
+<button class="nav-btn active" onclick="nav('settings')"><span class="icon">⚙️</span>Настройки</button>
+</div>
+</div>
+
+<!-- VOICES -->
+<div class="screen" id="screen-voices">
+<div class="stats-header">
+<div style="display:flex;align-items:center;gap:10px;">
+<button class="back-btn" onclick="nav('settings')">←</button>
+<h2 style="margin:0;">🎙️ Выбор голоса</h2>
+</div>
+<p>Нажмите ▶ для прослушивания</p>
+</div>
+<div class="scrollable" id="voiceList"></div>
+</div>
+
+<script>
+// ====== 1000 PHRASES (встроены) ======
+const RAW_PHRASES = `Hello!|хэлоу|Здравствуйте!
+Hi!|хай|Привет!
+Good morning!|гуд монин|Доброе утро!
+Good afternoon!|гуд афтэнун|Добрый день!
+Good evening!|гуд ивнинг|Добрый вечер!
+Good night!|гуд найт|Спокойной ночи!
+How are you?|хау ар ю|Как дела?
+How are you doing?|хау ар ю дуинг|Как поживаете?
+I'm fine, thank you.|айм файн, сэнк ю|У меня всё хорошо, спасибо.
+Not bad.|нот бэд|Неплохо.
+Pretty good.|прити гуд|Довольно хорошо.
+So-so.|соу-соу|Так себе.
+And you?|энд ю|А у вас?
+How's it going?|хаус ит гоуинг|Как идут дела?
+What's up?|уотс ап|Что нового?
+Nothing much.|насинг мач|Ничего особенного.
+Long time no see!|лонг тайм ноу си|Давно не виделись!
+Nice to see you.|найс ту си ю|Рад вас видеть.
+It's good to see you again.|итс гуд ту си ю эгэн|Приятно снова вас видеть.
+Welcome!|уэлкэм|Добро пожаловать!
+Come in, please.|кам ин, плиз|Проходите, пожалуйста.
+Make yourself at home.|мэйк ёсэлф эт хоум|Чувствуйте себя как дома.
+Have a seat, please.|хэв э сит, плиз|Присаживайтесь, пожалуйста.
+Goodbye!|гудбай|До свидания!
+Bye!|бай|Пока!
+See you later!|си ю лэйтэ|Увидимся позже!
+See you tomorrow!|си ю туморе|До завтра!
+See you soon!|си ю сун|До скорой встречи!
+See you next week.|си ю некст уик|Увидимся на следующей неделе.
+Take care!|тэйк кэа|Береги себя!
+Have a nice day!|хэв э найс дэй|Хорошего дня!
+Have a great weekend!|хэв э грэйт уикэнд|Отличных выходных!
+Have a good trip!|хэв э гуд трип|Счастливого пути!
+Good luck!|гуд лак|Удачи!
+Best wishes!|бест уишиз|Всего наилучшего!
+Please.|плиз|Пожалуйста.
+Thank you.|сэнк ю|Спасибо.
+Thank you very much.|сэнк ю вери мач|Большое спасибо.
+Thanks a lot!|сэнкс э лот|Огромное спасибо!
+Thanks for your help.|сэнкс фо ё хелп|Спасибо за помощь.
+Thanks for coming.|сэнкс фо камин|Спасибо, что пришли.
+Thank you for your time.|сэнк ю фо ё тайм|Спасибо, что уделили время.
+You're welcome.|юэ уэлкэм|Пожалуйста. (в ответ на спасибо)
+Don't mention it.|доунт меншн ит|Не стоит благодарности.
+No problem.|ноу проблем|Без проблем.
+My pleasure.|май плежэ|С удовольствием.
+Excuse me.|икскьюз ми|Извините. (чтобы обратиться)
+Sorry.|сори|Простите.
+I'm sorry.|айм сори|Мне жаль.
+I'm so sorry.|айм соу сори|Мне очень жаль.
+I apologize.|ай эполэджэйз|Приношу свои извинения.
+Sorry for being late.|сори фо биинг лэйт|Простите за опоздание.
+Sorry to bother you.|сори ту босэ ю|Извините за беспокойство.
+That's okay.|дэтс оукэй|Всё в порядке.
+It doesn't matter.|ит дазнт мэтэ|Это неважно.
+Never mind.|нэвэ майнд|Забудьте.
+Don't worry.|доунт вари|Не волнуйтесь.
+Pardon?|пардн|Прошу прощения?
+Could you repeat that, please?|куд ю рипит дэт, плиз|Не могли бы вы повторить?
+Could you speak more slowly?|куд ю спик мо слоули|Не могли бы вы говорить медленнее?
+I don't understand.|ай доунт андэстэнд|Я не понимаю.
+I didn't catch that.|ай диднт кэч дэт|Я не расслышал.
+What does this mean?|уот даз дис мин|Что это значит?
+How do you say this in English?|хау ду ю сэй дис ин инглиш|Как это сказать по-английски?
+How do you spell that?|хау ду ю спел дэт|Как это пишется?
+Can you write it down?|кэн ю райт ит даун|Вы можете это записать?
+Yes, please.|йес, плиз|Да, пожалуйста.
+No, thank you.|ноу, сэнк ю|Нет, спасибо.
+Of course.|оф кос|Конечно.
+Sure.|шуэ|Разумеется.
+Certainly.|сётнли|Безусловно.
+Absolutely.|эбсолютли|Абсолютно верно.
+Maybe.|мэйби|Возможно.
+Perhaps.|пэхэпс|Пожалуй.
+I think so.|ай синк соу|Думаю, да.
+I don't think so.|ай доунт синк соу|Не думаю.
+I agree.|ай эгри|Я согласен.
+I disagree.|ай дисэгри|Я не согласен.
+That's right.|дэтс райт|Это верно.
+That's true.|дэтс тру|Это правда.
+You're right.|юэ райт|Вы правы.
+I'm afraid not.|айм эфрэйд нот|Боюсь, что нет.
+After you.|афтэ ю|После вас.
+Go ahead.|гоу эхэд|Продолжайте.
+Here you are.|хиэ ю а|Вот, пожалуйста.
+Just a moment, please.|джаст э моумэнт, плиз|Одну минуту, пожалуйста.
+Wait a second.|уэйт э секэнд|Подождите секунду.
+Hold on a minute.|хоулд он э минит|Минутку.
+Congratulations!|кэнтрэтыюлэйшнэ|Поздравляю!
+Happy birthday!|хэпи бётдэй|С днём рождения!
+Merry Christmas!|мэри крисмэс|С Рождеством!
+Happy New Year!|хэпи нью йиэ|С Новым годом!
+Happy holidays!|хэпи холидэйэ|Счастливых праздников!
+Cheers!|чиэз|Ваше здоровье!
+Bless you!|блес ю|Будьте здоровы! (когда чихнули)
+Enjoy your meal!|инджой ё мил|Приятного аппетита!
+Enjoy!|инджой|Наслаждайтесь!
+Welcome back!|уэлкэм бэк|С возвращением!
+Say hello to your family.|сэй хэлоу ту ё фэмили|Передавайте привет семье.
+Give my regards to your parents.|гив май ригадз ту ё пэрэнтс|Передайте мой привет родителям.
+What's your name?|уотс ё нэйм|Как вас зовут?
+My name is Anna.|май нэйм из энэ|Меня зовут Анна.
+Nice to meet you.|найс ту мит ю|Приятно познакомиться.
+Pleased to meet you.|плизд ту мит ю|Рад знакомству.
+This is my friend.|дис из май френд|Это мой друг.
+Let me introduce my wife.|лет ми интрэдьюс май уайф|Позвольте представить мою жену.
+Where are you from?|узр ар ю фром|Откуда вы?
+I'm from Russia.|айм фром раша|Я из России.
+I come from Siberia.|ай кам фром сайбириэ|Я родом из Сибири.
+Which city do you live in?|уич сити ду ю лив ин|В каком городе вы живёте?
+I live in Germany now.|ай лив ин джёмэни нау|Сейчас я живу в Германии.
+How old are you?|хау оулд ар ю|Сколько вам лет?
+I'm thirty years old.|айм сётти йизэ оулд|Мне тридцать лет.
+Are you married?|ар ю мэрид|Вы женаты? / Вы замужем?
+I'm single.|айм сингл|Я не женат. / Я не замужем.
+I'm married.|айм мэрид|Я женат. / Я замужем.
+Do you have any children?|ду ю хэв эни чилдрэн|У вас есть дети?
+I have two kids.|ай хэв ту кидз|У меня двое детей.
+I have a big family.|ай хэв э биг фэмили|У меня большая семья.
+I have a brother and a sister.|ай хэв э брэзэ энд э систэ|У меня есть брат и сестра.
+I'm an only child.|айм эн оунли чайлд|Я единственный ребёнок.
+What do you do?|уот ду ю ду|Чем вы занимаетесь?
+What do you do for a living?|уот ду ю ду фор э ливинг|Кем вы работаете?
+I'm a teacher.|айм э тичэ|Я учитель.
+I work in an office.|ай уёк ин эн офис|Я работаю в офисе.
+I'm a student.|айм э стьюдэнт|Я студент.
+I'm retired.|айм ритайэд|Я на пенсии.
+I'm looking for a job.|айм лукинг фор э джоб|Я ищу работу.
+What do you do in your free time?|уот ду ю ду ин ё фри тайм|Чем вы занимаетесь в свободное время?
+I like reading books.|ай лайк ридинг букс|Я люблю читать книги.
+I enjoy listening to music.|ай инджой лисэнинг ту мьюзик|Мне нравится слушать музыку.
+I love cooking.|ай лав кукинг|Я обожаю готовить.
+I'm interested in photography.|айм интрэстид ин фэтогрэфи|Я интересуюсь фотографией.
+What are your hobbies?|уот ар ё хобиз|Какие у вас увлечения?
+Do you play any sports?|ду ю пляй эни спортс|Вы занимаетесь спортом?
+I go jogging every morning.|ай году джогинг эври монинг|Я бегаю каждое утро.
+I play football on weekends.|ай пляй футбол он уикэндз|По выходным я играю в футбол.
+Do you speak English?|ду ю спик инглиш|Вы говорите по-английски?
+I speak a little English.|ай спик э литл инглиш|Я немного говорю по-английски.
+My English is not very good.|май инглиш из нот вери гуд|Мой английский не очень хорош.
+I'm learning English.|айм лёнинг инглиш|Я учу английский.
+Your English is very good.|ё инглиш из вери гуд|У вас очень хороший английский.
+I want to improve my English.|ай уонт ту импрув май инглиш|Я хочу улучшить свой английский.
+What languages do you speak?|уот лэнгвиджиз ду ю спик|На каких языках вы говорите?
+Can you speak Russian?|кэн ю спик рашн|Вы говорите по-русски?
+Is this your first time here?|из дис ё фёст тайм хиэ|Вы здесь впервые?
+How long have you been here?|хау лонг хэв ю бин хиэ|Как давно вы здесь?
+I've been here for a week.|айв бин хиэ фор э уик|Я здесь уже неделю.
+How long are you staying?|хау лонг ар ю стэйинг|Как долго вы здесь пробудете?
+I'm here on vacation.|айм хиэ он вэкэйшн|Я здесь в отпуске.
+I'm here on business.|айм хиэ он бизнис|Я здесь по делам.
+Do you like it here?|ду ю лайк ит хиэ|Вам здесь нравится?
+I like this city very much.|ай лайк дис сити вери мач|Мне очень нравится этот город.
+It's a beautiful place.|итс э бьютифул плэйс|Это красивое место.
+What's the weather like today?|уотс зэ уэзэ лайк тудэй|Какая сегодня погода?
+It's a lovely day, isn't it?|итс э лавли дэй, изнт ит|Прекрасный день, не так ли?
+It's very hot today.|итс вери хот тудэй|Сегодня очень жарко.
+It's cold outside.|итс коулд аутсайд|На улице холодно.
+It's raining.|итс рэйнинг|Идёт дождь.
+It's snowing.|итс сноуинг|Идёт снег.
+It's windy.|итс уинди|Ветрено.
+The weather is nice.|зэ уэзэ из найс|Погода хорошая.
+I hope it doesn't rain.|ай хоуп ит дазнт рэйн|Надеюсь, дождя не будет.
+Do you have plans for the weekend?|ду ю хэв плэнз фор зэ уикэнд|У вас есть планы на выходные?
+What are you doing tonight?|уот ар ю дуинг тунайт|Что вы делаете сегодня вечером?
+Would you like to have coffee?|вуд ю лайк ту хэв кофи|Хотите выпить кофе?
+Do you want to go for a walk?|ду ю уонт ту гоу фор э уок|Хотите прогуляться?
+Let's meet tomorrow.|летс мит туморе|Давайте встретимся завтра.
+What time shall we meet?|уот тайм шэл уи мит|Во сколько встретимся?
+Where shall we meet?|уэр шэл уи мит|Где встретимся?
+I'd love to!|айд лав ту|С удовольствием!
+I'm afraid I can't.|айм эфрэйд ай кант|Боюсь, не смогу.
+Maybe another time.|мэйби эназэ тайм|Может быть, в другой раз.
+Can I have your phone number?|кэн ай хэв ё фоун намбэ|Можно ваш номер телефона?
+What's your email address?|уотс ё имэйл эдрэс|Какой у вас адрес электронной почты?
+Are you on social media?|ар ю он соушл мидиэ|Вы есть в соцсетях?
+I'll send you a message.|айл сенд ю э мэсидж|Я отправлю вам сообщение.
+I'll call you later.|айл кол ю лэйтэ|Я позвоню вам позже.
+Do you mind if I sit here?|ду ю майнд иф ай сит хиэ|Вы не возражаете, если я сяду здесь?
+Is this seat taken?|из дис сит тэйкн|Это место занято?
+Can I join you?|кэн ай джойн ю|Можно к вам присоединиться?
+Would you like some tea?|вуд ю лайк сам ти|Хотите чаю?
+Help yourself.|хелп ёсэлф|Угощайтесь.
+What do you think about it?|уот ду ю синк эбаут ит|Что вы об этом думаете?
+Tell me about yourself.|тел ми эбаут ёсэлф|Расскажите о себе.
+Tell me more about it.|тел ми мо эбаут ит|Расскажите об этом подробнее.
+That's interesting.|дэтс интрэстинг|Это интересно.
+Really?|риэли|Правда?
+Is that so?|из дэт соу|Неужели?
+You must be joking!|ю маст би джоукинг|Вы, должно быть, шутите!
+No way!|ноу уэй|Не может быть!
+What a surprise!|уот э сэпрайз|Какой сюрприз!
+That's great news!|дэтс грэйт ньюз|Отличные новости!
+I'm glad to hear that.|айм глэд ту хиэ дэт|Рад это слышать.
+I'm sorry to hear that.|айм сори ту хиэ дэт|Жаль это слышать.
+What a small world!|уот э смол уёлд|Как тесен мир!
+We have a lot in common.|уи хэв э лот ин комэн|У нас много общего.
+I have to go now.|ай хэв ту гоу нау|Мне пора идти.
+I must be going.|ай маст би гоуинг|Мне нужно идти.
+It was a pleasure talking to you.|ит уоз э плежэ токинг ту ю|Было приятно с вами поговорить.
+Where is the bus station?|уэр из зэ бас стэйшн|Где автовокзал?
+Where is the train station?|уэр из зэ трэйн стэйшн|Где железнодорожный вокзал?
+Where is the airport?|уэр из зи эпорт|Где аэропорт?
+Where is the nearest metro station?|уэр из зэ ниэрист метроу стэйшн|Где ближайшая станция метро?
+Where is the bathroom?|уэр из зэ батрум|Где туалет?
+How do I get to the city centre?|хау ду ай гет ту зэ сити сентэ|Как добраться до центра города?
+How far is it from here?|хау фа из ит фром хиэ|Как далеко это отсюда?
+Is it far?|из ит фа|Это далеко?
+Is it within walking distance?|из ит уизин уокинг дистэнс|Туда можно дойти пешком?
+Can you show me on the map?|кэн ю шоу ми он зэ мэп|Можете показать на карте?
+I'm lost.|айм лост|Я заблудился.
+Turn left.|тён лефт|Поверните налево.
+Turn right.|тён райт|Поверните направо.
+Go straight ahead.|гоу стрэйт эхед|Идите прямо.
+Go back.|гоу бэк|Идите назад.
+It's on the left.|итс он зэ лефт|Это слева.
+It's on the right.|итс он зэ райт|Это справа.
+It's next to the bank.|итс некст ту зэ бэнк|Это рядом с банком.
+It's opposite the hotel.|итс опэзит зэ хоутел|Это напротив гостиницы.
+It's around the corner.|итс эраунд зэ конэ|Это за углом.
+Take the first street on the left.|тэйк зэ фёст стрит он зэ лефт|Поверните на первую улицу налево.
+Cross the street.|крос зэ стрит|Перейдите улицу.
+Walk to the end of the street.|уок ту зи энд ов зэ стрит|Дойдите до конца улицы.
+Stop here, please.|стоп хиэ, плиз|Остановитесь здесь, пожалуйста.
+Where can I buy a ticket?|уэр кэн ай бай э тикит|Где можно купить билет?
+One ticket, please.|уан тикит, плиз|Один билет, пожалуйста.
+Two tickets to London, please.|ту тикитс ту лэндэн, плиз|Два билета до Лондона, пожалуйста.
+A single ticket, please.|э сингл тикит, плиз|Билет в один конец, пожалуйста.
+A return ticket, please.|э ритён тикит, плиз|Билет туда и обратно, пожалуйста.
+How much is the ticket?|хау мач из зэ тикит|Сколько стоит билет?
+What time does the train leave?|уот тайм даз зэ трэйн лив|Во сколько отправляется поезд?
+What time does the bus arrive?|уот тайм даз зэ бас эрайв|Во сколько прибывает автобус?
+Which platform does it leave from?|уич плэтфом даз ит лив фром|С какой платформы он отправляется?
+Is this the right train for Berlin?|из дис зэ райт трэйн фор бёлин|Это поезд до Берлина?
+Does this bus go to the museum?|даз дис бас гоу ту зэ мьюзиэм|Этот автобус идёт до музея?
+Where do I change trains?|уэр ду ай чэйндж трэйнз|Где мне сделать пересадку?
+Is this seat free?|из дис сит фри|Это место свободно?
+Next stop, please.|некст стоп, плиз|Следующая остановка, пожалуйста.
+Where should I get off?|уэр шуд ай гет оф|Где мне выходить?
+The train is delayed.|зэ трэйн из дилэйд|Поезд задерживается.
+The flight is cancelled.|зэ флайт из кэнсэлд|Рейс отменён.
+I missed my train.|ай мист май трэйн|Я опоздал на поезд.
+I missed my flight.|ай мист май флайт|Я опоздал на самолёт.
+What time is check-in?|уот тайм из чек-ин|Во сколько регистрация?
+Here is my passport.|хиэ из май пэспорт|Вот мой паспорт.
+Here is my boarding pass.|хиэ из май бодинг пас|Вот мой посадочный талон.
+Where is gate number five?|уэр из гэйт намбэ файв|Где выход номер пять?
+Where is the baggage claim?|уэр из зэ бэгидж клэйм|Где получение багажа?
+My luggage is lost.|май лагидж из лост|Мой багаж потерялся.
+I have nothing to declare.|ай хэв насинг ту диклэа|Мне нечего декларировать.
+What is the purpose of your visit?|уот из зэ пёпэс ов ё визит|Какова цель вашего визита?
+I'm here for tourism.|айм хиэ фо туризм|Я приехал как турист.
+I'll stay for ten days.|айл стэй фо тен дэйз|Я пробуду десять дней.
+Where can I get a taxi?|уэр кэн ай гет э тэкси|Где можно взять такси?
+Please take me to this address.|плиз тэйк ми ту дис эдрэс|Отвезите меня по этому адресу, пожалуйста.
+How much will it cost?|хау мач уил ит кост|Сколько это будет стоить?
+Keep the change.|кип зэ чэйндж|Сдачи не надо.
+Can you turn on the meter?|кэн ю тён он зэ митэ|Можете включить счётчик?
+I'd like to rent a car.|айд лайк ту рент э ка|Я хотел бы арендовать машину.
+Do you accept credit cards?|ду ю эксепт кредит кардз|Вы принимаете кредитные карты?
+Where is the nearest petrol station?|уэр из зэ ниэрист петрол стэйшн|Где ближайшая заправка?
+Fill it up, please.|фил ит ап, плиз|Заправьте полный бак, пожалуйста.
+I have a reservation.|ай хэв э рэзэвэйшн|У меня есть бронь.
+I'd like to book a room.|айд лайк ту бук э рум|Я хотел бы забронировать номер.
+Do you have any rooms available?|ду ю хэв эни румз эвэйлэбл|У вас есть свободные номера?
+A single room, please.|э сингл рум, плиз|Одноместный номер, пожалуйста.
+A double room, please.|э дабл рум, плиз|Двухместный номер, пожалуйста.
+How much is it per night?|хау мач из ит пё найт|Сколько стоит за ночь?
+Is breakfast included?|из брэкфэст инклудид|Завтрак включён?
+What time is breakfast?|уот тайм из брэкфэст|Во сколько завтрак?
+Can I see the room first?|кэн ай си зэ рум фёст|Можно сначала посмотреть номер?
+Is there Wi-Fi in the room?|из зэр уай-фай ин зэ рум|В номере есть Wi-Fi?
+What's the Wi-Fi password?|уотс зэ уай-фай пасуёд|Какой пароль от Wi-Fi?
+What time is check-out?|уот тайм из чек-аут|Во сколько нужно освободить номер?
+I'd like to check out.|айд лайк ту чек аут|Я хотел бы выписаться.
+Can I leave my luggage here?|кэн ай лив май лагидж хиэ|Можно оставить багаж здесь?
+Could you call a taxi for me?|куд ю кол э тэкси фо ми|Не могли бы вы вызвать мне такси?
+The room is too noisy.|зэ рум из ту нойзи|В номере слишком шумно.
+The air conditioning doesn't work.|зи ээ кондишнинг дазнт уёк|Кондиционер не работает.
+There is no hot water.|зэр из ноу хот уотэ|Нет горячей воды.
+Could I have another towel?|куд ай хэв эназэ тауэл|Можно ещё одно полотенце?
+Can you wake me up at seven?|кэн ю уэйк ми ап эт севн|Можете разбудить меня в семь?
+Where is the tourist information office?|уэр из зэ турист инфэмэйшн офис|Где туристическое бюро?
+Do you have a map of the city?|ду ю хэв э мэп ов зэ сити|У вас есть карта города?
+What are the main sights here?|уот ар зэ мэйн сайтс хиэ|Каковы главные достопримечательности?
+What do you recommend visiting?|уот ду ю рекэменд визитинг|Что вы посоветуете посетить?
+Is it worth seeing?|из ит уёс сиинг|Это стоит посмотреть?
+What time does the museum open?|уот тайм даз зэ мьюзиэм оупн|Во сколько открывается музей?
+What time does it close?|уот тайм даз ит клоуз|Во сколько он закрывается?
+How much is the entrance fee?|хау мач из зи энтрэнс фи|Сколько стоит вход?
+Are there any discounts for students?|ар зэр эни дискаунтс фо стьюдэнтс|Есть ли скидки для студентов?
+Can I take photos here?|кэн ай тэйк фоутоуз хиэ|Здесь можно фотографировать?
+Could you take a photo of us?|куд ю тэйк э фоутоу ов ас|Не могли бы вы нас сфотографировать?
+Is there a guided tour?|из зэр э гайдид туэ|Есть ли экскурсия с гидом?
+I'd like to join the tour.|айд лайк ту джойн зэ туэ|Я хотел бы присоединиться к экскурсии.
+What a beautiful view!|уот э бьютифул вью|Какой красивый вид!
+I need a visa.|ай нид э визэ|Мне нужна виза.
+My passport has expired.|май пэспорт хэз икспайэд|Мой паспорт просрочен.
+I'm traveling alone.|айм трэвлинг элоун|Я путешествую один.
+We're traveling as a group.|уиэ трэвлинг эз э груп|Мы путешествуем группой.
+I'm hungry.|айм хангри|Я голоден.
+I'm thirsty.|айм сёсти|Я хочу пить.
+Where is a good restaurant?|уэр из э гуд рэстронт|Где хороший ресторан?
+Can I see the menu?|кэн ай си зэ меню|Можно посмотреть меню?
+A table for two, please.|э тэйбл фо ту, плиз|Столик на двоих, пожалуйста.
+Is this table free?|из дис тэйбл фри|Этот столик свободен?
+May I order?|мэй ай одэ|Можно сделать заказ?
+What's today's special?|уотс тудэйз спешл|Какое сегодня блюдо дня?
+I'll have this one.|айл хэв дис уан|Я возьму это.
+Something to drink?|самсинг ту дринк|Что-нибудь выпить?
+Could I have some water?|куд ай хэв сам уотэ|Можно воды?
+I'd like some bread, please.|айд лайк сам брэд, плиз|Хлеба, пожалуйста.
+The check, please.|зэ чек, плиз|Счёт, пожалуйста.
+Do you take reservations?|ду ю тэйк рэзэвэйшнз|Вы принимаете брони?
+The menu, please.|зэ меню, плиз|Меню, пожалуйста.
+Do you have a menu in English?|ду ю хэв э меню ин инглиш|У вас есть меню на английском?
+What do you recommend?|уот ду ю рекэменд|Что вы посоветуете?
+What's the dish of the day?|уотс зэ диш ов зэ дэй|Какое блюдо дня?
+What's in this dish?|уотс ин дис диш|Что входит в это блюдо?
+Is it spicy?|из ит спайси|Оно острое?
+I'm allergic to nuts.|айм элёджик ту натс|У меня аллергия на орехи.
+I'm a vegetarian.|айм э веджитэриэн|Я вегетарианец.
+I don't eat meat.|ай доунт ит мит|Я не ем мясо.
+I don't eat pork.|ай доунт ит пок|Я не ем свинину.
+Does it contain gluten?|даз ит контэйн глутн|В нём есть глютен?
+I'd like to order, please.|айд лайк ту одэ, плиз|Я хотел бы сделать заказ.
+I'll have the soup.|айл хэв зэ суп|Я возьму суп.
+I'll have the same.|айл хэв зэ сэйм|Мне то же самое.
+For starters, I'd like a salad.|фо статэз, айд лайк э сэлэд|На закуску я хотел бы салат.
+For the main course, I'll have fish.|фо зэ мэйн кос, айл хэв фиш|На основное блюдо я возьму рыбу.
+What's for dessert?|уотс фо дизёт|Что на десерт?
+I'd like some water, please.|айд лайк сам уотэ, плиз|Я хотел бы воды, пожалуйста.
+Still or sparkling water?|стил о спаклинг уотэ|Вода без газа или с газом?
+A glass of orange juice, please.|э глас ов оринж джус, плиз|Стакан апельсинового сока, пожалуйста.
+A cup of coffee, please.|э кап ов кофи, плиз|Чашку кофе, пожалуйста.
+Black coffee, please.|блэк кофи, плиз|Чёрный кофе, пожалуйста.
+Coffee with milk, please.|кофи уиз милк, плиз|Кофе с молоком, пожалуйста.
+Tea with lemon, please.|ти уиз лемэн, плиз|Чай с лимоном, пожалуйста.
+Do you have any beer?|ду ю хэв эни биэ|У вас есть пиво?
+A glass of red wine, please.|э глас ов ред уайн, плиз|Бокал красного вина, пожалуйста.
+Could we have some bread?|куд уи хэв сам брэд|Можно нам хлеба?
+Could I have some more water?|куд ай хэв сам мо уотэ|Можно ещё воды?
+Could you bring us the salt?|куд ю бринг ас зэ солт|Принесите нам соль, пожалуйста.
+Can I have a fork, please?|кэн ай хэв э фок, плиз|Можно мне вилку?
+I need a napkin.|ай нид э нэпкин|Мне нужна салфетка.
+This is delicious!|дис из дилишэс|Это очень вкусно!
+It tastes great.|ит тэйстс грэйт|На вкус отлично.
+It smells wonderful.|ит смелз уандэфул|Пахнет замечательно.
+This is too salty.|дис из ту солти|Это слишком солёное.
+This is too sweet.|дис из ту суит|Это слишком сладкое.
+This is cold.|дис из коулд|Это холодное.
+This isn't what I ordered.|дис изнт уот ай одэд|Это не то, что я заказывал.
+I didn't order this.|ай диднт одэ дис|Я этого не заказывал.
+The food is not fresh.|зэ фуд из нот фрэш|Еда несвежая.
+Could you heat it up, please?|куд ю хит ит ап, плиз|Не могли бы вы разогреть?
+Is everything all right?|из эврисинг ол райт|Всё в порядке?
+Everything was wonderful.|эврисинг уоз уандэфул|Всё было замечательно.
+The meal was excellent.|зэ мил уоз эксэлент|Еда была превосходной.
+Could I have the bill, please?|куд ай хэв зэ бил, плиз|Можно счёт, пожалуйста?
+Check, please.|чек, плиз|Счёт, пожалуйста.
+Let's split the bill.|летс сплит зэ бил|Давайте разделим счёт.
+It's on me.|итс он ми|Это за мой счёт.
+I'll pay.|айл пэй|Я заплачу.
+Is the service included?|из зэ сёвис инклудид|Обслуживание включено?
+Can I pay by card?|кэн ай пэй бай кад|Можно оплатить картой?
+Can I pay in cash?|кэн ай пэй ин кэш|Можно оплатить наличными?
+Keep the change, please.|кип зэ чэйндж, плиз|Сдачу оставьте себе.
+Can I get a takeaway?|кэн ай гет э тэйкэуэй|Можно заказать с собой?
+Can I have this to go?|кэн ай хэв дис ту гоу|Упакуйте это с собой, пожалуйста.
+I'd like a sandwich.|айд лайк э сэндвидж|Я хотел бы бутерброд.
+I'd like a hamburger and fries.|айд лайк э хэмбёгэ энд фрайз|Я хотел бы гамбургер и картошку фри.
+I'd like a slice of pizza.|айд лайк э слайс ов питсэ|Я хотел бы кусок пиццы.
+I'll have a salad without onions.|айл хэв э сэлэд уизаут аньэнз|Мне салат без лука.
+I like my steak medium.|ай лайк май стэйк мидиэм|Мне стейк средней прожарки.
+Well done, please.|уэл дан, плиз|Хорошо прожаренный, пожалуйста.
+What kind of soup do you have?|уот кайнд ов суп ду ю хэв|Какие у вас есть супы?
+Do you have fresh fruit?|ду ю хэв фрэш фрут|У вас есть свежие фрукты?
+What flavors of ice cream do you have?|уот флэйвэз ов айс крим ду ю хэв|Какие вкусы мороженого у вас есть?
+I'd like some chocolate cake.|айд лайк сам чоклит кэйк|Я хотел бы шоколадный торт.
+I'm on a diet.|айм он э дайэт|Я на диете.
+I'd like a small portion.|айд лайк э смол пошн|Мне небольшую порцию.
+I'd like a large portion.|айд лайк э ладж пошн|Мне большую порцию.
+Could you make it less spicy?|куд ю мэйк ит лес спайси|Можно сделать менее острым?
+Please don't add sugar.|плиз доунт эд шугэ|Пожалуйста, не добавляйте сахар.
+I'd like it without ice.|айд лайк ит уизаут айс|Я хотел бы без льда.
+What time do you close?|уот тайм ду ю клоуз|Во сколько вы закрываетесь?
+Is the kitchen still open?|из зэ китчин стил оупн|Кухня ещё работает?
+Let's go to a café.|летс гоу ту э кэфэй|Пойдёмте в кафе.
+Let's order something to drink.|летс одэ самсинг ту дринк|Давайте закажем что-нибудь выпить.
+I'm cooking dinner tonight.|айм кукинг динэ тунайт|Сегодня вечером я готовлю ужин.
+What are we having for dinner?|уот ар уи хэвинг фо динэ|Что у нас на ужин?
+Dinner is ready!|динэ из реди|Ужин готов!
+Please pass me the salt.|плиз пас ми зэ солт|Передайте мне соль, пожалуйста.
+Would you like more?|вуд ю лайк мо|Хотите добавки?
+No more, thank you.|ноу мо, сэнк ю|Больше не надо, спасибо.
+I'll have seconds.|айл хэв секэндз|Я возьму добавки.
+I love homemade food.|ай лав хоуммэйд фуд|Я люблю домашнюю еду.
+My favorite dish is borscht.|май фэйвэрит диш из боршт|Моё любимое блюдо — борщ.
+I'd like to try the local cuisine.|айд лайк ту трай зэ лоукл куизин|Я хотел бы попробовать местную кухню.
+Could you give me the recipe?|куд ю гив ми зэ ресипи|Не могли бы вы дать мне рецепт?
+Where is the supermarket?|уэр из зэ супэмакет|Где супермаркет?
+I'm just looking, thanks.|айм джаст лукинг, сэнкс|Я просто смотрю, спасибо.
+Can I help you?|кэн ай хелп ю|Могу я вам помочь?
+I'm looking for a gift.|айм лукинг фор э гифт|Я ищу подарок.
+Where can I find the shoes?|уэр кэн ай файнд зэ шуз|Где найти обувь?
+What size do you wear?|уот сайз ду ю уэа|Какой размер вы носите?
+Do you have this in my size?|ду ю хэв дис ин май сайз|У вас есть это в моём размере?
+How much does it cost?|хау мач даз ит кост|Сколько это стоит?
+Can I pay here?|кэн ай пэй хиэ|Можно оплатить здесь?
+Do you take credit cards?|ду ю тэйк кредит кардз|Вы принимаете кредитные карты?
+I'd like to buy this.|айд лайк ту бай дис|Я хотел бы купить это.
+Can I have a receipt?|кэн ай хэв э рисит|Можно мне чек?
+Thank you, come again!|сэнк ю, кам эгэн|Спасибо, приходите ещё!
+What size is this?|уот сайз из дис|Какой это размер?
+My size is medium.|май сайз из мидиэм|Мой размер средний.
+Do you have it in black?|ду ю хэв ит ин блэк|Есть ли это в чёрном цвете?
+Do you have other colors?|ду ю хэв азэ калэз|Есть ли другие цвета?
+Can I try it on?|кэн ай трай ит он|Можно примерить?
+Where is the fitting room?|уэр из зэ фитинг рум|Где примерочная?
+It doesn't fit me.|ит дазнт фит ми|Мне это не подходит по размеру.
+It's too big.|итс ту биг|Это слишком большое.
+It's too small.|итс ту смол|Это слишком маленькое.
+It's too tight.|итс ту тайт|Это слишком тесно.
+It's too long.|итс ту лонг|Это слишком длинное.
+It's too short.|итс ту шот|Это слишком короткое.
+It fits perfectly.|ит фитс пёфиктли|Сидит идеально.
+It looks good on you.|ит лукс гуд он ю|Вам это идёт.
+I like this one.|ай лайк дис уан|Мне нравится этот.
+I don't like the color.|ай доунт лайк зэ калэ|Мне не нравится цвет.
+I'll take it.|айл тэйк ит|Я возьму это.
+I'll take both.|айл тэйк босу|Я возьму оба.
+I'll think about it.|айл синк эбаут ит|Я подумаю.
+How much is this?|хау мач из дис|Сколько это стоит?
+How much are these shoes?|хау мач ар диз шуз|Сколько стоят эти туфли?
+How much does it cost in total?|хау мач даз ит кост ин тоутл|Сколько это стоит всего?
+It's too expensive.|итс ту икспенсив|Это слишком дорого.
+It's very cheap.|итс вери чип|Это очень дёшево.
+It's a good price.|итс э гуд прайс|Хорошая цена.
+Do you have anything cheaper?|ду ю хэв энисинг чипэ|У вас есть что-нибудь дешевле?
+Is there a discount?|из зэр э дискаунт|Есть ли скидка?
+Can you give me a discount?|кэн ю гив ми э дискаунт|Можете сделать скидку?
+It's on sale.|итс он сэйл|Это по распродаже.
+Is this on sale?|из дис он сэйл|Это на распродаже?
+What's the original price?|уотс зи эриджинл прайс|Какая первоначальная цена?
+Is tax included?|из тэкс инклудид|Налог включён?
+Where do I pay?|уэр ду ай пэй|Где оплатить?
+Where is the cash register?|уэр из зэ кэш рэджистэ|Где касса?
+Do you accept cards?|ду ю эксепт кардз|Вы принимаете карты?
+I'll pay in cash.|айл пэй ин кэш|Я заплачу наличными.
+I'll pay by card.|айл пэй бай кад|Я заплачу картой.
+Can I get a receipt?|кэн ай гет э рисит|Можно чек?
+Could I have a bag, please?|куд ай хэв э бэг, плиз|Можно пакет, пожалуйста?
+Do you have change?|ду ю хэв чэйндж|У вас есть сдача?
+I don't have small change.|ай доунт хэв смол чэйндж|У меня нет мелочи.
+Here's your change.|хиэз ё чэйндж|Вот ваша сдача.
+You gave me the wrong change.|ю гэйв ми зэ ронг чэйндж|Вы дали мне неправильную сдачу.
+Can I return this?|кэн ай ритён дис|Можно это вернуть?
+I'd like to exchange this.|айд лайк ту икстчэйндж дис|Я хотел бы это обменять.
+I'd like a refund.|айд лайк э рифанд|Я хотел бы вернуть деньги.
+It's damaged.|итс дэмиджд|Это повреждено.
+It doesn't work.|ит дазнт уёк|Это не работает.
+Do you have a guarantee?|ду ю хэв э гэрэнти|Есть ли гарантия?
+Is it in stock?|из ит ин сток|Это есть в наличии?
+It's out of stock.|итс аут ов сток|Этого нет в наличии.
+Can you order it for me?|кэн ю одэ ит фо ми|Можете заказать это для меня?
+When will it be available?|уэн уил ит би эвэйлэбл|Когда это будет в наличии?
+Could you gift wrap it?|куд ю гифт рэп ит|Можете упаковать в подарочную бумагу?
+Could you deliver it to my address?|куд ю дэливэ ит ту май эдрэс|Можете доставить по моему адресу?
+How long does delivery take?|хау лонг даз дэливэри тэйк|Сколько занимает доставка?
+Is delivery free?|из дэливэри фри|Доставка бесплатная?
+I'd like a kilo of apples.|айд лайк э килоу ов эплз|Я хотел бы килограмм яблок.
+Half a kilo of cheese, please.|хаф э килоу ов чиз, плиз|Полкило сыра, пожалуйста.
+A loaf of bread, please.|э лоуф ов брэд, плиз|Буханку хлеба, пожалуйста.
+A bottle of milk, please.|э ботл ов милк, плиз|Бутылку молока, пожалуйста.
+Where is the dairy section?|уэр из зэ дэри секшн|Где молочный отдел?
+Where can I find bread?|уэр кэн ай файнд брэд|Где найти хлеб?
+Is this fresh?|из дис фрэш|Это свежее?
+What's the expiry date?|уотс зи икспайэри дэйт|Какой срок годности?
+Do you sell medicine here?|ду ю сел медин хиэ|Вы продаёте здесь лекарства?
+I need a pharmacy.|ай нид э фармэси|Мне нужна аптека.
+I need a bank.|ай нид э бэнк|Мне нужен банк.
+Where is the nearest ATM?|уэр из зэ ниэрист эй-ти-эм|Где ближайший банкомат?
+I'd like to withdraw some money.|айд лайк ту уиздро сам мани|Я хотел бы снять немного денег.
+I'd like to change some money.|айд лайк ту чэйндж сам мани|Я хотел бы обменять немного денег.
+What's the exchange rate?|уотс зи икстчэйндж рэйт|Какой курс обмена?
+I'd like to change euros into dollars.|айд лайк ту чэйндж юроуз инту долэз|Я хотел бы обменять евро на доллары.
+Can I open an account?|кэн ай оупн эн экаунт|Могу я открыть счёт?
+My card doesn't work.|май кад дазнт уёк|Моя карта не работает.
+My card was declined.|май кад уоз диклайнд|Мою карту отклонили.
+I forgot my PIN.|ай фэгот май пин|Я забыл свой ПИН-код.
+I'd like to send this parcel.|айд лайк ту сенд дис пасл|Я хотел бы отправить эту посылку.
+How much is a stamp?|хау мач из э стэмп|Сколько стоит марка?
+Where is the post office?|уэр из зэ пост офис|Где почта?
+How long will it take to arrive?|хау лонг уил ит тэйк ту эрайв|Сколько времени займёт доставка?
+I'm buying a present for my mother.|айм байинг э прэзэнт фо май мазэ|Я покупаю подарок для мамы.
+It's a souvenir from Russia.|итс э сувэниэ фром раша|Это сувенир из России.
+I'd like to buy something special.|айд лайк ту бай самсинг спешл|Я хотел бы купить что-нибудь особенное.
+That's all, thank you.|дэтс ол, сэнк ю|Это всё, спасибо.
+Anything else?|энисинг элс|Что-нибудь ещё?
+Thanks for shopping with us.|сэнкс фо шопинг уиз ас|Спасибо за покупку.
+What is your profession?|уот из ё прэфэшн|Какая у вас профессия?
+Where do you work?|уэр ду ю уёк|Где вы работаете?
+I work for a large company.|ай уёк фо э ладж кампэни|Я работаю в крупной компании.
+I work from home.|ай уёк фром хоум|Я работаю из дома.
+I'm self-employed.|айм сэлф-имплойд|Я работаю на себя.
+I work full-time.|ай уёк фул-тайм|Я работаю на полную ставку.
+I work part-time.|ай уёк пат-тайм|Я работаю на неполную ставку.
+I start work at nine.|ай стат уёк эт найн|Я начинаю работу в девять.
+I finish work at six.|ай финиш уёк эт сикс|Я заканчиваю работу в шесть.
+I have a lot of work to do.|ай хэв э лот ов уёк ту ду|У меня много работы.
+I'm very busy today.|айм вери бизи тудэй|Сегодня я очень занят.
+I'm free this afternoon.|айм фри дис афтэнун|Сегодня днём я свободен.
+I'm on a business trip.|айм он э бизнис трип|Я в командировке.
+I'm on vacation.|айм он вэкэйшн|Я в отпуске.
+I'm on sick leave.|айм он сик лив|Я на больничном.
+I have a meeting at ten.|ай хэв э митинг эт тен|У меня встреча в десять.
+The meeting starts at noon.|зэ митинг статс эт нун|Совещание начинается в полдень.
+The meeting has been postponed.|зэ митинг хэз бин поустпоунд|Совещание перенесено.
+The meeting is cancelled.|зэ митинг из кэнсэлд|Совещание отменено.
+Let's schedule a meeting.|летс шедьюл э митинг|Давайте назначим встречу.
+Can we reschedule?|кэн уи рискедьюл|Можем ли мы перенести?
+What's on the agenda?|уотс он зи эджэндэ|Что в повестке дня?
+Let's get started.|летс гет статид|Давайте начнём.
+Let's move on to the next point.|летс мув он ту зэ некст пойнт|Перейдём к следующему пункту.
+Could you explain that again?|куд ю иксплэйн дэт эгэн|Не могли бы вы объяснить ещё раз?
+Let me clarify.|лет ми клэрифай|Позвольте уточнить.
+I'd like to make a suggestion.|айд лайк ту мэйк э сэджэсчн|Я хотел бы внести предложение.
+I have a question.|ай хэв э квесчн|У меня есть вопрос.
+Could I add something?|куд ай эд самсинг|Можно мне кое-что добавить?
+That's a good point.|дэтс э гуд пойнт|Хороший довод.
+I see your point.|ай си ё пойнт|Я понимаю вашу мысль.
+I'm not sure I agree.|айм нот шуэ ай эгри|Не уверен, что согласен.
+Let's discuss it further.|летс дискас ит фёзэ|Давайте обсудим это подробнее.
+We need to make a decision.|уи нид ту мэйк э дисижн|Нам нужно принять решение.
+We have to meet the deadline.|уи хэв ту мит зэ дэдлайн|Мы должны уложиться в срок.
+When is the deadline?|уэн из зэ дэдлайн|Когда крайний срок?
+It needs to be done by Friday.|ит нидз ту би дан бай фрайдэй|Это нужно сделать к пятнице.
+I'll finish it today.|айл финиш ит тудэй|Я закончу это сегодня.
+I'll do my best.|айл ду май бэст|Я сделаю всё возможное.
+I'm working on it.|айм уёкинг он ит|Я работаю над этим.
+It's in progress.|итс ин прогресс|Это в процессе.
+It's almost done.|итс олмоуст дан|Это почти готово.
+The project is on schedule.|зэ проджэкт из он шедьюл|Проект идёт по графику.
+We're behind schedule.|уиэ бихайнд шедьюл|Мы отстаём от графика.
+We need more time.|уи нид мо тайм|Нам нужно больше времени.
+Could you send me the report?|куд ю сенд ми зэ рипот|Не могли бы вы прислать мне отчёт?
+I'll send you the file.|айл сенд ю зэ файл|Я пришлю вам файл.
+Please check your email.|плиз чек ё имэйл|Пожалуйста, проверьте почту.
+I'll get back to you soon.|айл гет бэк ту ю сун|Я скоро вам отвечу.
+Thank you for your email.|сэнк ю фо ё имэйл|Спасибо за ваше письмо.
+I'm writing to ask about the job.|айм райтинг ту аск эбаут зэ джоб|Я пишу, чтобы узнать о вакансии.
+Please find the attachment.|плиз файнд зи этэчмэнт|Во вложении вы найдёте файл.
+I look forward to hearing from you.|ай лук фоузд ту хиэринг фром ю|Жду вашего ответа.
+Best regards,|бэст ригадз|С уважением,
+Kind regards,|кайнд ригадз|С наилучшими пожеланиями,
+Dear Mr. Smith,|диэ мистэ смит|Уважаемый господин Смит,
+Dear Sir or Madam,|диэ сё о мэдэм|Уважаемые господа,
+I'd like to apply for the position.|айд лайк ту эплай фо зэ пэзишн|Я хотел бы подать заявку на должность.
+Here is my CV.|хиэ из май си-ви|Вот моё резюме.
+I have five years of experience.|ай хэв файв йизэ ов икспиэриэнс|У меня пятилетний опыт.
+I have a degree in economics.|ай хэв э дигри ин икэномикс|У меня диплом по экономике.
+I'm good at working in a team.|айм гуд эт уёкинг ин э тим|Я хорошо работаю в команде.
+I'm a quick learner.|айм э квик лёнэ|Я быстро учусь.
+When can I start?|уэн кэн ай стат|Когда я могу начать?
+What is the salary?|уот из зэ сэлэри|Какова зарплата?
+What are the working hours?|уот ар зэ уёкинг ауэз|Каков график работы?
+Do I get paid holidays?|ду ай гет пэйд холидэйз|Предусмотрен ли оплачиваемый отпуск?
+I got a promotion.|ай гот э прэмоушн|Меня повысили.
+I got a raise.|ай гот э рэйз|Мне повысили зарплату.
+I lost my job.|ай лост май джоб|Я потерял работу.
+I quit my job.|ай квит май джоб|Я уволился.
+I'd like to resign.|айд лайк ту ризайн|Я хотел бы подать в отставку.
+He is my boss.|хи из май бос|Он мой начальник.
+She is my colleague.|ши из май колиг|Она моя коллега.
+We work as a team.|уи уёк эз э тим|Мы работаем как команда.
+Who is in charge here?|ху из ин чадж хиэ|Кто здесь главный?
+Could you help me with this task?|куд ю хелп ми уиз дис таск|Не могли бы вы помочь мне с этой задачей?
+I need your advice.|ай нид ё эдвайс|Мне нужен ваш совет.
+Can I ask you a favor?|кэн ай аск ю э фэйвэ|Могу я попросить вас об одолжении?
+Thanks for your support.|сэнкс фо ё сапот|Спасибо за поддержку.
+Great job!|грэйт джоб|Отличная работа!
+Well done!|уэл дан|Молодец!
+Keep up the good work.|кип ап зэ гуд уёк|Так держать.
+I made a mistake.|ай мэйд э мистэйк|Я допустил ошибку.
+It's my fault.|итс май фолт|Это моя вина.
+It won't happen again.|ит уонт хэпн эгэн|Этого больше не повторится.
+Let's take a break.|летс тэйк э брэйк|Давайте сделаем перерыв.
+I need a day off.|ай нид э дэй оф|Мне нужен выходной.
+I'm studying at university.|айм стьюдинг эт юнивёсити|Я учусь в университете.
+I'm studying medicine.|айм стьюдинг медин|Я изучаю медицину.
+I have an exam tomorrow.|ай хэв эн игзам туморе|Завтра у меня экзамен.
+I passed the exam.|ай паст зи игзам|Я сдал экзамен.
+I failed the exam.|ай фэйлд зи игзам|Я не сдал экзамен.
+I have to do my homework.|ай хэв ту ду май хоумвёк|Мне нужно сделать домашнее задание.
+I need to study for the test.|ай нид ту стьюди фо зэ тэст|Мне нужно готовиться к контрольной.
+The lesson starts at eight.|зэ лесн статс эт эйт|Урок начинается в восемь.
+Please open your books.|плиз оупн ё букс|Пожалуйста, откройте книги.
+Could you spell that for me?|куд ю спел дэт фо ми|Можете продиктовать по буквам?
+Let me think about it.|лет ми синк эбаут ит|Дайте мне подумать.
+I don't know the answer.|ай доунт ноу зи ансэ|Я не знаю ответа.
+I'm happy.|айм хэпи|Я счастлив.
+I'm very happy today.|айм вери хэпи тудэй|Сегодня я очень счастлив.
+I'm so excited!|айм соу иксайтид|Я так взволнован!
+I'm looking forward to it.|айм лукинг фоузд ту ит|Я с нетерпением этого жду.
+I can't wait!|ай кант уэйт|Не могу дождаться!
+I'm proud of you.|айм прауд ов ю|Я горжусь тобой.
+I'm grateful for your help.|айм грэйтфул фо ё хелп|Я благодарен за вашу помощь.
+I feel great.|ай фил грэйт|Я чувствую себя прекрасно.
+I feel relaxed.|ай фил рилэксд|Я чувствую себя расслабленно.
+I feel lucky.|ай фил лаки|Мне повезло.
+I'm sad.|айм сэд|Мне грустно.
+I feel lonely.|ай фил лоунли|Мне одиноко.
+I feel tired.|ай фил тайэд|Я чувствую усталость.
+I'm exhausted.|айм игзостид|Я измотан.
+I'm bored.|айм бод|Мне скучно.
+I'm worried.|айм уэрид|Я беспокоюсь.
+I'm nervous.|айм нёвэс|Я нервничаю.
+I'm scared.|айм скэд|Мне страшно.
+I'm afraid of spiders.|айм эфрэйд ов спайдэз|Я боюсь пауков.
+I'm angry.|айм энгри|Я зол.
+I'm upset.|айм апсэт|Я расстроен.
+I'm disappointed.|айм диспойнтид|Я разочарован.
+I'm confused.|айм кэнфьюзд|Я в замешательстве.
+I'm surprised.|айм сэпрайзд|Я удивлён.
+I'm embarrassed.|айм имбэрэст|Мне неловко.
+I'm stressed.|айм стрэст|Я в стрессе.
+I'm in a bad mood.|айм ин э бэд муд|У меня плохое настроение.
+I'm in a good mood.|айм ин э гуд муд|У меня хорошее настроение.
+I feel much better now.|ай фил мач бэтэ нау|Теперь я чувствую себя гораздо лучше.
+Cheer up!|чиэ ап|Выше нос!
+Calm down.|кам даун|Успокойтесь.
+Take it easy.|тэйк ит изи|Не напрягайтесь.
+Everything will be fine.|эврисинг уил би файн|Всё будет хорошо.
+Don't give up.|доунт гив ап|Не сдавайтесь.
+Believe in yourself.|билив ин ёсэлф|Верьте в себя.
+I'm here for you.|айм хиэ фо ю|Я рядом с тобой.
+You can count on me.|ю кэн каунт он ми|Ты можешь на меня рассчитывать.
+I trust you.|ай траст ю|Я вам доверяю.
+I love you.|ай лав ю|Я люблю тебя.
+I miss you.|ай мис ю|Я скучаю по тебе.
+I like you.|ай лайк ю|Ты мне нравишься.
+I care about you.|ай кэа эбаут ю|Ты мне небезразличен.
+You mean a lot to me.|ю мин э лот ту ми|Ты много для меня значишь.
+You make me happy.|ю мэйк ми хэпи|Ты делаешь меня счастливым.
+I like it.|ай лайк ит|Мне это нравится.
+I really like it.|ай риэли лайк ит|Мне это очень нравится.
+I love it!|ай лав ит|Я это обожаю!
+I don't like it.|ай доунт лайк ит|Мне это не нравится.
+I hate it.|ай хэйт ит|Я это ненавижу.
+I prefer tea to coffee.|ай прифё ти ту кофи|Я предпочитаю чай кофе.
+I'd rather stay at home.|айд разэ стэй эт хоум|Я лучше останусь дома.
+I enjoy spending time with you.|ай инджой спендинг тайм уиз ю|Мне нравится проводить с тобой время.
+I'm fond of music.|айм фонд ов мьюзик|Я люблю музыку.
+I'm interested in history.|айм интрэстид ин хистэри|Меня интересует история.
+I'm not interested.|айм нот интрэстид|Мне это неинтересно.
+In my opinion, it's a good idea.|ин май эпиниэн, итс э гуд айдиэ|По-моему, это хорошая идея.
+I think you're right.|ай синк юэ райт|Я думаю, вы правы.
+I think it's too difficult.|ай синк итс ту дифкиэлт|Я думаю, это слишком трудно.
+I believe so.|ай билив соу|Я так считаю.
+I'm not sure.|айм нот шуэ|Я не уверен.
+I'm sure about that.|айм шуэ эбаут дэт|Я уверен в этом.
+I have no idea.|ай хэв ноу айдиэ|Понятия не имею.
+I have no doubt.|ай хэв ноу даут|Я не сомневаюсь.
+I doubt it.|ай даут ит|Сомневаюсь.
+It depends.|ит дипендз|Это зависит от обстоятельств.
+It makes sense.|ит мэйкс сэнс|В этом есть смысл.
+It doesn't make sense.|ит дазнт мэйк сэнс|В этом нет смысла.
+That's a good idea.|дэтс э гуд айдиэ|Это хорошая идея.
+That's a bad idea.|дэтс э бэд айдиэ|Это плохая идея.
+That's wonderful!|дэтс уандэфул|Это замечательно!
+That's terrible!|дэтс тэрибл|Это ужасно!
+That's amazing!|дэтс эмэйзинг|Это потрясающе!
+That's ridiculous!|дэтс ридикьюлэс|Это нелепо!
+That's impossible.|дэтс импосибл|Это невозможно.
+That's not fair.|дэтс нот фэа|Это несправедливо.
+That's not my fault.|дэтс нот май фолт|Это не моя вина.
+That's very kind of you.|дэтс вери кайнд ов ю|Это очень мило с вашей стороны.
+That's none of your business.|дэтс нан ов ё бизнис|Это не ваше дело.
+What a pity!|уот э пити|Как жаль!
+What a shame!|уот э шэйм|Какой позор!
+What a relief!|уот э рилиф|Какое облегчение!
+What a beautiful day!|уот э бьютифул дэй|Какой прекрасный день!
+How strange!|хау стрэйндж|Как странно!
+How funny!|хау фани|Как смешно!
+How lovely!|хау лавли|Как мило!
+How awful!|хау оуфул|Как ужасно!
+I can't believe it!|ай кант билив ит|Не могу в это поверить!
+I'm speechless.|айм спичлис|У меня нет слов.
+I have mixed feelings.|ай хэв микст филингз|У меня смешанные чувства.
+I feel guilty.|ай фил гилти|Я чувствую вину.
+I regret it.|ай ригрэт ит|Я об этом сожалею.
+I forgive you.|ай фэгив ю|Я прощаю тебя.
+Please forgive me.|плиз фэгив ми|Пожалуйста, простите меня.
+I hope you feel better soon.|ай хоуп ю фил бэтэ сун|Надеюсь, вы скоро поправитесь.
+I wish you all the best.|ай уиш ю ол зэ бэст|Желаю вам всего наилучшего.
+I wish I could help.|ай уиш ай куд хелп|Хотел бы я помочь.
+I'm on your side.|айм он ё сайд|Я на вашей стороне.
+Thank you for understanding.|сэнк ю фо андэстэндинг|Спасибо за понимание.
+I feel at home here.|ай фил эт хоум хиэ|Здесь я чувствую себя как дома.
+Life is beautiful.|лайф из бьютифул|Жизнь прекрасна.
+What time is it?|уот тайм из ит|Который час?
+It's three o'clock.|итс сри эклок|Сейчас три часа.
+What day is it today?|уот дэй из ит тудэй|Какой сегодня день?
+Today is Monday.|тудэй из мандэй|Сегодня понедельник.
+What's the date today?|уотс зэ дэйт тудэй|Какое сегодня число?
+It's the first of May.|итс зэ фёст ов мэй|Сегодня первое мая.
+I'm late.|айм лэйт|Я опаздываю.
+I'm early.|айм ёли|Я рано.
+I'm on time.|айм он тайм|Я вовремя.
+Let's go home.|летс гоу хоум|Пойдём домой.
+I'm at home.|айм эт хоум|Я дома.
+The door is open.|зэ до из оупн|Дверь открыта.
+Close the door, please.|клоуз зэ до, плиз|Закройте дверь, пожалуйста.
+What a beautiful house!|уот э бьютифул хаус|Какой красивый дом!
+I like your place.|ай лайк ё плэйс|Мне нравится ваше жильё.
+I wake up early.|ай уэйк ап ёли|Я просыпаюсь рано.
+I go to bed late.|ай гоу ту бэд лэйт|Я ложусь спать поздно.
+I go to sleep at eleven.|ай гоу ту слип эт илэвн|Я засыпаю в одиннадцать.
+I can't sleep.|ай кант слип|Я не могу уснуть.
+I overslept.|ай оувэслэпт|Я проспал.
+I take a shower every morning.|ай тэйк э шауэ эври монинг|Я принимаю душ каждое утро.
+I brush my teeth.|ай браш май тис|Я чищу зубы.
+I get dressed.|ай гет дрэст|Я одеваюсь.
+I make my bed.|ай мэйк май бэд|Я заправляю постель.
+I have breakfast at eight.|ай хэв брэкфэст эт эйт|Я завтракаю в восемь.
+I leave home at half past eight.|ай лив хоум эт хаф паст эйт|Я ухожу из дома в половине девятого.
+I go to work by bus.|ай гоу ту уёк бай бас|Я езжу на работу на автобусе.
+I walk to work.|ай уок ту уёк|Я хожу на работу пешком.
+I come back home at six.|ай кам бэк хоум эт сикс|Я возвращаюсь домой в шесть.
+I cook dinner in the evening.|ай кук динэ ин зи ивнинг|По вечерам я готовлю ужин.
+I watch TV after dinner.|ай уоч ти-ви афтэ динэ|После ужина я смотрю телевизор.
+I read before bed.|ай рид бифо бэд|Я читаю перед сном.
+I do the laundry on Saturday.|ай ду зэ лондри он сэтэдэй|Я стираю по субботам.
+I clean the house every week.|ай клин зэ хаус эври уик|Я убираю дом каждую неделю.
+I wash the dishes.|ай уош зэ дишиз|Я мою посуду.
+I take out the trash.|ай тэйк аут зэ трэш|Я выношу мусор.
+I do the shopping on Sunday.|ай ду зэ шопинг он сандэй|Я хожу за покупками в воскресенье.
+I water the plants.|ай уотэ зэ плантс|Я поливаю растения.
+I walk the dog twice a day.|ай уок зэ дог туайс э дэй|Я гуляю с собакой дважды в день.
+I feed the cat.|ай фид зэ кэт|Я кормлю кошку.
+Where do you live?|уэр ду ю лив|Где вы живёте?
+I live in an apartment.|ай лив ин эн эпатмэнт|Я живу в квартире.
+I live in a house.|ай лив ин э хаус|Я живу в доме.
+I live with my parents.|ай лив уиз май пэрэнтс|Я живу с родителями.
+I live alone.|ай лив элоун|Я живу один.
+My flat is on the third floor.|май флэт из он зэ сёд фло|Моя квартира на третьем этаже.
+We have three rooms.|уи хэв сри румз|У нас три комнаты.
+This is the living room.|дис из зэ ливинг рум|Это гостиная.
+This is the kitchen.|дис из зэ китчин|Это кухня.
+This is the bedroom.|дис из зэ бэдрум|Это спальня.
+This is the bathroom.|дис из зэ батрум|Это ванная.
+Where is the key?|уэр из зэ ки|Где ключ?
+I lost my keys.|ай лост май киз|Я потерял ключи.
+I locked myself out.|ай локт майсэлф аут|Я захлопнул дверь и остался снаружи.
+Please open the door.|плиз оупн зэ до|Пожалуйста, откройте дверь.
+Please close the window.|плиз клоуз зэ уиндоу|Пожалуйста, закройте окно.
+Turn on the light.|тён он зэ лайт|Включите свет.
+Turn off the light.|тён оф зэ лайт|Выключите свет.
+Turn on the TV.|тён он зэ ти-ви|Включите телевизор.
+Could you turn the music down?|куд ю тён зэ мьюзик даун|Не могли бы вы сделать музыку тише?
+It's too loud.|итс ту лауд|Слишком громко.
+It's too quiet.|итс ту куайэт|Слишком тихо.
+It's too dark in here.|итс ту дак ин хиэ|Здесь слишком темно.
+It's too hot in here.|итс ту хот ин хиэ|Здесь слишком жарко.
+It's very cold in here.|итс вери коулд ин хиэ|Здесь очень холодно.
+Can you open the window?|кэн ю оупн зэ уиндоу|Можете открыть окно?
+The heating is on.|зэ хитинг из он|Отопление включено.
+The power is out.|зэ пауэ из аут|Нет электричества.
+The tap is leaking.|зэ тэп из ликинг|Кран течёт.
+The toilet is blocked.|зэ тойлит из блокт|Туалет засорился.
+The fridge is empty.|зэ фридж из эмпти|Холодильник пустой.
+The washing machine is broken.|зэ уошинг мэшин из броукн|Стиральная машина сломалась.
+I need to call a plumber.|ай нид ту кол э пламэ|Мне нужно вызвать сантехника.
+We need to fix it.|уи нид ту фикс ит|Нам нужно это починить.
+What's the weather forecast?|уотс зэ уэзэ фокаст|Каков прогноз погоды?
+It will rain tomorrow.|ит уил рэйн туморе|Завтра будет дождь.
+It's going to be sunny.|итс гоуинг ту би сани|Будет солнечно.
+It's cloudy today.|итс клауди тудэй|Сегодня облачно.
+It's foggy.|итс фоги|Туман.
+It's freezing!|итс фризинг|Мороз!
+It's a bit chilly.|итс э бит чили|Прохладновато.
+It's humid.|итс хьюмид|Влажно.
+Take an umbrella with you.|тэйк эн амбрэлэ уиз ю|Возьмите с собой зонт.
+Put on a warm coat.|пут он э уом коут|Наденьте тёплое пальто.
+Spring is my favorite season.|спринг из май фэйвэрит сизн|Весна — моё любимое время года.
+Winter is long here.|уинтэ из лонг хиэ|Здесь долгая зима.
+Summer is warm.|самэ из уом|Лето тёплое.
+Autumn is beautiful.|отэм из бьютифул|Осень красивая.
+I always have a lot to do.|ай олвэйз хэв э лот ту ду|У меня всегда много дел.
+I do exercise every day.|ай ду эксэсайз эври дэй|Я занимаюсь спортом каждый день.
+I like to relax at weekends.|ай лайк ту рилэкс эт уикэндз|По выходным я люблю отдыхать.
+We often visit friends.|уи офн визит фрэндз|Мы часто ходим в гости к друзьям.
+We're going on holiday next month.|уиэ гоуинг он холидэй некст манс|В следующем месяце мы едем в отпуск.
+Time flies!|тайм флайз|Время летит!
+I'm always on time.|айм олвэйз он тайм|Я всегда прихожу вовремя.
+I'm running late.|айм ранинг лэйт|Я опаздываю.
+Hurry up!|хари ап|Поторопитесь!
+We have plenty of time.|уи хэв плэнти ов тайм|У нас достаточно времени.
+Where do you usually go on weekends?|уэр ду ю южуэли гоу он уикэндз|Куда вы обычно ходите по выходным?
+I prefer to stay at home in the evening.|ай прифё ту стэй эт хоум ин зи ивнинг|Вечером я предпочитаю оставаться дома.
+I don't feel well.|ай доунт фил уэл|Мне нехорошо.
+I feel sick.|ай фил сик|Меня тошнит.
+I'm ill.|айм ил|Я болен.
+I have a headache.|ай хэв э хэдэйк|У меня болит голова.
+I have a toothache.|ай хэв э тусэйк|У меня болит зуб.
+I have a stomachache.|ай хэв э стамэйк|У меня болит живот.
+I have a sore throat.|ай хэв э со сроут|У меня болит горло.
+I have a backache.|ай хэв э бэкэйк|У меня болит спина.
+I have a fever.|ай хэв э фивэ|У меня температура.
+I have a cold.|ай хэв э коулд|Я простужен.
+I have a cough.|ай хэв э коф|У меня кашель.
+I have a runny nose.|ай хэв э рани ноуз|У меня насморк.
+I'm sneezing a lot.|айм снизинг э лот|Я много чихаю.
+I have the flu.|ай хэв зэ флу|У меня грипп.
+I feel dizzy.|ай фил дизи|У меня кружится голова.
+I feel weak.|ай фил уик|Я чувствую слабость.
+I can't breathe well.|ай кант бриз уэл|Мне трудно дышать.
+It hurts here.|ит хётс хиэ|Болит вот здесь.
+My leg hurts.|май лег хётс|У меня болит нога.
+My arm is swollen.|май ам из своулн|Моя рука распухла.
+I cut my finger.|ай кат май фингэ|Я порезал палец.
+I burned my hand.|ай бёнд май хэнд|Я обжёг руку.
+I fell down.|ай фэл даун|Я упал.
+I twisted my ankle.|ай твистид май энкл|Я подвернул лодыжку.
+I think I broke my arm.|ай синк ай броук май ам|Кажется, я сломал руку.
+I've been bitten by a dog.|айв бин битн бай э дог|Меня укусила собака.
+I have an allergy.|ай хэв эн элэджи|У меня аллергия.
+I'm allergic to penicillin.|айм элёджик ту пенисилин|У меня аллергия на пенициллин.
+I'm diabetic.|айм дайэбэтик|У меня диабет.
+I have high blood pressure.|ай хэв хай блад прэшэ|У меня высокое давление.
+I'm pregnant.|айм прэгнэнт|Я беременна.
+I take medication every day.|ай тэйк мэдикэйшн эври дэй|Я принимаю лекарства каждый день.
+I need to see a doctor.|ай нид ту си э доктэ|Мне нужно к врачу.
+Please call a doctor.|плиз кол э доктэ|Пожалуйста, вызовите врача.
+I need to make an appointment.|ай нид ту мэйк эн эпойнтмэнт|Мне нужно записаться на приём.
+I have an appointment at three.|ай хэв эн эпойнтмэнт эт сри|У меня приём в три часа.
+Where is the nearest hospital?|уэр из зэ ниэрист хоспитл|Где ближайшая больница?
+Where is the nearest pharmacy?|уэр из зэ ниэрист фармэси|Где ближайшая аптека?
+Is there a doctor who speaks English?|из зэр э доктэ ху спикс инглиш|Есть ли врач, говорящий по-английски?
+How long have you had these symptoms?|хау лонг хэв ю хэд диз симптэмз|Как давно у вас эти симптомы?
+Since yesterday.|синс естэдэй|Со вчерашнего дня.
+For three days.|фо сри дэйз|Три дня.
+What seems to be the problem?|уот симз ту би зэ проблэм|В чём проблема?
+Where does it hurt?|уэр даз ит хёт|Где болит?
+Open your mouth.|оупн ё маус|Откройте рот.
+Take a deep breath.|тэйк э дип брэс|Сделайте глубокий вдох.
+I'll take your temperature.|айл тэйк ё темпрэчэ|Я измерю вам температуру.
+We need to do some tests.|уи нид ту ду сам тэстс|Нам нужно сделать анализы.
+You need an X-ray.|ю нид эн экс-рэй|Вам нужен рентген.
+You need to rest.|ю нид ту рэст|Вам нужно отдыхать.
+Stay in bed.|стэй ин бэд|Соблюдайте постельный режим.
+Drink plenty of water.|дринк плэнти ов уотэ|Пейте много воды.
+Take this medicine three times a day.|тэйк дис медин сри таймз э дэй|Принимайте это лекарство три раза в день.
+Take one tablet after meals.|тэйк уан тэблэт афтэ милз|Принимайте по одной таблетке после еды.
+Take it before meals.|тэйк ит бифо милз|Принимайте перед едой.
+Don't take it on an empty stomach.|доунт тэйк ит он эн эмпти стамэк|Не принимайте на голодный желудок.
+Are there any side effects?|ар зэр эни сайд эфэкстс|Есть ли побочные эффекты?
+Can I have a prescription?|кэн ай хэв э прискрипшн|Можно рецепт?
+Do you have something for a headache?|ду ю хэв самсинг фор э хэдэйк|У вас есть что-нибудь от головной боли?
+I need some painkillers.|ай нид сам пэйнкилэз|Мне нужны обезболивающие.
+I need cough syrup.|ай нид коф сирэп|Мне нужен сироп от кашля.
+I need a plaster.|ай нид э пластэ|Мне нужен пластырь.
+I need to see a dentist.|ай нид ту си э дэнтист|Мне нужно к стоматологу.
+I need new glasses.|ай нид нью гласиз|Мне нужны новые очки.
+Get well soon!|гет уэл сун|Скорейшего выздоровления!
+I'm feeling better.|айм филинг бэтэ|Мне лучше.
+I'm feeling worse.|айм филинг уёс|Мне хуже.
+I've recovered.|айв рикавэд|Я выздоровел.
+Help!|хэлп|Помогите!
+Call an ambulance!|кол эн эмбьюлэнс|Вызовите скорую помощь!
+Call the police!|кол зэ пэлис|Вызовите полицию!
+Call the fire brigade!|кол зэ файэ бригэйд|Вызовите пожарных!
+It's an emergency!|итс эн имёджэнси|Это срочно!
+Somebody is hurt.|самбоди из хёт|Кто-то ранен.
+There has been an accident.|зэр хэз бин эн эксидэнт|Произошла авария.
+He's unconscious.|хиз анконшэс|Он без сознания.
+She's not breathing.|шиз нот бризинг|Она не дышит.
+Please hurry!|плиз хари|Пожалуйста, скорее!
+I've been robbed.|айв бин робд|Меня ограбили.
+My wallet was stolen.|май уолит уоз столэн|У меня украли кошелёк.
+My bag was stolen.|май бэг уоз столэн|У меня украли сумку.
+I lost my passport.|ай лост май пэспорт|Я потерял паспорт.
+I lost my phone.|ай лост май фоун|Я потерял телефон.
+I need to report a theft.|ай нид ту рипот э тэфт|Мне нужно заявить о краже.
+Where is the police station?|уэр из зэ пэлис стэйшн|Где полицейский участок?
+I need help.|ай нид хэлп|Мне нужна помощь.
+Leave me alone!|лив ми элоун|Оставьте меня в покое!
+Be careful!|би кэафул|Осторожно!
+Watch out!|уоч аут|Берегитесь!
+Fire!|файэ|Пожар!
+Danger!|дэйнджэ|Опасность!
+Stay calm.|стэй кам|Сохраняйте спокойствие.
+Don't move.|доунт мув|Не двигайтесь.
+Follow me.|фолоу ми|Следуйте за мной.
+Where is the emergency exit?|уэр из зи имёджэнси эксит|Где аварийный выход?
+Is it safe here?|из ит сэйф хиэ|Здесь безопасно?
+I'm insured.|айм иншуд|Я застрахован.
+Here is my insurance card.|хиэ из май иншурэнс кад|Вот моя страховая карточка.
+Please contact my family.|плиз контакт май фэмили|Пожалуйста, свяжитесь с моей семьёй.
+I need an interpreter.|ай нид эн интёпритэ|Мне нужен переводчик.
+Hello, this is Anna speaking.|хэлоу, дис из энэ спикинг|Алло, это говорит Анна.
+Who's calling, please?|хуз колинг, плиз|Кто звонит, пожалуйста?
+Can I speak to Mr. Brown?|кэн ай спик ту мистэ браун|Могу я поговорить с господином Брауном?
+Hold the line, please.|хоулд зэ лайн, плиз|Оставайтесь на линии, пожалуйста.
+He's not here right now.|хиз нот хиэ райт нау|Его сейчас нет.
+Can I take a message?|кэн ай тэйк э мэсидж|Могу ли я передать сообщение?
+Please call me back.|плиз кол ми бэк|Пожалуйста, перезвоните мне.
+I'll call you back.|айл кол ю бэк|Я перезвоню вам.
+You have the wrong number.|ю хэв зэ ронг намбэ|Вы ошиблись номером.
+The line is busy.|зэ лайн из бизи|Линия занята.
+I can't hear you.|ай кант хиэ ю|Я вас не слышу.
+The connection is bad.|зэ конэкшн из бэд|Плохая связь.
+My phone is dead.|май фоун из дэд|Мой телефон разрядился.
+I need to charge my phone.|ай нид ту чадж май фоун|Мне нужно зарядить телефон.
+Where can I charge my phone?|уэр кэн ай чадж май фоун|Где можно зарядить телефон?
+I have no signal.|ай хэв ноу сигнл|У меня нет сигнала.
+I'll text you.|айл тэкст ю|Я напишу вам сообщение.
+Send me a message.|сэнд ми э мэсидж|Отправьте мне сообщение.
+Is there Wi-Fi here?|из зэр уай-фай хиэ|Здесь есть Wi-Fi?
+How do I connect to the internet?|хау ду ай конэкт ту зи интэнэт|Как подключиться к интернету?
+The internet is slow.|зи интэнэт из слоу|Интернет медленный.
+The website is not working.|зэ уэбсайт из нот уёкинг|Сайт не работает.
+I forgot my password.|ай фэгот май пасуёд|Я забыл пароль.
+How do I reset my password?|хау ду ай ризэт май пасуёд|Как сбросить пароль?
+Could you send me the link?|куд ю сэнд ми зэ линк|Не могли бы вы прислать мне ссылку?
+Please share your screen.|плиз шэа ё скрин|Пожалуйста, покажите свой экран.
+Can you hear me?|кэн ю хиэ ми|Вы меня слышите?
+Can you see my screen?|кэн ю си май скрин|Вы видите мой экран?
+You're on mute.|юэ он мьют|У вас выключен микрофон.
+I'll turn on my camera.|айл тён он май кэмэрэ|Я включу камеру.
+My laptop has crashed.|май лэптоп хэз крэшт|Мой ноутбук завис.
+I need to restart the computer.|ай нид ту ристат зэ кэмпьютэ|Мне нужно перезагрузить компьютер.
+Have you tried turning it off and on again?|хэв ю трайд тёнинг ит оф энд он эгэн|Вы пробовали выключить и снова включить?
+I need to download the app.|ай нид ту даунлоуд зи эп|Мне нужно скачать приложение.
+I'll save the file.|айл сэйв зэ файл|Я сохраню файл.
+I'll print the document.|айл принт зэ докьомэнт|Я распечатаю документ.
+Where can I print this?|уэр кэн ай принт дис|Где это можно распечатать?
+I'll take a screenshot.|айл тэйк э скриншот|Я сделаю скриншот.
+Let me check my calendar.|лет ми чек май кэлэндэ|Дайте проверю свой календарь.
+Please wait a moment.|плиз уэйт э моумэнт|Пожалуйста, подождите немного.
+It's a piece of cake.|итс э пис ов кэйк|Это проще простого.
+It's a matter of time.|итс э мэтэ ов тайм|Это вопрос времени.
+It's up to you.|итс ап ту ю|Решать вам.
+It's worth a try.|итс уёс э трай|Стоит попробовать.
+It's not worth it.|итс нот уёс ит|Это того не стоит.
+It's a long story.|итс э лонг стори|Это долгая история.
+It's about time!|итс эбаут тайм|Давно пора!
+It's now or never.|итс нау о нэвэ|Сейчас или никогда.
+It's none of my business.|итс нан ов май бизнис|Это не моё дело.
+It slipped my mind.|ит слипт май майнд|Это вылетело у меня из головы.
+It rings a bell.|ит рингз э бэл|Это мне что-то напоминает.
+It's on the tip of my tongue.|итс он зэ тип ов май танг|Вертится на языке.
+It's a small world.|итс э смол уёлд|Мир тесен.
+It's raining cats and dogs.|итс рэйнинг кэтс энд догз|Льёт как из ведра.
+Once in a blue moon.|уанс ин э блу мун|Раз в сто лет.
+Better late than never.|бэтэ лэйт зэн нэвэ|Лучше поздно, чем никогда.
+Actions speak louder than words.|экшнз спик лаудэ зэн уёдз|Дела говорят громче слов.
+Easy come, easy go.|изи кам, изи гоу|Легко нажито — легко прожито.
+Better safe than sorry.|бэтэ сэйф зэн сори|Лучше перестраховаться.
+Time is money.|тайм из мани|Время — деньги.
+Where there's a will, there's a way.|уээ зэр из э уил, зэр из э уэй|Где хотенье, там и умение.
+Don't judge a book by its cover.|доунт джадж э бук бай итс кавэ|Не суди о книге по обложке.
+Don't count your chickens before they hatch.|доунт каунт ё чикинз бифо зэй хэч|Цыплят по осени считают.
+You can't have your cake and eat it too.|ю кант хэв ё кэйк энд ит ит ту|Нельзя получить всё сразу.
+The early bird catches the worm.|зи ёли бёд кэчиз зэ уём|Кто рано встаёт, тому Бог подаёт.
+Practice what you preach.|прэктис уот ю прич|Подавай пример делом.
+Break a leg!|брэйк э лэг|Ни пуха ни пера!
+Fingers crossed!|фингэз кроссд|Держу кулачки!
+Keep your fingers crossed for me.|кип ё фингэз кроссд фо ми|Держите за меня кулаки.
+I'm all ears.|айм ол иэз|Я весь внимание.
+I'm on my way.|айм он май уэй|Я уже в пути.
+I'm on it.|айм он ит|Я этим занимаюсь.
+I'm in!|айм ин|Я участвую!
+Count me in.|каунт ми ин|Рассчитывайте на меня.
+Count me out.|каунт ми аут|Меня не считайте.
+Let's call it a day.|летс кол ит э дэй|Давайте на сегодня закончим.
+Let's get going.|летс гет гоуинг|Пойдёмте.
+Let's keep it simple.|летс кип ит симпл|Давайте проще.
+Let's see what happens.|летс си уот хэпнз|Посмотрим, что будет.
+Let me know.|лет ми ноу|Дайте мне знать.
+Keep me posted.|кип ми поустид|Держите меня в курсе.
+Make up your mind.|мэйк ап ё майнд|Определитесь.
+Mind your own business.|майнд ёр оун бизнис|Занимайтесь своими делами.
+Mind the gap.|майнд зэ гэп|Осторожно, зазор.
+Watch your step.|уоч ё стэп|Смотрите под ноги.
+Take your time.|тэйк ё тайм|Не торопитесь.
+Take a look at this.|тэйк э лук эт дис|Взгляните на это.
+Look at that!|лук эт дэт|Смотрите!
+Listen carefully.|лисн кэафули|Слушайте внимательно.
+Pay attention, please.|пэй этэншн, плиз|Обратите внимание, пожалуйста.
+Be quiet, please.|би куайэт, плиз|Тише, пожалуйста.
+Keep going!|кип гоуинг|Продолжайте!
+Let's get to the point.|летс гет ту зэ пойнт|Давайте ближе к делу.
+For example.|фор игзампл|Например.
+In other words.|ин азэ уёдз|Другими словами.
+By the way.|бай зэ уэй|Кстати.
+As a matter of fact.|эз э мэтэ ов фэкт|Вообще-то.
+On the other hand.|он зи азэ хэнд|С другой стороны.
+In conclusion.|ин конклужн|В заключение.
+That's all for today.|дэтс ол фо тудэй|На сегодня всё.`;
+
+const INTERVALS = [0,1,3,7,14,30,60,120,240,365];
+const LEARNED_LEVEL = 5;
+
+function makeDefaultPhrases() {
+    return RAW_PHRASES.split('\n').map(line => {
+        const parts = line.split('|');
+        return { en: parts[0], tr: parts[1] || '', ru: parts[2] || '', level: 0, ease: 1.8, interval: 0, due: null, correct: 0, wrong: 0, lastSeen: null };
+    }).filter(p => p.en);
+}
+
+// ====== STATE ======
+let state = {
+    phrases: [], streak: 0, lastStudyDate: null,
+    todayCount: 0, todayDate: null,
+    sessionQueue: [], sessionIndex: 0,
+    sessionGood: 0, sessionBad: 0,
+    sessionActive: false, voiceURI: null,
+    sessionSize: '10',
+    sessionRepeats: {}, sessionStats: {},
+    lastFailedIndices: []
+};
+const STORAGE_KEY = 'englishTrainer_v7';
+
+function migratePhrase(p) {
+    if (typeof p.level !== 'number') p.level = 0;
+    if (typeof p.ease !== 'number') p.ease = 1.8;
+    if (typeof p.interval !== 'number') p.interval = 0;
+    if (p.due === undefined) p.due = null;
+    if (typeof p.correct !== 'number') p.correct = 0;
+    if (typeof p.wrong !== 'number') p.wrong = 0;
+    return p;
+}
+function saveState() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            phrases: state.phrases, streak: state.streak, lastStudyDate: state.lastStudyDate,
+            todayCount: state.todayCount, todayDate: state.todayDate,
+            sessionQueue: state.sessionQueue, sessionIndex: state.sessionIndex,
+            sessionGood: state.sessionGood, sessionBad: state.sessionBad,
+            sessionActive: state.sessionActive, voiceURI: state.voiceURI,
+            sessionSize: state.sessionSize,
+            sessionRepeats: state.sessionRepeats, sessionStats: state.sessionStats,
+            lastFailedIndices: state.lastFailedIndices
+        }));
+    } catch(e) {}
+}
+function loadState() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) state = { ...state, ...JSON.parse(raw) };
+    } catch(e) {}
+    // Always use embedded phrases if current is missing or too few (fixes 28-phrase bug)
+    if (!state.phrases || state.phrases.length < 100) {
+        state.phrases = makeDefaultPhrases();
+    }
+    state.phrases = state.phrases.map(migratePhrase);
+    const today = new Date().toDateString();
+    if (state.todayDate !== today) { state.todayCount = 0; state.todayDate = today; }
+}
+
+// ====== VOICE ======
+let preferredVoice = null;
+const FEMALE_PRIORITY = ['Samantha','Ava','Alli','Susan','Zoe','Karen','Serena','Kate','Moira','Tessa','Fiona','Victoria','Stephanie','Allison','Nicky','Google US English','Google UK English Female','Microsoft Zira','Microsoft Aria','Microsoft Jenny'];
+const MALE_NAMES = ['Daniel','Oliver','Alex','Fred','Tom','David','Mark','James','Aaron','Arthur','Male'];
+function isFemaleVoice(v){if(/female|woman|girl/i.test(v.name))return true;for(const n of FEMALE_PRIORITY)if(v.name.includes(n))return true;return false}
+function isMaleVoice(v){for(const n of MALE_NAMES)if(v.name.includes(n))return true;return false}
+function pickFemaleVoice(){
+    if(!window.speechSynthesis)return null;
+    const en=speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.toLowerCase().startsWith('en'));
+    if(!en.length)return null;
+    for(const name of FEMALE_PRIORITY){const v=en.find(v=>v.name.includes(name));if(v)return v;}
+    return en.find(v=>isFemaleVoice(v))||en.find(v=>!isMaleVoice(v))||en.find(v=>v.lang==='en-US')||en[0];
+}
+function refreshPreferredVoice(){
+    if(!window.speechSynthesis)return;
+    if(state.voiceURI){const f=speechSynthesis.getVoices().find(v=>v.voiceURI===state.voiceURI);if(f){preferredVoice=f;updateCurrentVoiceLabel();return;}}
+    preferredVoice=pickFemaleVoice();updateCurrentVoiceLabel();
+}
+function updateCurrentVoiceLabel(){const el=document.getElementById('currentVoiceName');if(el)el.textContent=preferredVoice?`${preferredVoice.name} (${preferredVoice.lang})`:'Не найдено';}
+function speak(text){
+    if(!window.speechSynthesis)return;speechSynthesis.cancel();
+    if(!preferredVoice)refreshPreferredVoice();
+    const u=new SpeechSynthesisUtterance(text);
+    if(preferredVoice){u.voice=preferredVoice;u.lang=preferredVoice.lang}else u.lang='en-US';
+    u.rate=0.85;u.pitch=1.08;speechSynthesis.speak(u);
+}
+function openVoicePicker(){refreshPreferredVoice();renderVoiceList();showScreen('voices')}
+function renderVoiceList(){
+    const wrap=document.getElementById('voiceList');if(!wrap)return;wrap.innerHTML='';
+    if(!window.speechSynthesis){wrap.innerHTML='<div style="padding:30px;text-align:center;color:var(--muted)">Синтез речи не поддерживается.</div>';return}
+    const all=speechSynthesis.getVoices();
+    if(!all.length){wrap.innerHTML='<div style="padding:30px;text-align:center;color:var(--muted)">Голоса загружаются...</div>';setTimeout(renderVoiceList,500);return}
+    const seen=new Set();const en=[];
+    all.forEach(v=>{if(!v.lang||!v.lang.toLowerCase().startsWith('en'))return;const k=v.name+'|'+v.lang;if(seen.has(k))return;seen.add(k);en.push(v)});
+    if(!en.length){wrap.innerHTML='<div style="padding:30px;text-align:center;color:var(--muted)">Нет английских голосов. Установите в Настройки iOS → Универсальный доступ → Голоса → Английский.</div>';return}
+    const fem=[],oth=[];en.forEach(v=>{if(isFemaleVoice(v))fem.push(v);else oth.push(v)});
+    function addSec(t,l){if(!l.length)return;const h=document.createElement('div');h.className='voice-section-title';h.textContent=t;wrap.appendChild(h);l.forEach(v=>wrap.appendChild(makeVoiceRow(v)))}
+    addSec('⭐ Рекомендуемые (женские)',fem);addSec('Другие английские голоса',oth);
+}
+function makeVoiceRow(v){
+    const isSel=state.voiceURI===v.voiceURI;
+    const row=document.createElement('div');row.className='voice-item'+(isSel?' selected':'');
+    const play=document.createElement('button');play.className='voice-play';play.textContent='▶';
+    play.onclick=e=>{e.stopPropagation();previewVoice(v.voiceURI)};
+    const info=document.createElement('div');info.className='voice-info';
+    info.innerHTML=`<div class="voice-name">${v.name}</div><div class="voice-lang">${v.lang}</div>`;
+    const check=document.createElement('div');check.className='voice-check';check.textContent='✓';
+    row.appendChild(play);row.appendChild(info);row.appendChild(check);
+    row.onclick=()=>selectVoice(v.voiceURI);return row;
+}
+function previewVoice(uri){
+    const v=speechSynthesis.getVoices().find(x=>x.voiceURI===uri);if(!v)return;
+    speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('Hello! This is how I sound. Let us practice English together.');
+    u.voice=v;u.lang=v.lang;u.rate=0.9;speechSynthesis.speak(u);
+}
+function selectVoice(uri){
+    state.voiceURI=uri;refreshPreferredVoice();saveState();renderVoiceList();
+    setTimeout(()=>previewVoice(uri),100);
+}
+
+// ====== SPEECH RECOGNITION ======
+let recognition=null,isRecording=false,recordingStarted=false,gotResult=false,lastScore=null;
+const SRClass=window.SpeechRecognition||window.webkitSpeechRecognition;
+const hasRecognition=!!SRClass;
+function initRecognition(){if(!SRClass)return null;const r=new SRClass();r.lang='en-US';r.interimResults=false;r.maxAlternatives=3;r.continuous=false;return r}
+function toggleRecording(){
+    if(!hasRecognition){showPronError('Распознавание речи недоступно. Safari iOS 16.4+ или Chrome.');return}
+    if(isRecording){try{recognition.stop()}catch(e){}isRecording=false;updateMicUI();return}
+    if(window.speechSynthesis)speechSynthesis.cancel();
+    if(!localStorage.getItem('micHintShown_v2')){localStorage.setItem('micHintShown_v2','1');alert('Разрешите доступ к микрофону. Говорите чётко и не спеша.')}
+    if(!recognition){recognition=initRecognition();if(!recognition){showPronError('Не удалось инициализировать микрофон.');return}
+        recognition.onresult=handleResult;recognition.onerror=handleError;recognition.onend=handleEnd;}
+    gotResult=false;lastScore=null;isRecording=true;recordingStarted=true;
+    updateMicUI();clearPronResult();
+    try{recognition.start()}catch(e){isRecording=false;recordingStarted=false;updateMicUI();showPronError('Ошибка: '+e.message)}
+}
+function updateMicUI(){
+    const btn=document.getElementById('micBtn');const icon=document.getElementById('micIcon');const text=document.getElementById('micText');if(!btn)return;
+    if(isRecording){btn.classList.add('recording');icon.textContent='⏹';text.textContent='Слушаю...'}
+    else{btn.classList.remove('recording');icon.textContent='🎤';text.textContent=lastScore!==null?'Произнести ещё раз':'Произнести'}
+}
+function handleResult(event){
+    gotResult=true;const target=currentPhrase().en;const alts=event.results[0];
+    let bs=0,bt='';for(let i=0;i<alts.length;i++){const t=alts[i].transcript;const s=calcSimilarity(target,t);if(s>bs){bs=s;bt=t}}
+    lastScore=bs;displayPronResult(target,bt,bs);enterRatingMode();
+}
+function handleError(e){
+    isRecording=false;updateMicUI();if(e.error==='aborted')return;
+    let m='Ошибка: '+e.error;
+    if(e.error==='no-speech')m='Не услышал вас.';
+    else if(e.error==='not-allowed'||e.error==='service-not-allowed')m='Разрешите доступ к микрофону.';
+    else if(e.error==='network')m='Нужен интернет.';
+    else if(e.error==='audio-capture')m='Микрофон не найден.';
+    showPronError(m);
+}
+function handleEnd(){
+    const h=recordingStarted;recordingStarted=false;isRecording=false;updateMicUI();
+    if(!gotResult&&h&&!document.querySelector('#pronResult .pron-card'))showPronError('Не услышал. Попробуйте снова.');
+}
+function clearPronResult(){const el=document.getElementById('pronResult');el.classList.remove('show');el.innerHTML=''}
+function showPronError(msg){const el=document.getElementById('pronResult');el.classList.add('show');el.innerHTML=`<div class="pron-card"><div class="pron-error">${msg}</div></div>`}
+function levenshtein(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;const dp=new Array(m+1);for(let i=0;i<=m;i++){dp[i]=new Array(n+1);dp[i][0]=i}for(let j=0;j<=n;j++)dp[0][j]=j;for(let i=1;i<=m;i++)for(let j=1;j<=n;j++){dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1])}return dp[m][n]}
+function norm(s){return s.toLowerCase().replace(/[.,!?;:'"—–\-]/g,'').replace(/\s+/g,' ').trim()}
+function calcSimilarity(target,spoken){
+    const a=norm(target),b=norm(spoken);if(!a||!b)return 0;if(a===b)return 100;
+    const wa=a.split(' '),wb=b.split(' ');const used=new Set();let matched=0;
+    for(const w of wa){let f=-1;for(let i=0;i<wb.length;i++)if(!used.has(i)&&wb[i]===w){f=i;break}
+        if(f===-1){const tol=Math.max(1,Math.floor(w.length/3));for(let i=0;i<wb.length;i++)if(!used.has(i)&&levenshtein(w,wb[i])<=tol){f=i;break}}
+        if(f!==-1){matched++;used.add(f)}}
+    const ws=(matched/Math.max(wa.length,wb.length))*100;
+    const cs=(1-levenshtein(a,b)/Math.max(a.length,b.length))*100;
+    return Math.round(Math.max(ws,cs*0.92));
+}
+function displayPronResult(target,spoken,score){
+    const el=document.getElementById('pronResult');el.classList.add('show');
+    let cc,e,l;if(score>=85){cc='excellent';e='🎯';l='Отлично!'}else if(score>=65){cc='good';e='👍';l='Хорошо!'}else if(score>=40){cc='middle';e='🤔';l='Можно лучше'}else{cc='bad';e='💪';l='Попробуйте ещё'}
+    const tw=target.split(/\s+/);const sn=norm(spoken).split(' ');
+    const hl=tw.map(w=>{const nw=norm(w);if(!nw)return w;const heard=sn.some(sw=>sw&&(sw===nw||levenshtein(sw,nw)<=Math.max(1,Math.floor(nw.length/3))));return heard?w:`<span class="missed-word">${w}</span>`}).join(' ');
+    let mh='';if(score<85&&hl!==tw.join(' '))mh=`<div class="pron-missed"><strong>Не расслышано:</strong><br>${hl}</div>`;
+    el.innerHTML=`<div class="pron-card"><div class="pron-score-big pron-score-${cc}">${score}%</div><div class="pron-label">${e} ${l}</div><div class="pron-heard">Услышано: <strong>"${spoken}"</strong></div>${mh}</div>`;
+}
+
+// ====== NAV ======
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('screen-'+id).classList.add('active')}
+function nav(t){
+    if(t==='home'){renderHome();showScreen('home')}
+    else if(t==='stats'){renderStats();showScreen('stats')}
+    else if(t==='settings'){refreshPreferredVoice();renderSettings();showScreen('settings')}
+    else if(t==='voices'){openVoicePicker()}
+}
+function goHome(){state.sessionActive=false;saveState();nav('home')}
+
+// ====== HELPERS ======
+function learnedCount(){return state.phrases.filter(p=>p.level>=LEARNED_LEVEL).length}
+function learningCount(){return state.phrases.filter(p=>p.level>0&&p.level<LEARNED_LEVEL).length}
+function newCount(){return state.phrases.filter(p=>p.level===0&&!p.due).length}
+function dueCount(){const now=Date.now();return state.phrases.filter(p=>p.due&&p.due<=now).length}
+function updateDailyStreak(){
+    const t=new Date().toDateString();if(state.lastStudyDate===t)return;
+    const y=new Date(Date.now()-86400000).toDateString();
+    if(state.lastStudyDate===y)state.streak+=1;else state.streak=1;
+    state.lastStudyDate=t;if(state.todayDate!==t){state.todayCount=0;state.todayDate=t}
+}
+function formatInterval(days){
+    if(days<=0)return'сейчас';if(days===1)return'завтра';if(days<30)return`через ${days} дн.`;
+    if(days<365)return`через ${Math.round(days/30)} мес.`;return`через ${Math.round(days/365)} г.`;
+}
+
+// ====== HOME ======
+function renderHome(){
+    document.getElementById('statStreak').textContent=state.streak;
+    document.getElementById('statLearned').textContent=learnedCount();
+    document.getElementById('statToday').textContent=state.todayCount;
+    document.getElementById('homeGreeting').textContent=state.streak>0?`Серия: ${state.streak} дн. Продолжай!`:'Готов учить английский?';
+    const total=state.phrases.length;const done=learnedCount();
+    const pct=total>0?Math.round((done/total)*100):0;
+    document.getElementById('overallCount').textContent=`${done} / ${total}`;
+    document.getElementById('overallFill').style.width=pct+'%';
+    const dc=dueCount();const card=document.getElementById('dueCard');const label=document.getElementById('dueLabel');const count=document.getElementById('dueCount');
+    if(dc>0){card.classList.remove('all-clear');label.textContent='📅 К повторению сегодня';count.textContent=dc+(dc===1?' фраза':dc<5?' фразы':' фраз')}
+    else{card.classList.add('all-clear');label.textContent='✅ Всё повторено';count.textContent='Все фразы ждут своего часа'}
+}
+
+// ====== SETTINGS ======
+function renderSettings(){
+    const pills=document.getElementById('sizePills');pills.innerHTML='';
+    [['10','10'],['20','20'],['30','30'],['all','Все']].forEach(([v,l])=>{
+        const btn=document.createElement('button');btn.className='pill'+(state.sessionSize===v?' selected':'');btn.textContent=l;
+        btn.onclick=()=>{state.sessionSize=v;saveState();renderSettings()};pills.appendChild(btn);
+    });
+}
+
+// ====== SESSION ======
+function currentPhrase(){return state.phrases[state.sessionQueue[state.sessionIndex]]}
+function buildQueue(onlyDue){
+    const now=Date.now();let pool;
+    if(onlyDue){pool=state.phrases.map((p,i)=>({p,i})).filter(x=>x.p.due&&x.p.due<=now);pool.sort((a,b)=>a.p.due-b.p.due)}
+    else{pool=state.phrases.map((p,i)=>({p,i}));
+        pool.sort((a,b)=>{
+            const now2=Date.now();
+            const clsA=a.p.due&&a.p.due<=now2?0:(a.p.level===0&&!a.p.due?1:2);
+            const clsB=b.p.due&&b.p.due<=now2?0:(b.p.level===0&&!b.p.due?1:2);
+            if(clsA!==clsB)return clsA-clsB;
+            if(clsA===0)return a.p.due-b.p.due;
+            return Math.random()-0.5;
+        });
+    }
+    return pool;
+}
+function startSession(onlyDue){
+    let pool=buildQueue(onlyDue===true);
+    if(pool.length===0)pool=buildQueue(false);
+    if(pool.length===0){alert('Нет фраз для изучения.');return}
+    const size=state.sessionSize==='all'?pool.length:Math.min(parseInt(state.sessionSize),pool.length);
+    state.sessionQueue=pool.slice(0,size).map(x=>x.i);
+    state.sessionIndex=0;state.sessionGood=0;state.sessionBad=0;
+    state.sessionRepeats={};state.sessionStats={};state.lastFailedIndices=[];
+    state.sessionActive=true;lastScore=null;
+    updateDailyStreak();saveState();showScreen('learn');loadPhrase();
+}
+function startDueSession(){
+    const now=Date.now();
+    const duePhrases=state.phrases.map((p,i)=>({p,i})).filter(x=>x.p.due&&x.p.due<=now);
+    if(duePhrases.length===0){alert('К повторению сегодня ничего нет.');return}
+    duePhrases.sort((a,b)=>a.p.due-b.p.due);
+    state.sessionQueue=duePhrases.map(x=>x.i);
+    state.sessionIndex=0;state.sessionGood=0;state.sessionBad=0;
+    state.sessionRepeats={};state.sessionStats={};state.lastFailedIndices=[];
+    state.sessionActive=true;lastScore=null;
+    updateDailyStreak();saveState();showScreen('learn');loadPhrase();
+}
+function repeatFailed(){
+    if(state.lastFailedIndices.length===0)return;
+    state.sessionQueue=[...state.lastFailedIndices];
+    state.sessionIndex=0;state.sessionGood=0;state.sessionBad=0;
+    state.sessionRepeats={};state.sessionStats={};state.lastFailedIndices=[];
+    state.sessionActive=true;lastScore=null;
+    saveState();showScreen('learn');loadPhrase();
+}
+function loadPhrase(){
+    if(state.sessionIndex>=state.sessionQueue.length){finishSession();return}
+    if(isRecording){try{recognition.stop()}catch(e){}isRecording=false;recordingStarted=false}
+    lastScore=null;updateMicUI();clearPronResult();
+    const p=currentPhrase();
+    document.getElementById('enText').textContent=p.en;
+    document.getElementById('trText').textContent=p.tr;
+    document.getElementById('ruText').textContent=p.ru;
+    document.getElementById('ruText').classList.remove('show');
+    document.getElementById('ratingRow').classList.remove('show');
+    document.getElementById('btnReveal').style.display='';
+    document.getElementById('btnReveal').textContent='Показать перевод';
+    const level=Math.min(p.level||0,5);const bar=document.getElementById('levelBar');bar.innerHTML='';
+    for(let i=0;i<5;i++){const d=document.createElement('span');d.className='level-dot'+(i<level?' filled':'');bar.appendChild(d)}
+    const hint=document.getElementById('levelHint');
+    if(p.level>=LEARNED_LEVEL)hint.textContent=`Изучено • повторение ${formatInterval(p.interval)}`;
+    else if(p.due&&p.due<=Date.now())hint.textContent='Просрочено — пора повторить';
+    else if(p.due)hint.textContent=`Повторение ${formatInterval(p.interval)}`;
+    else hint.textContent='Новая фраза';
+    const t=state.sessionQueue.length;
+    document.getElementById('learnProgress').style.width=((state.sessionIndex/t)*100)+'%';
+    document.getElementById('learnCounter').textContent=`${state.sessionIndex+1}/${t}`;
+    setTimeout(speakCurrentPhrase,400);
+}
+function speakCurrentPhrase(){if(state.sessionIndex>=state.sessionQueue.length)return;speak(currentPhrase().en)}
+function revealTranslation(){document.getElementById('ruText').classList.add('show');enterRatingMode()}
+function enterRatingMode(){
+    document.getElementById('ruText').classList.add('show');
+    document.getElementById('ratingRow').classList.add('show');
+    document.getElementById('btnReveal').style.display='none';
+}
+function ratePhrase(q){
+    const idx=state.sessionQueue[state.sessionIndex];const p=state.phrases[idx];
+    if(q==='again'){
+        p.level=0;p.interval=0;p.due=Date.now();
+        p.ease=Math.max(1.3,(p.ease||1.8)-0.2);p.wrong++;
+        state.sessionBad++;state.sessionStats[idx]='again';
+        const repeats=state.sessionRepeats[idx]||0;
+        if(repeats<2){
+            state.sessionRepeats[idx]=repeats+1;
+            const remaining=state.sessionQueue.length-state.sessionIndex-1;
+            const offset=Math.min(3,remaining);
+            state.sessionQueue.splice(state.sessionIndex+1+offset,0,idx);
+        }
+    }else{
+        p.level=Math.min(INTERVALS.length-1,(p.level||0)+1);
+        p.interval=INTERVALS[p.level]||1;
+        p.due=Date.now()+p.interval*86400000;
+        p.ease=Math.min(2.5,(p.ease||1.8)+0.1);p.correct++;
+        state.sessionGood++;state.sessionStats[idx]='good';
+    }
+    p.lastSeen=Date.now();state.todayCount++;
+    saveState();state.sessionIndex++;loadPhrase();
+}
+function finishSession(){
+    state.sessionActive=false;state.sessionQueue=[];
+    const failed=Object.keys(state.sessionStats).filter(k=>state.sessionStats[k]==='again').map(Number);
+    state.lastFailedIndices=failed;saveState();
+    const g=state.sessionGood,b=state.sessionBad;
+    document.getElementById('endGood').textContent=g;
+    document.getElementById('endBad').textContent=b;
+    const e=document.getElementById('endEmoji'),s=document.getElementById('endSub');
+    if(b===0&&g>0){e.textContent='🏆';s.textContent='Идеальная сессия!'}
+    else if(g>b){e.textContent='🎉';s.textContent='Отлично! Продолжай.'}
+    else{e.textContent='💪';s.textContent='Хорошая тренировка.'}
+    const btn=document.getElementById('btnRepeatFailed');
+    if(failed.length>0){btn.style.display='';btn.textContent=`Повторить ${failed.length} ${failed.length===1?'фразу':failed.length<5?'фразы':'фраз'}`}
+    else btn.style.display='none';
+    showScreen('end');
+}
+function exitSession(){
+    if(!confirm('Выйти из сессии? Прогресс сохранится.'))return;
+    if(isRecording)try{recognition.stop()}catch(e){}
+    isRecording=false;state.sessionActive=false;state.sessionQueue=[];
+    saveState();goHome();
+}
+
+// ====== STATS ======
+function renderStats(){
+    document.getElementById('statsLearned').textContent=learnedCount();
+    document.getElementById('statsLearning').textContent=learningCount();
+    document.getElementById('statsNew').textContent=newCount();
+    document.getElementById('statsStreak').textContent=state.streak;
+    const L=learnedCount(),S=state.streak;
+    const ach=[
+        {emoji:'🌟',label:'Первая фраза',got:L>=1},
+        {emoji:'📚',label:'10 изучено',got:L>=10},
+        {emoji:'🎓',label:'50 изучено',got:L>=50},
+        {emoji:'🏆',label:'100 изучено',got:L>=100},
+        {emoji:'👑',label:'500 изучено',got:L>=500},
+        {emoji:'🔥',label:'Серия 3 дня',got:S>=3},
+        {emoji:'💎',label:'Серия 7 дней',got:S>=7},
+        {emoji:'🚀',label:'Серия 30 дней',got:S>=30}
+    ];
+    const aw=document.getElementById('achievements');aw.innerHTML='';
+    ach.forEach(a=>{const el=document.createElement('span');el.className='ach-badge'+(a.got?'':' locked');el.innerHTML=`${a.emoji} ${a.label}`;aw.appendChild(el)});
+}
+
+// ====== SETTINGS ACTIONS ======
+function resetStats(){
+    if(!confirm('Сбросить статистику?'))return;
+    state.streak=0;state.lastStudyDate=null;state.todayCount=0;
+    state.todayDate=new Date().toDateString();
+    saveState();renderHome();alert('Статистика сброшена.');
+}
+function resetProgress(){
+    if(!confirm('Сбросить весь прогресс изучения?'))return;
+    state.phrases.forEach(p=>{p.level=0;p.ease=1.8;p.interval=0;p.due=null;p.correct=0;p.wrong=0;p.lastSeen=null});
+    state.streak=0;state.todayCount=0;
+    saveState();renderHome();alert('Прогресс сброшен.');
+}
+function resetPhrases(){
+    if(!confirm('Восстановить встроенные 1000 фраз? Загруженные заменятся.'))return;
+    state.phrases=makeDefaultPhrases();
+    state.sessionQueue=[];state.streak=0;
+    saveState();renderHome();alert('Восстановлены 1000 встроенных фраз.');
+}
+
+// ====== PDF PARSING (осталось на случай замены) ======
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+function groupItemsToRows(items){
+    const valid=items.filter(it=>it.str&&it.str.trim());if(!valid.length)return[];
+    const groups=[];valid.forEach(item=>{const y=Math.round(item.transform[5]);let g=groups.find(g=>Math.abs(g.y-y)<=3);if(!g){g={y,items:[]};groups.push(g)}g.items.push(item)});
+    groups.sort((a,b)=>b.y-a.y);
+    return groups.map(g=>{g.items.sort((a,b)=>a.transform[4]-b.transform[4]);return g.items.map(it=>it.str).join(' ').replace(/\s+/g,' ').trim()}).filter(r=>r.length>0);
+}
+function isJunkLine(row){
+    if(!row||row.length<3)return true;
+    if(/^[\d\s.,;:!?\-–—]+$/.test(row))return true;
+    if(/(.)\1{10,}/.test(row))return true;
+    if(/\b(\S+)( \1){4,}/i.test(row))return true;
+    if((row.match(/\d+/g)||[]).length>8)return true;
+    return false;
+}
+function isLatinOnly(s){if(!s)return false;if(!/[a-zA-Z]/.test(s))return false;if(/[А-Яа-яЁё]/.test(s))return false;return true}
+function isCyrillicOnly(s){if(!s)return false;if(!/[А-Яа-яЁё]/.test(s))return false;if(/[a-zA-Z]/.test(s))return false;return true}
+function parseInlineContent(text){
+    const firstCyr=text.search(/[А-Яа-яЁё]/);if(firstCyr<1)return null;
+    const en=text.slice(0,firstCyr).trim();const cyr=text.slice(firstCyr).trim();
+    if(!en||!cyr)return null;if(!/[a-zA-Z]/.test(en))return null;if(/[А-Яа-яЁё]/.test(en))return null;
+    let splitPos=-1;for(let i=3;i<cyr.length;i++){if(/[А-ЯЁ]/.test(cyr[i])&&cyr[i-1]===' '){splitPos=i;break}}
+    if(splitPos===-1)return{en,tr:cyr,ru:''};
+    return{en,tr:cyr.slice(0,splitPos).trim(),ru:cyr.slice(splitPos).trim()};
+}
+function parseRows(rows){
+    const result=[];const seen=new Set();const pending=[];
+    for(let i=0;i<rows.length;i++){
+        const row=rows[i];if(isJunkLine(row))continue;
+        const numMatch=row.match(/^(\d{1,4})\.?\s*(.+)$/);
+        if(numMatch){
+            const num=parseInt(numMatch[1]);
+            if(num>=1&&num<=1000){
+                const rest=numMatch[2].trim();if(!rest)continue;
+                let parsed=parseInlineContent(rest);
+                if(!parsed&&isLatinOnly(rest)){
+                    const n1=rows[i+1],n2=rows[i+2];
+                    if(n1&&isCyrillicOnly(n1)){
+                        if(n2&&isCyrillicOnly(n2)&&/^[А-ЯЁ]/.test(n2)){parsed={en:rest,tr:n1,ru:n2};i+=2}
+                        else{pending.push({en:rest,tr:n1});i+=1;continue}
+                    }
+                }
+                if(parsed&&parsed.ru&&!seen.has(parsed.en.toLowerCase())){seen.add(parsed.en.toLowerCase());result.push({en:parsed.en,tr:parsed.tr||'',ru:parsed.ru,level:0,ease:1.8,interval:0,due:null,correct:0,wrong:0,lastSeen:null})}
+                else if(parsed&&!parsed.ru){pending.push({en:parsed.en,tr:parsed.tr})}
+                continue;
+            }
+        }
+        if(pending.length>0&&isCyrillicOnly(row)&&/^[А-ЯЁ]/.test(row)&&row.length>5){
+            const p=pending.shift();
+            if(!seen.has(p.en.toLowerCase())){seen.add(p.en.toLowerCase());result.push({en:p.en,tr:p.tr||'',ru:row,level:0,ease:1.8,interval:0,due:null,correct:0,wrong:0,lastSeen:null})}
+        }
+    }
+    return result;
+}
+async function handlePdfUpload(event){
+    const file=event.target.files[0];if(!file)return;
+    const loading=document.getElementById('loadingMsg');loading.style.display='flex';
+    try{
+        const buf=await file.arrayBuffer();
+        const pdf=await pdfjsLib.getDocument({data:buf}).promise;
+        const allRows=[];
+        for(let p=1;p<=pdf.numPages;p++){const page=await pdf.getPage(p);const tc=await page.getTextContent();allRows.push(...groupItemsToRows(tc.items))}
+        const extracted=parseRows(allRows);
+        if(extracted.length===0){alert('Не удалось распознать фразы. Возможно, PDF — скан.');return}
+        const old={};state.phrases.forEach(p=>old[p.en.toLowerCase()]=p);
+        state.phrases=extracted.map(np=>{const o=old[np.en.toLowerCase()];return o?{...np,level:o.level,ease:o.ease,interval:o.interval,due:o.due,correct:o.correct,wrong:o.wrong,lastSeen:o.lastSeen}:np});
+        state.sessionQueue=[];saveState();renderHome();
+        alert(`✅ Загружено ${extracted.length} фраз.`);
+    }catch(e){console.error(e);alert('Ошибка при чтении PDF: '+e.message)}
+    finally{loading.style.display='none';event.target.value=''}
+}
+
+// ====== INIT ======
+window.addEventListener('DOMContentLoaded',()=>{
+    loadState();
+    refreshPreferredVoice();
+    if(window.speechSynthesis){
+        speechSynthesis.getVoices();
+        if(speechSynthesis.onvoiceschanged!==undefined){
+            speechSynthesis.onvoiceschanged=()=>{
+                refreshPreferredVoice();
+                if(document.getElementById('screen-voices').classList.contains('active'))renderVoiceList();
+            };
+        }
+        setTimeout(refreshPreferredVoice,500);
+        setTimeout(refreshPreferredVoice,1500);
+    }
+    if(state.sessionActive&&state.sessionQueue.length>0){showScreen('learn');loadPhrase()}
+    else{renderHome();showScreen('home')}
+});
+</script>
+</body>
+</html>
