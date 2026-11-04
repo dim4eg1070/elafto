@@ -1,2060 +1,564 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>English Quest — Острова открытий</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-:root{
-  --navy:#172554; --blue:#2563EB; --teal:#14B8A6; --coral:#FB7185;
-  --yellow:#FBBF24; --purple:#8B5CF6;
-  --bg:#F8FAFC; --card:#FFFFFF; --text:#172554; --text-soft:#475569;
-  --line:rgba(23,37,84,.08);
-  --ok:#10B981; --bad:#F43F5E;
-  --shadow:0 6px 0 rgba(23,37,84,.06), 0 10px 24px rgba(23,37,84,.08);
-  --shadow-sm:0 3px 0 rgba(23,37,84,.06);
-}
-*{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
-html,body{height:100%;}
-body{
-  font-family:'Nunito',system-ui,sans-serif; color:var(--text); background:var(--bg);
-  font-size:18px; line-height:1.4; min-height:100vh; overflow-x:hidden;
-  background-image:
-    radial-gradient(circle at 6% 8%, rgba(37,99,235,.10), transparent 38%),
-    radial-gradient(circle at 94% 92%, rgba(251,113,133,.10), transparent 38%),
-    radial-gradient(circle at 85% 15%, rgba(139,92,246,.08), transparent 35%);
-  background-attachment:fixed;
-}
-button{font-family:inherit; font-size:inherit; color:inherit; background:none; border:none; cursor:pointer; text-align:inherit;}
-button:focus-visible{outline:3px solid var(--blue); outline-offset:3px; border-radius:14px;}
-h1,h2,h3,h4{font-family:'Baloo 2',system-ui,sans-serif; line-height:1.15;}
-img{max-width:100%;}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7ff">
+  <meta name="description" content="English Quest — весёлое путешествие по островам английского языка для детей 6–10 лет.">
+  <title>English Quest — Острова открытий</title>
+  <style>
+:root{--ink:#24304b;--muted:#7d879d;--line:#edf0f6;--purple:#7768e8;--purple-dark:#5d4dcc;--bg:#f7f8fc;--white:#fff;--shadow:0 12px 35px rgba(45,56,99,.08);--radius:22px;font-family:'Trebuchet MS',ui-rounded,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--ink)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);font-family:inherit;color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer}.app-shell{min-height:100vh;display:flex;max-width:1800px;margin:0 auto}.sidebar{width:252px;flex:0 0 252px;background:#fff;border-right:1px solid #eef0f6;padding:27px 17px 20px;display:flex;flex-direction:column;min-height:100vh;position:sticky;top:0;height:100vh;z-index:20}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:inherit;padding:2px 10px 23px}.brand-mark{width:43px;height:43px;border-radius:15px;background:linear-gradient(145deg,#8d7cf2,#5f57d8);display:grid;place-items:center;color:white;font-size:26px;box-shadow:0 7px 16px #8775eb55}.brand span:last-child{display:flex;flex-direction:column;line-height:1}.brand b{font-size:17px;font-weight:900;letter-spacing:.2px}.brand strong{font-size:19px;font-weight:900;color:#7669e8;margin-top:2px}.brand small{font-size:7px;font-weight:900;letter-spacing:1.35px;color:#9ba1b2;margin-top:5px}.sidebar-profile{display:flex;align-items:center;gap:10px;padding:12px 11px;background:#f8f8ff;border:1px solid #efeffb;border-radius:16px;margin:2px 1px 25px}.sidebar-profile>div:nth-child(2){min-width:0;flex:1}.sidebar-profile b{display:block;font-size:13px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sidebar-profile small{display:block;color:#9ba2b4;font-size:10px;margin-top:2px}.avatar{width:37px;height:37px;border-radius:13px;background:#fff0df;display:grid;place-items:center;font-size:22px;flex:0 0 auto}.icon-button{border:0;background:#f1f2f8;color:#6b7390;border-radius:12px;width:38px;height:38px;font-size:18px;display:grid;place-items:center}.icon-button:hover{background:#e9e7ff;color:var(--purple)}.icon-button.tiny{width:26px;height:26px;font-size:13px;border-radius:8px}.main-nav{display:flex;flex-direction:column;gap:6px}.nav-item{border:0;background:transparent;color:#7d879d;display:flex;align-items:center;gap:13px;text-align:left;padding:13px 14px;border-radius:13px;font-size:13px;font-weight:800;transition:.2s}.nav-item span{font-size:18px;width:22px;text-align:center}.nav-item:hover{background:#f6f5ff;color:#7062df}.nav-item.active{background:#eeecff;color:#6657d9;box-shadow:inset 3px 0 #7869e8}.sidebar-bottom{margin-top:auto}.side-quest-card{background:linear-gradient(140deg,#6e65df,#8c7df2);border-radius:17px;color:#fff;padding:17px 15px;margin:24px 2px 14px;position:relative;overflow:hidden}.side-quest-card:after{content:'✦';position:absolute;right:13px;top:11px;font-size:25px;color:#ffffff65}.side-quest-icon{font-size:24px;margin-bottom:8px}.side-quest-card b{font-size:13px;line-height:1.35;display:block}.side-quest-card span{font-size:10px;color:#dedaff;display:block;margin-top:8px}.parent-link{width:100%;font-size:12px}.sidebar-foot{text-align:center;color:#b0b5c3;font-size:9px;margin-top:16px}.main-area{min-width:0;flex:1;padding:0 40px 65px}.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eceef4;margin-bottom:27px}.breadcrumb{font-size:12px;color:#a3a9b8;font-weight:700;display:flex;align-items:center;gap:12px}.breadcrumb i{font-style:normal;color:#c7cbd6;font-size:19px}.breadcrumb b{color:#45516b;font-weight:900}.top-actions{display:flex;gap:12px;align-items:center}.streak-pill{height:37px;min-width:90px;padding:0 12px;border-radius:12px;background:#fff;border:1px solid #f0edf3;display:flex;align-items:center;gap:6px;box-shadow:0 4px 15px #27315b08}.streak-pill span{font-size:16px}.streak-pill b{font-size:14px}.streak-pill small{font-size:10px;color:#a0a6b6}.sound-toggle{height:38px;width:38px;border:1px solid #edf0f5;background:#fff;border-radius:12px;font-size:16px}.mobile-menu{display:none}.view{display:none;animation:fadeIn .25s ease}.view.active{display:block}@keyframes fadeIn{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
+.hero-banner{height:280px;border-radius:25px;background:linear-gradient(110deg,#e8e8ff 0%,#eff0ff 56%,#dceeff 100%);position:relative;overflow:hidden;display:flex;margin-bottom:21px;padding:31px 40px;box-shadow:0 10px 28px #7067d70e}.hero-copy{position:relative;z-index:3;max-width:440px}.eyebrow{font-size:9px;letter-spacing:1.6px;font-weight:900;color:#7669df}.sparkle{color:#e5ad46;font-size:13px;margin-right:4px}.hero-copy h1{font-size:34px;line-height:1.08;margin:12px 0 10px;font-weight:900;letter-spacing:-.8px}.hero-copy h1 em{font-style:normal;color:#7769e5}.hero-copy p{font-size:12px;line-height:1.6;color:#737f9b;max-width:330px;margin:0 0 18px}.primary-btn{background:linear-gradient(130deg,#7f70ec,#6556d5);border:0;color:#fff;font-weight:900;border-radius:13px;min-height:45px;padding:0 20px;box-shadow:0 8px 18px #7769df3a;display:inline-flex;align-items:center;justify-content:center;gap:19px;font-size:12px;transition:.18s}.primary-btn:hover{transform:translateY(-2px);box-shadow:0 12px 22px #7769df50}.primary-btn span{font-size:16px}.hero-art{position:absolute;right:2%;top:0;width:49%;height:100%;z-index:1}.sun-glow{position:absolute;width:200px;height:200px;border-radius:50%;background:#ffe5aa;opacity:.5;top:4px;right:16%}.cloud{position:absolute;height:28px;width:85px;border-radius:50px;background:#fff;opacity:.75}.cloud:before,.cloud:after{content:'';position:absolute;background:inherit;border-radius:50%}.cloud:before{width:38px;height:38px;left:14px;top:-17px}.cloud:after{width:31px;height:31px;right:14px;top:-12px}.cloud-one{top:37px;left:20%}.cloud-two{top:68px;right:6%;transform:scale(.7)}.rainbow{position:absolute;right:27%;top:10px;font-size:66px;opacity:.82;transform:rotate(-12deg)}.hero-character{position:absolute;z-index:3;filter:drop-shadow(0 8px 5px #49527a25)}.fox{font-size:91px;right:43%;bottom:36px;transform:rotate(-5deg)}.owl{font-size:72px;right:13%;bottom:47px;transform:rotate(6deg)}.bot{font-size:61px;right:1%;bottom:28px;transform:rotate(-7deg)}.hero-island{position:absolute;bottom:-69px;left:10%;width:100%;height:145px;background:linear-gradient(180deg,#9edac2,#76c4a9);border-radius:50% 50% 0 0;transform:rotate(-3deg)}.hero-star{position:absolute;color:#f9c65f;font-size:25px}.star-a{top:76px;right:35%}.star-b{top:133px;right:5%;font-size:20px}.hero-wave{position:absolute;bottom:-38px;left:-5%;width:110%;height:58px;background:#fff;border-radius:50%;opacity:.35}.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:35px}.stat-card{height:78px;border-radius:17px;background:#fff;box-shadow:0 4px 18px #28345a08;display:flex;align-items:center;padding:0 18px;gap:12px;position:relative;overflow:hidden}.stat-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:21px}.stat-blue .stat-icon{background:#eeedff}.stat-green .stat-icon{background:#e5f8ef}.stat-orange .stat-icon{background:#fff2df}.stat-card b{font-size:20px;font-weight:900;display:block;line-height:1.1}.stat-card b small{font-size:11px;color:#aab1c0;font-weight:800}.stat-card span{font-size:10px;color:#939bad;font-weight:700;display:block;margin-top:4px}.stat-deco{position:absolute;right:14px;top:8px;color:#f0effb;font-size:27px}.section-heading{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;gap:15px}.section-heading h2{font-size:22px;margin:5px 0 3px;font-weight:900;letter-spacing:-.3px}.section-heading p{margin:0;color:#929bad;font-size:11px}.muted-eyebrow{color:#a5acc0;font-size:8px}.map-legend{display:flex;gap:15px;align-items:center;padding-bottom:3px}.map-legend span{font-size:9px;color:#959caf;display:flex;align-items:center;gap:5px}.legend-dot{width:7px;height:7px;border-radius:50%;background:#d8dce7}.legend-dot.done{background:#64c49b}.legend-dot.current{background:#8274ed}.island-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}.island-card{background:#fff;border:1px solid #f0f1f6;border-radius:19px;padding:13px 13px 12px;min-height:179px;position:relative;box-shadow:0 5px 18px #2b345b07;transition:.2s;overflow:hidden}.island-card:not(.locked){cursor:pointer}.island-card:not(.locked):hover{transform:translateY(-4px);box-shadow:0 12px 25px #39436b12}.island-card.locked{opacity:.65;filter:saturate(.75)}.island-art{height:83px;border-radius:14px;display:grid;place-items:center;position:relative;overflow:hidden;margin-bottom:10px}.island-art:before,.island-art:after{content:'';position:absolute;border-radius:50%;background:#ffffff55}.island-art:before{width:80px;height:80px;right:-16px;top:-31px}.island-art:after{width:40px;height:40px;left:-13px;bottom:-19px}.island-emoji{font-size:48px;position:relative;z-index:1;filter:drop-shadow(0 6px 3px #454d6815)}.island-number{position:absolute;left:9px;top:8px;z-index:2;background:#ffffffad;color:#59637d;font-size:8px;font-weight:900;padding:4px 7px;border-radius:7px}.island-status{position:absolute;right:8px;top:8px;z-index:2;width:23px;height:23px;display:grid;place-items:center;border-radius:50%;background:#fff;color:#58b88a;font-size:11px;box-shadow:0 3px 9px #43506b14}.island-card h3{font-size:12px;margin:0 0 2px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.island-card p{margin:0;color:#9ba3b3;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.island-progress{height:4px;border-radius:4px;background:#f0f1f6;margin-top:10px;overflow:hidden}.island-progress span{height:100%;display:block;border-radius:5px;background:linear-gradient(90deg,#8b7df1,#6f67dc)}.island-footer{display:flex;justify-content:space-between;margin-top:6px;color:#a3aabc;font-size:8px;font-weight:800}.island-footer b{color:#727c96}.tone-coral .island-art,.island-art.tone-coral{background:#ffe8e0}.tone-purple .island-art,.island-art.tone-purple{background:#eee8ff}.tone-blue .island-art,.island-art.tone-blue{background:#e3f0ff}.tone-green .island-art,.island-art.tone-green{background:#e0f5e9}.tone-orange .island-art,.island-art.tone-orange{background:#fff0da}.tone-pink .island-art,.island-art.tone-pink{background:#ffe8f0}.tone-yellow .island-art,.island-art.tone-yellow{background:#fff5d7}.tone-sky .island-art,.island-art.tone-sky{background:#e4f7ff}.tone-mint .island-art,.island-art.tone-mint{background:#def7f1}.tone-lilac .island-art,.island-art.tone-lilac{background:#f0eaff}.friends-tip{margin-top:22px;border-radius:17px;background:#fff8e9;border:1px solid #fff0d1;padding:13px 18px;display:flex;align-items:center;gap:13px;position:relative;overflow:hidden}.tip-owl{font-size:31px}.friends-tip b{font-size:11px;color:#8a6d2c}.friends-tip p{font-size:10px;color:#a48e62;margin:3px 0 0}.tip-spark{position:absolute;right:21px;top:9px;color:#f4c35e;font-size:23px}
+/* Inner pages */
+.page-intro{border-radius:22px;padding:26px 31px;display:flex;align-items:center;justify-content:space-between;min-height:155px;overflow:hidden;position:relative;margin-bottom:22px}.page-intro h1{font-size:28px;font-weight:900;margin:8px 0 5px;letter-spacing:-.5px}.page-intro p{margin:0;font-size:11px;color:#818ba3;max-width:470px}.intro-illustration{font-size:73px;position:relative;z-index:1;filter:drop-shadow(0 8px 5px #42506a18);margin-right:35px}.intro-lilac{background:linear-gradient(110deg,#eeebff,#f6f4ff)}.intro-peach{background:linear-gradient(110deg,#fff0e5,#fff7ee)}.intro-mint{background:linear-gradient(110deg,#e5f8ef,#f1fbf6)}.intro-gold{background:linear-gradient(110deg,#fff5db,#fffaf0)}.intro-parent{background:linear-gradient(110deg,#eaf1ff,#f5f7ff)}.toolbar{display:flex;align-items:center;gap:12px;margin-bottom:17px}.search-box{height:43px;max-width:290px;flex:1;border:1px solid #eaedf4;border-radius:12px;background:#fff;display:flex;align-items:center;padding:0 12px;gap:9px;color:#9aa2b4}.search-box span{font-size:21px}.search-box input{border:0;outline:0;min-width:0;width:100%;font-size:11px;color:#46516b;background:transparent}.toolbar select{height:43px;border:1px solid #eaedf4;border-radius:12px;background:#fff;color:#737e96;padding:0 12px;font-size:11px;outline:0}.learned-count{margin-left:auto;color:#8f98ad;font-size:10px;font-weight:800}.vocab-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.word-card{background:#fff;border:1px solid #eef0f5;border-radius:16px;padding:14px 12px;min-height:145px;position:relative;transition:.18s}.word-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}.word-card.learned{border-color:#bdebd5;background:#fbfffd}.word-emoji{height:58px;display:grid;place-items:center;font-size:34px;background:#f7f8fc;border-radius:11px;margin-bottom:10px}.word-card b{font-size:13px;font-weight:900;display:block}.word-card small{font-size:10px;color:#929caf;display:block;margin-top:2px}.word-actions{display:flex;align-items:center;justify-content:space-between;margin-top:9px}.word-actions button{border:0;background:#f2f0ff;color:#786ce5;border-radius:8px;width:28px;height:26px}.know-toggle{font-size:8px;font-weight:900;border:0;background:#effaf4;color:#52aa80;padding:6px 8px;border-radius:8px}.word-card:not(.learned) .know-toggle{background:#f2f3f7;color:#99a1b1}.category-chip{position:absolute;right:9px;top:9px;font-size:7px;color:#929aae;background:#f5f6fa;border-radius:6px;padding:4px 6px}.phrase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.phrase-card{background:#fff;border:1px solid #eff0f5;border-radius:17px;padding:16px;display:flex;gap:12px;align-items:center}.phrase-emoji{width:46px;height:46px;border-radius:14px;background:#fff4e7;display:grid;place-items:center;font-size:23px;flex-shrink:0}.phrase-copy{min-width:0;flex:1}.phrase-copy b{font-size:13px;display:block;font-weight:900}.phrase-copy small{font-size:10px;color:#929caf;display:block;margin-top:3px}.play-small{border:0;background:#f0efff;color:#7769e4;width:34px;height:34px;border-radius:11px;font-size:15px;flex-shrink:0}.story-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.story-card{background:#fff;border:1px solid #eff0f5;border-radius:20px;overflow:hidden;box-shadow:0 4px 15px #26345a08}.story-cover{height:140px;display:grid;place-items:center;font-size:63px;background:linear-gradient(140deg,#eff0ff,#e2f1ff);position:relative}.story-card:nth-child(2) .story-cover{background:linear-gradient(140deg,#fff2db,#ffe6e5)}.story-card:nth-child(3) .story-cover{background:linear-gradient(140deg,#e5f7ee,#e9f0ff)}.story-cover:after{content:'✦';position:absolute;right:19px;top:13px;color:#f2bd58;font-size:25px}.story-body{padding:16px}.story-body h3{font-size:15px;margin:0 0 3px}.story-body p{font-size:10px;color:#929caf;margin:0 0 12px}.story-meta{display:flex;gap:9px;color:#a0a7b7;font-size:9px;margin-bottom:13px}.story-body .primary-btn{min-height:38px;width:100%}.story-reader{background:#fff;border:1px solid #edf0f5;border-radius:20px;padding:20px;margin-top:18px}.story-reader.hidden{display:none}.story-reader-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.story-reader-head h2{font-size:19px;margin:0}.story-scenes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.scene-line{padding:13px;border-radius:12px;background:#f8f8fe}.scene-line b{font-size:12px;display:block}.scene-line small{font-size:10px;color:#8f98ad;display:block;margin-top:4px}.scene-line button{border:0;background:transparent;color:#786ce5;margin-top:7px;font-size:10px;font-weight:900}.story-questions{margin-top:18px;padding-top:16px;border-top:1px solid #eff0f5}.story-questions h3{font-size:14px}.story-question{margin-bottom:12px}.story-question b{font-size:11px;display:block;margin-bottom:7px}.story-question button{margin:0 7px 6px 0;border:1px solid #e9ebf3;background:#fff;border-radius:9px;padding:8px 12px;font-size:10px;color:#68738e}.story-question button.correct{background:#e6f8ef;border-color:#aee4c9;color:#329669}.story-question button.wrong{background:#fff0ed;border-color:#ffc7ba;color:#d56d5b}.album-summary{background:linear-gradient(110deg,#7167df,#9589f0);border-radius:20px;padding:23px;color:#fff;display:flex;align-items:center;justify-content:space-around;margin-bottom:25px}.album-summary div{text-align:center}.album-summary b{font-size:27px;display:block}.album-summary span{font-size:9px;color:#e4e0ff}.compact{margin-bottom:13px}.sticker-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}.sticker{min-height:112px;border-radius:16px;border:1px dashed #e3e5ed;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#b5bac7}.sticker.unlocked{border:1px solid #f5e5ba;background:#fffdf6;color:#866e37}.sticker span{font-size:33px;filter:grayscale(1);opacity:.3}.sticker.unlocked span{filter:none;opacity:1}.sticker b{font-size:9px}.parent-gate{max-width:440px;margin:25px auto;background:#fff;border:1px solid #eef0f6;border-radius:21px;padding:27px;text-align:center;box-shadow:var(--shadow)}.gate-icon{font-size:38px}.parent-gate h2{font-size:20px;margin:8px 0 4px}.parent-gate p{font-size:11px;color:#9199aa;margin:0 0 17px}.gate-equation{font-size:28px;font-weight:900;color:#7265df;margin:12px}.gate-row{display:flex;gap:8px}.gate-row input{flex:1;min-width:0;border:1px solid #e9ebf3;border-radius:12px;padding:0 13px;outline:0}.gate-row .primary-btn{min-height:42px}.gate-error{color:#d76c62;font-size:10px;display:block;height:16px;margin-top:8px}.parent-content.hidden{display:none}.parent-content{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.parent-panel{background:#fff;border:1px solid #edf0f5;border-radius:17px;padding:18px}.parent-panel h3{font-size:13px;margin:0 0 12px}.parent-kpi{font-size:26px;font-weight:900}.parent-panel p{font-size:10px;color:#929bad;margin:2px 0}.parent-progress{height:8px;border-radius:8px;background:#f0f1f6;overflow:hidden;margin:10px 0}.parent-progress span{display:block;height:100%;background:linear-gradient(90deg,#8c80ed,#65c59a)}.parent-list{display:flex;flex-direction:column;gap:8px}.parent-list div{display:flex;justify-content:space-between;font-size:10px;color:#6d7892;padding-bottom:7px;border-bottom:1px solid #f1f2f6}.parent-actions{display:flex;gap:8px;flex-wrap:wrap}.secondary-btn{border:1px solid #e7e9f2;background:#fff;color:#78829a;border-radius:10px;padding:9px 12px;font-size:10px;font-weight:900}.secondary-btn.danger{color:#d46e67;border-color:#f4d9d5}.hidden{display:none!important}
+/* Modals and lesson game */
+.modal-backdrop{position:fixed;inset:0;background:#20274480;backdrop-filter:blur(5px);z-index:100;display:flex;align-items:center;justify-content:center;padding:18px}.modal-backdrop.hidden{display:none}.modal{width:min(430px,100%);background:#fff;border-radius:24px;padding:28px;position:relative;box-shadow:0 25px 80px #10172a35;text-align:center;animation:pop .22s ease}.modal-close{position:absolute;right:15px;top:12px;width:30px;height:30px;border:0;background:#f2f3f8;border-radius:9px;color:#858da2;font-size:21px}.modal-mascot{font-size:47px}.modal h2{font-size:22px;margin:9px 0 5px}.modal p{font-size:11px;color:#9199aa;line-height:1.5;margin:0 auto 17px;max-width:320px}.modal-input{height:46px;width:100%;border:1px solid #e5e7f0;border-radius:12px;padding:0 14px;outline:0;text-align:center;font-weight:800;color:#46516b}.modal-input:focus{border-color:#978ced;box-shadow:0 0 0 3px #8b7ef022}.avatar-picker{display:flex;justify-content:center;gap:9px;margin:15px 0 18px}.avatar-choice{width:46px;height:46px;border:2px solid transparent;background:#f5f5fa;border-radius:14px;font-size:24px}.avatar-choice.selected{background:#f0edff;border-color:#8376eb}.primary-btn.wide{width:100%}.island-modal{width:min(520px,100%);text-align:left;padding:22px}.island-modal-head{display:flex;align-items:center;gap:14px}.island-modal-art{width:75px;height:75px;border-radius:18px;display:grid;place-items:center;font-size:42px}.island-modal h2{font-size:20px;margin:0}.island-modal-head p{margin:3px 0 0;text-align:left}.modal-goal{padding:12px 14px;border-radius:12px;background:#f8f8fe;font-size:10px;color:#78829a;margin:16px 0}.mission-list{display:flex;flex-direction:column;gap:8px}.mission-row{display:flex;align-items:center;gap:10px;padding:11px;border:1px solid #eff0f5;border-radius:13px;background:#fff}.mission-num{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;background:#f1efff;color:#786ce4;font-size:11px;font-weight:900}.mission-copy{flex:1;min-width:0}.mission-copy b{font-size:11px;display:block}.mission-copy small{font-size:9px;color:#9aa2b2}.mission-state{font-size:10px;color:#65b88d;font-weight:900}.mission-row button{border:0;border-radius:9px;background:#786be5;color:#fff;padding:8px 11px;font-size:9px;font-weight:900}.mission-row button:disabled{background:#e9eaf0;color:#9ea5b4;cursor:not-allowed}.lesson-window{width:min(700px,100%);background:#f9faff;border-radius:25px;overflow:hidden;box-shadow:0 25px 80px #10172a50;max-height:94vh;display:flex;flex-direction:column;animation:pop .22s ease}.lesson-top{background:#fff;padding:16px 22px;display:flex;align-items:center;gap:13px;border-bottom:1px solid #edf0f5}.lesson-close{border:0;background:#f0f1f7;border-radius:10px;width:34px;height:34px;color:#818aa0;font-size:19px}.lesson-top-copy{flex:1;min-width:0}.lesson-top-copy b{display:block;font-size:12px}.lesson-top-copy small{font-size:9px;color:#9aa2b3}.lesson-progress{height:6px;background:#eff0f6;border-radius:9px;overflow:hidden;width:110px}.lesson-progress span{display:block;height:100%;background:linear-gradient(90deg,#8174ee,#60c49b);transition:.3s}.lesson-content{padding:28px 35px 32px;overflow:auto;text-align:center}.lesson-kicker{font-size:9px;font-weight:900;letter-spacing:1.5px;color:#8b7de7}.lesson-content h2{font-size:23px;margin:8px 0 5px;font-weight:900}.lesson-content>p{font-size:11px;color:#8d97ac;margin:0 auto 20px;max-width:430px;line-height:1.5}.lesson-hero-emoji{font-size:64px;margin:12px 0 4px;filter:drop-shadow(0 8px 5px #25325315)}.learn-card{background:#fff;border:1px solid #eceef5;border-radius:19px;padding:17px;max-width:360px;margin:12px auto 18px;box-shadow:0 6px 18px #34405d08}.learn-card-emoji{font-size:65px;margin:3px 0 8px}.learn-card b{font-size:25px;display:block}.learn-card small{font-size:12px;color:#8f98aa;display:block;margin-top:3px}.audio-button{border:0;background:#eeecff;color:#7163df;width:40px;height:40px;border-radius:50%;font-size:17px;margin-top:11px}.lesson-controls{display:flex;justify-content:center;gap:9px;margin-top:17px}.lesson-controls .primary-btn{min-width:155px}.soft-btn{border:1px solid #e8eaf1;background:#fff;color:#78839a;border-radius:12px;padding:0 17px;min-height:43px;font-weight:900;font-size:11px}.answer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:20px auto;max-width:500px}.answer-card{min-height:112px;border:2px solid #eaecf4;background:#fff;border-radius:16px;padding:10px 8px;color:#4c5873;transition:.15s}.answer-card:hover{border-color:#b9b1fa;transform:translateY(-2px)}.answer-card .answer-emoji{font-size:37px;display:block;margin-bottom:7px}.answer-card b{font-size:11px}.answer-card.correct{background:#e9f8f0;border-color:#85d2a9}.answer-card.wrong{background:#fff0ed;border-color:#f4a99d;animation:shake .25s}.feedback-line{font-size:11px;font-weight:900;min-height:20px;color:#42a879}.feedback-line.bad{color:#d58267}.match-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:470px;margin:18px auto}.match-col{display:flex;flex-direction:column;gap:8px}.match-option{padding:12px;border:1px solid #e9ebf3;background:#fff;border-radius:12px;font-size:11px;font-weight:900;color:#66718a}.match-option.selected{border-color:#8275ed;background:#f1efff;color:#6759d9}.match-option.matched{border-color:#9eddb8;background:#ecfaf2;color:#379a6e;opacity:.6}.phrase-build{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:17px 0}.phrase-slot{min-width:65px;padding:10px 13px;border-radius:10px;background:#fff;border:1px dashed #d6d9e5;color:#a4abba;font-size:11px}.phrase-slot.filled{border-style:solid;border-color:#b9b0f8;color:#6559ce;background:#f3f1ff;font-weight:900}.word-chip{border:1px solid #e6e8f0;border-radius:10px;background:#fff;padding:9px 12px;font-size:11px;font-weight:900;color:#58647d}.word-chip:disabled{opacity:.35}.success-panel{background:#fff;border-radius:20px;border:1px solid #ebeff5;padding:24px 20px;max-width:420px;margin:0 auto}.success-stars{font-size:42px;letter-spacing:5px;margin:5px}.success-panel h2{font-size:23px}.success-panel p{font-size:11px;color:#8993a9}.success-reward{background:#fff8e7;border-radius:12px;padding:11px;color:#9a7934;font-size:10px;font-weight:900;margin:12px 0}.lesson-story{background:#fff;border-radius:17px;padding:16px;margin:14px auto;max-width:480px;text-align:left}.lesson-story p{font-size:12px;margin:0 0 11px}.lesson-story p:last-child{margin:0}.lesson-story small{font-size:10px;color:#929caf;display:block;margin-top:3px}.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);background:#26324e;color:#fff;padding:11px 16px;border-radius:12px;font-size:11px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;z-index:150;box-shadow:0 8px 25px #18203a35}.toast.show{opacity:1;transform:translate(-50%,0)}@keyframes pop{from{opacity:0;transform:scale(.97) translateY(8px)}to{opacity:1;transform:none}}@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@media(max-width:1250px){.main-area{padding:0 26px 50px}.island-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.vocab-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.island-card{min-height:173px}}
+@media(max-width:960px){.sidebar{width:225px;flex-basis:225px}.main-area{padding:0 20px 45px}.hero-banner{padding-left:28px}.hero-copy h1{font-size:30px}.hero-art{width:48%;right:0}.fox{font-size:75px}.owl{font-size:62px}.bot{font-size:49px}.island-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.phrase-grid,.story-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sticker-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:720px){.sidebar{position:fixed;left:-270px;top:0;height:100dvh;width:250px;transition:left .25s;box-shadow:15px 0 35px #1b23421c}.sidebar.open{left:0}.main-area{padding:0 14px 40px}.topbar{height:62px;margin-bottom:17px}.mobile-menu{display:grid;width:34px;height:34px;font-size:15px}.breadcrumb{margin-right:auto;margin-left:10px;font-size:10px;gap:7px}.top-actions{gap:7px}.streak-pill{height:33px;min-width:70px;padding:0 8px}.sound-toggle{height:34px;width:34px}.hero-banner{height:257px;padding:23px 22px;border-radius:20px}.hero-copy{max-width:60%}.hero-copy h1{font-size:27px}.hero-copy p{font-size:10px;max-width:220px}.hero-art{width:48%;right:-7%;opacity:.95}.fox{font-size:61px;right:38%;bottom:42px}.owl{font-size:47px;right:9%;bottom:51px}.bot{font-size:40px;right:0;bottom:29px}.rainbow{font-size:47px;right:24%}.stats-row{gap:8px;margin-bottom:27px}.stat-card{height:69px;padding:0 9px;gap:7px;border-radius:13px}.stat-icon{width:32px;height:32px;font-size:17px;border-radius:10px}.stat-card b{font-size:16px}.stat-card span{font-size:8px}.stat-deco{display:none}.section-heading{align-items:flex-start;flex-direction:column}.section-heading h2{font-size:20px}.map-legend{gap:10px}.island-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.island-card{min-height:166px;padding:10px}.island-art{height:76px}.island-emoji{font-size:43px}.island-card h3{font-size:11px}.friends-tip{padding:11px}.friends-tip p{font-size:9px;max-width:260px}.page-intro{min-height:135px;padding:20px;border-radius:18px}.page-intro h1{font-size:22px}.page-intro p{font-size:10px;max-width:250px}.intro-illustration{font-size:52px;margin-right:3px}.toolbar{flex-wrap:wrap}.search-box{max-width:none;flex-basis:100%}.toolbar select{flex:1}.learned-count{margin-left:0}.vocab-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.word-card{min-height:137px;padding:10px}.word-emoji{height:54px}.phrase-grid,.story-grid{grid-template-columns:1fr}.phrase-card{padding:12px}.story-cover{height:115px}.sticker-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.parent-content{grid-template-columns:1fr}.album-summary{padding:18px 8px}.album-summary b{font-size:22px}.album-summary span{font-size:8px}.lesson-window{max-height:96dvh;border-radius:19px}.lesson-top{padding:12px}.lesson-progress{width:65px}.lesson-content{padding:21px 17px 25px}.lesson-content h2{font-size:20px}.answer-grid{gap:7px}.answer-card{min-height:98px;padding:8px 4px}.answer-card .answer-emoji{font-size:30px}.answer-card b{font-size:9px}.modal{padding:24px 19px}.story-scenes{grid-template-columns:1fr}}
+@media(max-width:390px){.hero-copy{max-width:67%}.hero-art{right:-18%;width:54%}.hero-copy h1{font-size:24px}.hero-copy p{max-width:190px}.stats-row{grid-template-columns:1fr 1fr}.stats-row .stat-card:last-child{grid-column:span 2}.map-legend{flex-wrap:wrap}.island-card{min-height:157px}.lesson-controls{flex-direction:column}.lesson-controls button{width:100%}}
+.island-modal-art.tone-coral{background:#ffe8e0}.island-modal-art.tone-purple{background:#eee8ff}.island-modal-art.tone-blue{background:#e3f0ff}.island-modal-art.tone-green{background:#e0f5e9}.island-modal-art.tone-orange{background:#fff0da}.island-modal-art.tone-pink{background:#ffe8f0}.island-modal-art.tone-yellow{background:#fff5d7}.island-modal-art.tone-sky{background:#e4f7ff}.island-modal-art.tone-mint{background:#def7f1}.island-modal-art.tone-lilac{background:#f0eaff}
+@media print{.sidebar,.topbar,.primary-btn,.secondary-btn,.lesson-controls,.nav-item{display:none!important}.main-area{padding:0}.view{display:none!important}#view-parent{display:block!important}.parent-content{display:grid!important}.parent-gate{display:none!important}.parent-panel{break-inside:avoid}}
+.dialogue-heading{margin-top:30px}.dialogue-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.dialogue-card{background:#fff;border:1px solid #eff0f5;border-radius:17px;padding:14px}.dialogue-card-head{display:flex;align-items:center;gap:10px;padding-bottom:11px;border-bottom:1px solid #f0f1f6}.dialogue-card-head>span{width:42px;height:42px;background:#f7f4ff;border-radius:13px;display:grid;place-items:center;font-size:22px}.dialogue-card-head>div{flex:1;min-width:0}.dialogue-card-head b{font-size:12px;display:block}.dialogue-card-head small{font-size:9px;color:#9aa2b2}.dialogue-lines{display:flex;flex-direction:column;gap:3px;padding-top:8px}.dialogue-lines button{border:0;background:transparent;display:flex;align-items:flex-start;gap:7px;text-align:left;padding:7px 5px;border-radius:8px}.dialogue-lines button:hover{background:#f8f7ff}.dialogue-lines b{font-size:9px;color:#786be3;min-width:72px}.dialogue-lines span{font-size:10px;color:#6d7891;flex:1}.dialogue-lines i{font-style:normal;font-size:10px;color:#9b91e8}
+@media(max-width:960px){.dialogue-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:720px){.dialogue-grid{grid-template-columns:1fr}}
 
-/* ---------- TOPBAR ---------- */
-.topbar{
-  display:flex; justify-content:space-between; align-items:center;
-  padding:12px 18px; background:#fff; position:sticky; top:0; z-index:50;
-  box-shadow:0 4px 16px rgba(23,37,84,.06); border-bottom:3px solid var(--blue);
-}
-.logo{
-  display:flex; align-items:center; gap:8px; font-family:'Baloo 2',sans-serif;
-  font-weight:800; font-size:22px; color:var(--navy);
-}
-.logo span{background:linear-gradient(90deg,var(--blue),var(--teal));
-  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
-.topbar-stats{display:flex; align-items:center; gap:8px;}
-.stat{
-  display:flex; align-items:center; gap:6px; padding:8px 14px;
-  background:var(--bg); border-radius:50px; font-weight:800;
-  border:2px solid var(--line); min-height:44px; font-size:16px;
-}
-.icon-btn{
-  width:48px; height:48px; display:flex; align-items:center; justify-content:center;
-  border-radius:50%; background:var(--bg); border:2px solid var(--line); font-size:20px;
-}
+  </style>
+  <script>
+/* English Quest — учебный контент первой версии */
+const WORDS = [
+  ['hello','привет','Приветствия','👋'],['goodbye','до свидания','Приветствия','🚪'],['please','пожалуйста','Приветствия','🙏'],['thank you','спасибо','Приветствия','💛'],['yes','да','Приветствия','✅'],['no','нет','Приветствия','❌'],['name','имя','Приветствия','🏷️'],['friend','друг','Приветствия','🧑‍🤝‍🧑'],['teacher','учитель','Приветствия','🧑‍🏫'],['happy','счастливый','Приветствия','😊'],
+  ['red','красный','Цвета','🔴'],['blue','синий','Цвета','🔵'],['yellow','жёлтый','Цвета','🟡'],['green','зелёный','Цвета','🟢'],['orange','оранжевый','Цвета','🟠'],['pink','розовый','Цвета','💗'],['purple','фиолетовый','Цвета','🟣'],['black','чёрный','Цвета','⚫'],['white','белый','Цвета','⚪'],['brown','коричневый','Цвета','🟤'],
+  ['one','один','Числа','1️⃣'],['two','два','Числа','2️⃣'],['three','три','Числа','3️⃣'],['four','четыре','Числа','4️⃣'],['five','пять','Числа','5️⃣'],['six','шесть','Числа','6️⃣'],['seven','семь','Числа','7️⃣'],['eight','восемь','Числа','8️⃣'],['nine','девять','Числа','9️⃣'],['ten','десять','Числа','🔟'],
+  ['cat','кот','Животные','🐱'],['dog','собака','Животные','🐶'],['bird','птица','Животные','🐦'],['fish','рыба','Животные','🐠'],['rabbit','кролик','Животные','🐰'],['horse','лошадь','Животные','🐴'],['cow','корова','Животные','🐮'],['duck','утка','Животные','🦆'],['bear','медведь','Животные','🐻'],['monkey','обезьяна','Животные','🐵'],
+  ['house','дом','Дом','🏠'],['room','комната','Дом','🚪'],['kitchen','кухня','Дом','🍳'],['bedroom','спальня','Дом','🛏️'],['door','дверь','Дом','🚪'],['window','окно','Дом','🪟'],['bed','кровать','Дом','🛌'],['table','стол','Дом','🪑'],['chair','стул','Дом','🪑'],['lamp','лампа','Дом','💡'],
+  ['apple','яблоко','Еда','🍎'],['banana','банан','Еда','🍌'],['bread','хлеб','Еда','🍞'],['milk','молоко','Еда','🥛'],['water','вода','Еда','💧'],['cheese','сыр','Еда','🧀'],['egg','яйцо','Еда','🥚'],['rice','рис','Еда','🍚'],['pizza','пицца','Еда','🍕'],['orange','апельсин','Еда','🍊'],
+  ['book','книга','Школа','📘'],['pen','ручка','Школа','🖊️'],['pencil','карандаш','Школа','✏️'],['bag','сумка / рюкзак','Школа','🎒'],['ruler','линейка','Школа','📏'],['desk','парта / письменный стол','Школа','🪑'],['paper','бумага','Школа','📄'],['crayon','восковой мелок','Школа','🖍️'],['scissors','ножницы','Школа','✂️'],['board','доска','Школа','🧑‍🏫'],
+  ['sun','солнце','Погода','☀️'],['rain','дождь','Погода','🌧️'],['snow','снег','Погода','❄️'],['wind','ветер','Погода','💨'],['cloud','облако','Погода','☁️'],['hot','жаркий / горячий','Погода','🥵'],['cold','холодный','Погода','🥶'],['warm','тёплый','Погода','🌤️'],['sunny','солнечно','Погода','🌞'],['rainy','дождливо','Погода','🌦️'],
+  ['head','голова','Тело и действия','🙂'],['eyes','глаза','Тело и действия','👀'],['ears','уши','Тело и действия','👂'],['nose','нос','Тело и действия','👃'],['mouth','рот','Тело и действия','👄'],['hands','кисти рук','Тело и действия','👏'],['feet','ступни','Тело и действия','🦶'],['run','бегать','Тело и действия','🏃'],['jump','прыгать','Тело и действия','🤸'],['dance','танцевать','Тело и действия','💃'],
+  ['T-shirt','футболка','Одежда и игры','👕'],['trousers','брюки','Одежда и игры','👖'],['shoes','обувь / туфли','Одежда и игры','👟'],['coat','пальто','Одежда и игры','🧥'],['hat','шапка / шляпа','Одежда и игры','🧢'],['dress','платье','Одежда и игры','👗'],['ball','мяч','Одежда и игры','⚽'],['kite','воздушный змей','Одежда и игры','🪁'],['bike','велосипед','Одежда и игры','🚲'],['toy','игрушка','Одежда и игры','🧸']
+].map(([en,ru,category,emoji],i)=>({id:i+1,en,ru,category,emoji}));
 
-/* ---------- SCREENS ---------- */
-main{padding:20px 16px 80px; max-width:980px; margin:0 auto;}
-.screen{animation:fadeIn .3s ease-out;}
-@keyframes fadeIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
-@keyframes popIn{from{transform:scale(.85); opacity:0;} to{transform:scale(1); opacity:1;}}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg);} 50%{transform:translateY(-6px) rotate(2deg);}}
-@keyframes shake{0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);}}
-
-/* ---------- WELCOME ---------- */
-.welcome{max-width:520px; margin:0 auto; background:#fff; border-radius:28px;
-  padding:32px 22px; box-shadow:var(--shadow); border:3px solid rgba(37,99,235,.15);}
-.welcome-char{font-size:72px; text-align:center; animation:bob 2.4s ease-in-out infinite;}
-.welcome h1{font-size:28px; text-align:center; margin:8px 0 6px; color:var(--navy);}
-.welcome p{text-align:center; color:var(--text-soft); margin-bottom:20px;}
-.field-label{display:block; font-weight:800; margin:16px 0 8px; font-size:16px;}
-.input{
-  width:100%; padding:14px 16px; font-size:18px; font-family:inherit;
-  background:var(--bg); border:2px solid var(--line); border-radius:16px; outline:none;
-}
-.input:focus{border-color:var(--blue);}
-.avatar-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:8px;}
-.avatar-btn{
-  aspect-ratio:1; display:flex; align-items:center; justify-content:center;
-  font-size:32px; background:var(--bg); border-radius:16px; border:3px solid transparent;
-  transition:all .15s; min-height:56px;
-}
-.avatar-btn.selected{border-color:var(--blue); background:#EFF6FF; transform:scale(1.05);}
-.option-grid{display:grid; gap:10px; margin-top:8px;}
-.option-btn{
-  padding:14px 16px; background:var(--bg); border-radius:16px;
-  font-weight:700; border:3px solid transparent; text-align:left; font-size:16px;
-  min-height:56px;
-}
-.option-btn.selected{border-color:var(--blue); background:#EFF6FF;}
-.primary-btn{
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  width:100%; padding:16px 20px; margin-top:22px;
-  background:var(--blue); color:#fff; font-weight:800; font-size:18px;
-  border-radius:50px; box-shadow:0 5px 0 #1d4ed8; transition:transform .12s;
-  min-height:56px;
-}
-.primary-btn:active{transform:translateY(3px); box-shadow:0 2px 0 #1d4ed8;}
-.primary-btn.teal{background:var(--teal); box-shadow:0 5px 0 #0e8f82;}
-.primary-btn.teal:active{box-shadow:0 2px 0 #0e8f82;}
-.primary-btn.coral{background:var(--coral); box-shadow:0 5px 0 #c94f68;}
-.primary-btn.coral:active{box-shadow:0 2px 0 #c94f68;}
-.primary-btn.ghost{background:var(--bg); color:var(--text); box-shadow:0 5px 0 var(--line);}
-.primary-btn.ghost:active{box-shadow:0 2px 0 var(--line);}
-
-/* ---------- MAP ---------- */
-.section-title{font-size:22px; margin:8px 4px 14px; color:var(--navy);}
-.continue-card{
-  background:linear-gradient(135deg,var(--blue),var(--teal));
-  color:#fff; border-radius:24px; padding:20px; margin-bottom:22px;
-  display:flex; align-items:center; gap:16px;
-  box-shadow:0 6px 0 rgba(37,99,235,.3), 0 14px 30px rgba(37,99,235,.2);
-  cursor:pointer; transition:transform .15s;
-}
-.continue-card:active{transform:scale(.98);}
-.continue-icon{font-size:44px;}
-.continue-body{flex:1;}
-.continue-label{font-size:13px; font-weight:800; opacity:.85; text-transform:uppercase; letter-spacing:.5px;}
-.continue-title{font-family:'Baloo 2',sans-serif; font-size:22px; margin-top:2px;}
-.continue-meta{font-size:14px; opacity:.9; margin-top:2px;}
-.island-grid{
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(165px,1fr)); gap:14px;
-}
-.island{
-  position:relative; padding:18px 14px 16px; background:#fff; border-radius:22px;
-  text-align:center; box-shadow:var(--shadow); transition:transform .15s;
-  border:3px solid transparent; overflow:hidden;
-}
-.island:not(.locked):hover{transform:translateY(-4px);}
-.island:not(.locked):active{transform:translateY(2px);}
-.island.locked{opacity:.55; cursor:not-allowed;}
-.island::before{content:''; position:absolute; inset:0 0 auto 0; height:6px; background:var(--wc,var(--blue));}
-.island-emoji{font-size:40px; line-height:1; margin:6px 0 8px;}
-.island-name{font-family:'Baloo 2',sans-serif; font-size:17px; font-weight:700;}
-.island-theme{font-size:12px; color:var(--text-soft); font-weight:600; margin-top:2px; line-height:1.2;}
-.island-progress{margin-top:10px; height:8px; background:rgba(23,37,84,.08); border-radius:50px; overflow:hidden;}
-.island-progress > i{display:block; height:100%; border-radius:50px; background:var(--wc,var(--blue)); transition:width .4s;}
-.island-lock{
-  position:absolute; top:10px; right:10px; font-size:18px;
-  background:rgba(23,37,84,.1); padding:4px 8px; border-radius:50px;
-}
-
-/* ---------- WORLD ---------- */
-.back-btn{
-  display:inline-flex; align-items:center; gap:6px; padding:10px 18px;
-  background:#fff; border-radius:50px; font-weight:800; color:var(--text-soft);
-  box-shadow:var(--shadow-sm); margin-bottom:16px; min-height:44px;
-}
-.world-banner{
-  background:#fff; border-radius:24px; padding:24px 18px; text-align:center;
-  box-shadow:var(--shadow); margin-bottom:20px; border:3px solid rgba(37,99,235,.1);
-}
-.world-banner .guide{font-size:60px; animation:bob 2.4s infinite;}
-.world-banner h1{font-size:26px; margin-top:6px;}
-.world-banner p{color:var(--text-soft); font-weight:600; margin-top:4px;}
-.mission-list{display:grid; gap:12px;}
-.mission{
-  display:flex; align-items:center; gap:14px; padding:16px 18px;
-  background:#fff; border-radius:20px; box-shadow:var(--shadow-sm);
-  text-align:left; border:3px solid transparent; transition:all .15s; min-height:70px;
-}
-.mission:not(.locked):hover{border-color:var(--blue);}
-.mission:not(.locked):active{transform:scale(.99);}
-.mission.locked{opacity:.5; cursor:not-allowed;}
-.mission-num{
-  width:44px; height:44px; border-radius:50%; background:var(--bg);
-  display:flex; align-items:center; justify-content:center; font-weight:800; color:var(--blue);
-  flex-shrink:0; font-family:'Baloo 2',sans-serif; font-size:20px;
-}
-.mission.done .mission-num{background:var(--ok); color:#fff;}
-.mission-body{flex:1; min-width:0;}
-.mission-title{font-family:'Baloo 2',sans-serif; font-size:17px; font-weight:700;}
-.mission-objective{font-size:13px; color:var(--text-soft); font-weight:600; margin-top:2px;}
-.mission-status{font-size:22px; flex-shrink:0;}
-
-/* ---------- LESSON ---------- */
-.lesson-head{
-  display:flex; align-items:center; gap:12px; margin-bottom:14px;
-}
-.lesson-progress{
-  flex:1; height:12px; background:rgba(23,37,84,.08); border-radius:50px; overflow:hidden;
-}
-.lesson-progress > i{display:block; height:100%; background:var(--blue); border-radius:50px; transition:width .4s;}
-.lesson-count{font-weight:800; font-size:15px; color:var(--text-soft); min-width:52px; text-align:right;}
-.character-bar{
-  display:flex; align-items:center; gap:10px; margin-bottom:14px;
-  background:#fff; border-radius:20px; padding:12px 16px; box-shadow:var(--shadow-sm);
-  border-left:5px solid var(--yellow);
-}
-.character-bar .char{font-size:32px; flex-shrink:0;}
-.character-bar .msg{font-weight:700; font-size:15px; color:var(--text);}
-.task-card{
-  background:#fff; border-radius:26px; padding:26px 20px; box-shadow:var(--shadow);
-  text-align:center;
-}
-
-/* Learn card */
-.big-emoji{font-size:96px; line-height:1; animation:popIn .3s ease-out;}
-.speak-btn{
-  display:inline-flex; align-items:center; justify-content:center;
-  width:56px; height:56px; border-radius:50%; background:var(--teal); color:#fff;
-  font-size:22px; box-shadow:0 4px 0 #0e8f82; margin:8px 0; transition:transform .12s;
-}
-.speak-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #0e8f82;}
-.word-en{font-family:'Baloo 2',sans-serif; font-size:42px; font-weight:800; color:var(--blue); margin:6px 0;}
-.word-ru{font-size:18px; color:var(--text-soft); font-weight:700;}
-.example-en{font-size:16px; color:var(--text); font-weight:600; margin-top:14px; font-style:italic;}
-.example-ru{font-size:14px; color:var(--text-soft); font-weight:600;}
-
-/* Quiz */
-.options-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px;}
-.opt-emoji{
-  padding:22px 12px; background:var(--bg); border-radius:18px;
-  border:3px solid transparent; font-size:52px; line-height:1;
-  display:flex; align-items:center; justify-content:center; min-height:110px;
-  transition:all .15s;
-}
-.opt-emoji:not(.disabled):hover{border-color:var(--blue); background:#EFF6FF;}
-.opt-emoji.correct{border-color:var(--ok); background:#D1FAE5;}
-.opt-emoji.wrong{border-color:var(--bad); background:#FEE2E2; animation:shake .4s;}
-.opt-emoji.disabled{cursor:not-allowed; opacity:.55;}
-.opt-word{
-  padding:20px 12px; background:var(--bg); border-radius:18px; border:3px solid transparent;
-  font-family:'Baloo 2',sans-serif; font-size:22px; font-weight:700; color:var(--navy);
-  min-height:80px;
-}
-.opt-word:hover{border-color:var(--blue);}
-.opt-word.correct{border-color:var(--ok); background:#D1FAE5;}
-.opt-word.wrong{border-color:var(--bad); background:#FEE2E2; animation:shake .4s;}
-
-/* Spell */
-.spell-slots{display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin:16px 0;}
-.spell-slot{
-  width:44px; height:52px; border-radius:14px; background:var(--bg);
-  border:3px dashed rgba(23,37,84,.18);
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Baloo 2',sans-serif; font-size:26px; font-weight:800; color:var(--blue);
-}
-.spell-slot.filled{background:#fff; border-style:solid; border-color:var(--blue);}
-.letter-pool{display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin-top:10px;}
-.letter-btn{
-  width:48px; height:52px; border-radius:14px; background:var(--yellow); color:#7c4f00;
-  font-family:'Baloo 2',sans-serif; font-size:24px; font-weight:800;
-  box-shadow:0 4px 0 #d99618; transition:transform .12s;
-}
-.letter-btn:active{transform:translateY(3px); box-shadow:0 1px 0 #d99618;}
-
-/* Match pairs */
-.match-columns{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px;}
-.match-col{display:flex; flex-direction:column; gap:10px;}
-.match-item{
-  padding:14px 10px; background:var(--bg); border-radius:14px; border:3px solid transparent;
-  min-height:60px; display:flex; align-items:center; justify-content:center;
-  font-weight:700; transition:all .15s;
-}
-.match-item.word{font-family:'Baloo 2',sans-serif; font-size:20px; color:var(--navy);}
-.match-item.image{font-size:38px;}
-.match-item.selected{border-color:var(--blue); background:#EFF6FF;}
-.match-item.matched{border-color:var(--ok); background:#D1FAE5; opacity:.6; pointer-events:none;}
-.match-item.wrong{border-color:var(--bad); background:#FEE2E2; animation:shake .4s;}
-
-/* Build phrase */
-.phrase-slots{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:16px 0; min-height:56px;}
-.phrase-slot{
-  padding:10px 16px; border-radius:12px; background:var(--bg);
-  border:3px dashed rgba(23,37,84,.18); min-width:52px; min-height:46px;
-  display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--blue);
-}
-.phrase-slot.filled{background:#fff; border-style:solid; border-color:var(--blue);}
-.phrase-pool{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:10px;}
-.phrase-word{
-  padding:10px 18px; background:var(--yellow); color:#7c4f00;
-  border-radius:12px; font-weight:700; box-shadow:0 4px 0 #d99618;
-  min-height:46px;
-}
-.phrase-word:active{transform:translateY(3px); box-shadow:0 1px 0 #d99618;}
-
-/* Count */
-.count-visual{font-size:44px; line-height:1.2; letter-spacing:4px; margin:16px 0; word-break:break-word;}
-
-/* Story */
-.story-scene{
-  padding:24px 8px; min-height:200px; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:14px;
-}
-.story-emoji{font-size:76px; line-height:1.2; text-align:center;}
-.story-en{font-size:20px; font-weight:700; color:var(--navy); line-height:1.4; max-width:520px;}
-.story-ru{font-size:15px; color:var(--text-soft); font-weight:600; max-width:520px;}
-.story-nav{display:flex; gap:10px; justify-content:center; margin-top:14px;}
-.story-nav button{min-width:120px; padding:12px 20px; border-radius:50px; font-weight:800;
-  background:var(--bg); box-shadow:0 4px 0 var(--line);}
-.story-nav button.primary{background:var(--blue); color:#fff; box-shadow:0 4px 0 #1d4ed8;}
-
-/* Feedback */
-.feedback{
-  margin-top:14px; padding:12px 16px; border-radius:14px;
-  font-weight:700; display:none; align-items:center; justify-content:center; gap:8px;
-}
-.feedback.show{display:flex; animation:popIn .25s;}
-.feedback.ok{background:#D1FAE5; color:#065f46;}
-.feedback.bad{background:#FEE2E2; color:#991b1b;}
-
-/* Speak practice */
-.speak-phrase{font-family:'Baloo 2',sans-serif; font-size:32px; color:var(--blue); margin:16px 0 6px;}
-.speak-ru{color:var(--text-soft); font-weight:700;}
-.speak-actions{display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap;}
-.speak-actions button{padding:14px 22px; border-radius:50px; font-weight:800; min-height:52px;}
-.speak-actions .try{background:var(--bg); box-shadow:0 4px 0 var(--line);}
-.speak-actions .done{background:var(--ok); color:#fff; box-shadow:0 4px 0 #047857;}
-
-/* ---------- REWARD ---------- */
-.reward{background:#fff; border-radius:28px; padding:36px 22px; text-align:center;
-  box-shadow:var(--shadow); max-width:520px; margin:0 auto;}
-.reward-emoji{font-size:86px; line-height:1; animation:bob 1.8s infinite;}
-.reward-title{font-size:30px; color:var(--navy); margin-top:10px;}
-.reward-sub{color:var(--text-soft); font-weight:700; margin-top:6px;}
-.reward-stars{font-size:48px; letter-spacing:6px; margin:20px 0;}
-.reward-stars .off{opacity:.2;}
-.reward-sticker{margin-top:8px; padding:12px 16px; background:#FEF3C7; border-radius:16px; display:inline-block; font-weight:800;}
-.reward-actions{display:flex; gap:10px; margin-top:22px; flex-wrap:wrap;}
-
-/* ---------- DICTIONARY ---------- */
-.topic-pills{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;}
-.pill{padding:8px 14px; border-radius:50px; background:#fff; font-weight:700; font-size:14px;
-  box-shadow:var(--shadow-sm); min-height:44px; display:inline-flex; align-items:center; gap:6px;}
-.pill.active{background:var(--blue); color:#fff;}
-.word-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px;}
-.word-tile{background:#fff; border-radius:18px; padding:14px; text-align:center;
-  box-shadow:var(--shadow-sm); cursor:pointer; transition:transform .15s;}
-.word-tile:active{transform:scale(.97);}
-.word-tile-emoji{font-size:36px;}
-.word-tile-en{font-family:'Baloo 2',sans-serif; font-size:17px; font-weight:700; margin-top:4px;}
-.word-tile-ru{font-size:12.5px; color:var(--text-soft); font-weight:600;}
-.word-tile-status{display:inline-block; font-size:11px; font-weight:800; padding:2px 8px;
-  border-radius:50px; margin-top:6px;}
-.word-tile-status.new{background:#DBEAFE; color:#1e40af;}
-.word-tile-status.learning{background:#FEF3C7; color:#92400e;}
-.word-tile-status.known{background:#D1FAE5; color:#065f46;}
-
-/* ---------- ALBUM ---------- */
-.sticker-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:14px;}
-.sticker{background:#fff; border-radius:18px; padding:18px 12px; text-align:center;
-  box-shadow:var(--shadow-sm); position:relative;}
-.sticker.locked{opacity:.4;}
-.sticker-icon{font-size:44px; line-height:1;}
-.sticker-name{font-weight:700; font-size:14px; margin-top:8px;}
-
-/* ---------- STORIES ---------- */
-.story-list{display:grid; gap:12px;}
-.story-card{background:#fff; border-radius:20px; padding:16px 18px;
-  box-shadow:var(--shadow-sm); display:flex; align-items:center; gap:14px;
-  text-align:left; min-height:80px; border:3px solid transparent; transition:all .15s;}
-.story-card:hover{border-color:var(--purple);}
-.story-card-icon{font-size:40px;}
-.story-card h3{font-size:18px;}
-.story-card p{font-size:13px; color:var(--text-soft); font-weight:600;}
-
-/* ---------- PARENT / MODAL ---------- */
-.modal{
-  position:fixed; inset:0; background:rgba(23,37,84,.55); display:none;
-  align-items:center; justify-content:center; z-index:200; padding:16px;
-}
-.modal.open{display:flex;}
-.modal-card{
-  background:#fff; border-radius:24px; padding:24px 22px; max-width:520px; width:100%;
-  max-height:88vh; overflow-y:auto; animation:popIn .3s;
-}
-.modal-card h2{font-size:24px; color:var(--navy); margin-bottom:14px;}
-.parent-row{display:flex; justify-content:space-between; padding:12px 0;
-  border-bottom:2px dashed var(--line); font-weight:700; align-items:center; gap:10px;}
-.parent-row:last-child{border:none;}
-.parent-row span:last-child{color:var(--text-soft); font-weight:800; text-align:right;}
-.parent-section{margin-top:18px; padding-top:14px; border-top:3px solid var(--line);}
-.parent-section h3{font-size:18px; margin-bottom:10px;}
-.settings-row{display:flex; justify-content:space-between; align-items:center; padding:10px 0; gap:10px;}
-.settings-row label{font-weight:700;}
-.settings-row select, .settings-row input[type=number]{
-  padding:8px 12px; font-size:16px; font-family:inherit; border-radius:12px;
-  border:2px solid var(--line); background:var(--bg); min-width:90px;
-}
-.toggle{position:relative; width:56px; height:32px; flex-shrink:0;}
-.toggle input{opacity:0; width:0; height:0;}
-.toggle span{position:absolute; inset:0; background:var(--line); border-radius:50px;
-  transition:.2s; cursor:pointer;}
-.toggle span::before{content:''; position:absolute; width:24px; height:24px;
-  left:4px; top:4px; background:#fff; border-radius:50%; transition:.2s; box-shadow:0 2px 4px rgba(0,0,0,.2);}
-.toggle input:checked + span{background:var(--ok);}
-.toggle input:checked + span::before{transform:translateX(24px);}
-.close-btn{
-  width:100%; padding:14px; border-radius:50px; font-weight:800; font-size:16px;
-  background:var(--blue); color:#fff; box-shadow:0 4px 0 #1d4ed8; margin-top:16px; min-height:52px;
-}
-.gate-code{font-size:32px; font-weight:800; text-align:center; margin:16px 0; color:var(--navy);}
-.gate-input{width:100%; padding:14px; font-size:22px; text-align:center; font-family:inherit;
-  border:2px solid var(--line); border-radius:14px; outline:none; background:var(--bg);}
-.gate-input:focus{border-color:var(--blue);}
-.gate-error{color:var(--bad); text-align:center; font-weight:700; margin-top:8px; min-height:20px;}
-
-/* Confetti */
-.confetti{position:fixed; width:10px; height:14px; top:-20px; z-index:999;
-  border-radius:2px; pointer-events:none; animation:fall linear forwards;}
-@keyframes fall{to{transform:translateY(110vh) rotate(720deg); opacity:.7;}}
-
-/* Bottom nav */
-.bottom-nav{
-  position:fixed; bottom:0; left:0; right:0; background:#fff;
-  border-top:2px solid var(--line); display:flex; justify-content:space-around;
-  padding:6px 0 max(6px, env(safe-area-inset-bottom)); z-index:40;
-  box-shadow:0 -4px 16px rgba(23,37,84,.06);
-}
-.nav-btn{
-  flex:1; padding:8px 4px; display:flex; flex-direction:column; align-items:center; gap:2px;
-  font-size:11px; font-weight:800; color:var(--text-soft); min-height:56px;
-}
-.nav-btn .nav-emoji{font-size:22px;}
-.nav-btn.active{color:var(--blue);}
-body.lesson-mode .bottom-nav{display:none;}
-body.lesson-mode main{padding-bottom:20px;}
-
-/* Responsive */
-@media (max-width:480px){
-  .welcome h1{font-size:24px;}
-  .word-en{font-size:34px;}
-  .big-emoji{font-size:76px;}
-  .opt-emoji{font-size:42px; min-height:90px;}
-  .opt-word{font-size:19px; min-height:64px;}
-  .spell-slot{width:36px; height:44px; font-size:22px;}
-  .letter-btn{width:40px; height:44px; font-size:20px;}
-  .island-grid{grid-template-columns:repeat(2,1fr); gap:10px;}
-  .island-emoji{font-size:32px;}
-  .island-name{font-size:15px;}
-  .island-theme{font-size:11px;}
-  .story-en{font-size:17px;}
-  .story-emoji{font-size:56px;}
-  .speak-phrase{font-size:26px;}
-  .reward-title{font-size:24px;}
-  .reward-emoji{font-size:70px;}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
-}
-</style>
-</head>
-<body>
-
-<header class="topbar">
-  <button class="logo" onclick="goHome()" aria-label="На главную">🏝️ <span>English Quest</span></button>
-  <div class="topbar-stats">
-    <div class="stat" title="Звёзды">⭐ <span id="stat-stars">0</span></div>
-    <button class="icon-btn" onclick="openParentGate()" aria-label="Кабинет родителя">🔒</button>
-  </div>
-</header>
-
-<main id="app"></main>
-
-<nav class="bottom-nav" id="bottom-nav">
-  <button class="nav-btn" data-nav="map" onclick="goMap()"><span class="nav-emoji">🗺️</span>Карта</button>
-  <button class="nav-btn" data-nav="dictionary" onclick="goDictionary()"><span class="nav-emoji">📖</span>Словарь</button>
-  <button class="nav-btn" data-nav="album" onclick="goAlbum()"><span class="nav-emoji">🎖️</span>Альбом</button>
-  <button class="nav-btn" data-nav="stories" onclick="goStories()"><span class="nav-emoji">📚</span>Истории</button>
-</nav>
-
-<div id="modal-root"></div>
-
-<script>
-/* ============================================================
-   DATA — 100 слов по 10 мирам
-   ============================================================ */
-const W = (en, ru, emoji, topic, example, exRu) => ({
-  id: en.replace(/\s/g,'_').toLowerCase(),
-  en, ru, emoji, topic, example, exRu
-});
+const PHRASES = [
+  ['Hello!','Привет!','👋'],['Hi!','Привет!','😊'],['Good morning!','Доброе утро!','🌞'],['Goodbye!','До свидания!','👋'],['See you!','До встречи!','🤗'],['Please.','Пожалуйста.','🙏'],['Thank you.','Спасибо.','💛'],['You’re welcome.','Пожалуйста / не за что.','🌟'],['Sorry.','Извини.','🥺'],['Yes.','Да.','✅'],['No.','Нет.','❌'],['What is your name?','Как тебя зовут?','💬'],['My name is…','Меня зовут…','🏷️'],['How are you?','Как дела?','🙂'],['I’m happy.','Я счастлив(а).','😄'],['I’m hungry.','Я голоден / голодна.','🍽️'],['I’m thirsty.','Я хочу пить.','🥤'],['I like apples.','Я люблю яблоки.','🍎'],['I like dogs.','Мне нравятся собаки.','🐶'],['I don’t know.','Я не знаю.','🤔'],['I can do it!','Я могу это сделать!','💪'],['Let’s play!','Давай играть!','🎈'],['Come here.','Иди сюда.','👇'],['Look!','Смотри!','👀'],['Listen!','Слушай!','👂'],['Open the door.','Открой дверь.','🚪'],['Close the window.','Закрой окно.','🪟'],['Touch your nose.','Дотронься до носа.','👃'],['How many?','Сколько?','🔢'],['What colour is it?','Какого это цвета?','🎨']
+].map(([en,ru,emoji],i)=>({id:i+1,en,ru,emoji}));
 
 const WORLDS = [
-  { id:'hello', name:'Hello Camp', theme:'Приветствие и знакомство', emoji:'⛺', color:'#FBBF24',
-    words:[
-      W('hello','привет','👋','hello'),
-      W('goodbye','до свидания','🖐️','hello'),
-      W('please','пожалуйста','🙏','hello'),
-      W('thank you','спасибо','💝','hello'),
-      W('yes','да','✅','hello'),
-      W('no','нет','❌','hello'),
-      W('name','имя','🏷️','hello','My name is Finn.','Меня зовут Финн.'),
-      W('friend','друг','🤝','hello','You are my friend.','Ты мой друг.'),
-      W('teacher','учитель','👩‍🏫','hello'),
-      W('happy','счастливый','😊','hello')
-    ]
-  },
-  { id:'colors', name:'Color Forest', theme:'Цвета и формы', emoji:'🌈', color:'#FB7185',
-    words:[
-      W('red','красный','🔴','colors'),
-      W('blue','синий','🔵','colors'),
-      W('yellow','жёлтый','🟡','colors'),
-      W('green','зелёный','🟢','colors'),
-      W('orange','оранжевый','🟠','colors'),
-      W('pink','розовый','🌸','colors'),
-      W('purple','фиолетовый','🟣','colors'),
-      W('black','чёрный','⚫','colors'),
-      W('white','белый','⚪','colors'),
-      W('brown','коричневый','🟤','colors')
-    ]
-  },
-  { id:'numbers', name:'Number City', theme:'Числа 1–10', emoji:'🏙️', color:'#8B5CF6',
-    words:[
-      W('one','один','1️⃣','numbers'),
-      W('two','два','2️⃣','numbers'),
-      W('three','три','3️⃣','numbers'),
-      W('four','четыре','4️⃣','numbers'),
-      W('five','пять','5️⃣','numbers'),
-      W('six','шесть','6️⃣','numbers'),
-      W('seven','семь','7️⃣','numbers'),
-      W('eight','восемь','8️⃣','numbers'),
-      W('nine','девять','9️⃣','numbers'),
-      W('ten','десять','🔟','numbers')
-    ]
-  },
-  { id:'animals', name:'Animal Island', theme:'Животные', emoji:'🐾', color:'#14B8A6',
-    words:[
-      W('cat','кот','🐱','animals'),
-      W('dog','собака','🐶','animals'),
-      W('bird','птица','🐦','animals'),
-      W('fish','рыба','🐟','animals'),
-      W('rabbit','кролик','🐰','animals'),
-      W('horse','лошадь','🐴','animals'),
-      W('cow','корова','🐮','animals'),
-      W('duck','утка','🦆','animals'),
-      W('bear','медведь','🐻','animals'),
-      W('monkey','обезьяна','🐵','animals')
-    ]
-  },
-  { id:'home', name:'Home Rocket', theme:'Дом и предметы', emoji:'🚀', color:'#2563EB',
-    words:[
-      W('house','дом','🏠','home'),
-      W('room','комната','🛋️','home'),
-      W('kitchen','кухня','🍳','home'),
-      W('bedroom','спальня','🌙','home'),
-      W('door','дверь','🚪','home'),
-      W('window','окно','🪟','home'),
-      W('bed','кровать','🛏️','home'),
-      W('table','стол','🍽️','home'),
-      W('chair','стул','🪑','home'),
-      W('lamp','лампа','💡','home')
-    ]
-  },
-  { id:'food', name:'Food Planet', theme:'Еда и напитки', emoji:'🍎', color:'#F43F5E',
-    words:[
-      W('apple','яблоко','🍎','food'),
-      W('banana','банан','🍌','food'),
-      W('bread','хлеб','🍞','food'),
-      W('milk','молоко','🥛','food'),
-      W('water','вода','💧','food'),
-      W('cheese','сыр','🧀','food'),
-      W('egg','яйцо','🥚','food'),
-      W('rice','рис','🍚','food'),
-      W('pizza','пицца','🍕','food'),
-      W('orange','апельсин','🍊','food')
-    ]
-  },
-  { id:'school', name:'School Station', theme:'Школьные принадлежности', emoji:'🎒', color:'#0EA5E9',
-    words:[
-      W('book','книга','📖','school'),
-      W('pen','ручка','🖊️','school'),
-      W('pencil','карандаш','✏️','school'),
-      W('bag','рюкзак','🎒','school'),
-      W('ruler','линейка','📏','school'),
-      W('desk','парта','🗄️','school'),
-      W('paper','бумага','📄','school'),
-      W('crayon','мелок','🖍️','school'),
-      W('scissors','ножницы','✂️','school'),
-      W('board','доска','📋','school')
-    ]
-  },
-  { id:'weather', name:'Weather Mountain', theme:'Погода и ощущения', emoji:'⛰️', color:'#38BDF8',
-    words:[
-      W('sun','солнце','☀️','weather'),
-      W('rain','дождь','🌧️','weather'),
-      W('snow','снег','❄️','weather'),
-      W('wind','ветер','💨','weather'),
-      W('cloud','облако','☁️','weather'),
-      W('hot','жаркий','🔥','weather'),
-      W('cold','холодный','🥶','weather'),
-      W('warm','тёплый','🌤️','weather'),
-      W('sunny','солнечно','🌞','weather'),
-      W('rainy','дождливо','🌦️','weather')
-    ]
-  },
-  { id:'action', name:'Action Planet', theme:'Тело и действия', emoji:'💫', color:'#A855F7',
-    words:[
-      W('head','голова','👤','action'),
-      W('eyes','глаза','👀','action'),
-      W('ears','уши','👂','action'),
-      W('nose','нос','👃','action'),
-      W('mouth','рот','👄','action'),
-      W('hands','руки','✋','action'),
-      W('feet','ноги','🦶','action'),
-      W('run','бегать','🏃','action'),
-      W('jump','прыгать','🤸','action'),
-      W('dance','танцевать','💃','action')
-    ]
-  },
-  { id:'play', name:'Play Valley', theme:'Одежда и игрушки', emoji:'🎈', color:'#F59E0B',
-    words:[
-      W('t-shirt','футболка','👕','play'),
-      W('trousers','брюки','👖','play'),
-      W('shoes','обувь','👟','play'),
-      W('coat','пальто','🧥','play'),
-      W('hat','шапка','🎩','play'),
-      W('dress','платье','👗','play'),
-      W('ball','мяч','⚽','play'),
-      W('kite','воздушный змей','🪁','play'),
-      W('bike','велосипед','🚲','play'),
-      W('toy','игрушка','🧸','play')
-    ]
-  }
+  {id:1,name:'Hello Camp',ru:'Лагерь приветствий',subtitle:'Знакомимся и здороваемся',emoji:'🏕️',tone:'coral',goal:'Научись здороваться, прощаться и представляться.',wordStart:0,lessons:['Знакомство','Кто ты?','Да или нет','Праздник друзей'],phrase:'My name is Finn!',mission:'Помоги Фину познакомиться с новыми друзьями. Скажи hello и представься!',unlock:'Начало большого путешествия',icon:'👋'},
+  {id:2,name:'Color Forest',ru:'Цветной лес',subtitle:'Раскрась волшебный лес',emoji:'🌈',tone:'purple',goal:'Узнавай цвета и отвечай: It is…',wordStart:10,lessons:['Палитра','Ещё цвета','Цветная охота','Радуга острова'],phrase:'What colour is it?',mission:'Помоги Оли вернуть цвета волшебной радуге.',unlock:'Пройди 3 миссии в Hello Camp',icon:'🎨'},
+  {id:3,name:'Number City',ru:'Город чисел',subtitle:'Считаем и играем',emoji:'🏙️',tone:'blue',goal:'Считай от одного до десяти и отвечай How many?',wordStart:20,lessons:['Считаем до пяти','До десяти','Сколько предметов?','Магазин робота'],phrase:'How many?',mission:'Открой магазин Бипа и посчитай все сокровища.',unlock:'Пройди 3 миссии в Color Forest',icon:'🔢'},
+  {id:4,name:'Animal Island',ru:'Остров животных',subtitle:'Познакомься с друзьями-животными',emoji:'🦁',tone:'green',goal:'Называй животных и говори: It is a…',wordStart:30,lessons:['Домашние друзья','Ферма','Большие животные','Кто где живёт?'],phrase:'It is a cat.',mission:'Найди животных, которые спрятались на острове.',unlock:'Пройди 3 миссии в Number City',icon:'🐾'},
+  {id:5,name:'Home Rocket',ru:'Дом-ракета',subtitle:'Исследуем комнаты и предметы',emoji:'🚀',tone:'orange',goal:'Называй комнаты и предметы вокруг себя.',wordStart:40,lessons:['Мой дом','Внутри комнаты','Найди предмет','Комната мечты'],phrase:'This is my room.',mission:'Помоги Оли найти синюю сумку в доме.',unlock:'Пройди 3 миссии в Animal Island',icon:'🏠'},
+  {id:6,name:'Food Planet',ru:'Планета вкусняшек',subtitle:'Готовим пикник для друзей',emoji:'🍓',tone:'pink',goal:'Называй еду и вежливо проси: Can I have…?',wordStart:50,lessons:['Фруктовый сад','Завтрак','Обед','Пикник'],phrase:'I like apples.',mission:'Собери корзину для весёлого пикника.',unlock:'Пройди 3 миссии в Home Rocket',icon:'🍎'},
+  {id:7,name:'School Station',ru:'Школьная станция',subtitle:'Собираем всё для уроков',emoji:'🎒',tone:'yellow',goal:'Называй школьные предметы и говори I have…',wordStart:60,lessons:['В рюкзаке','На парте','Творческая мастерская','Собери портфель'],phrase:'I have a pencil.',mission:'Помоги Бипу собрать школьный рюкзак.',unlock:'Пройди 3 миссии в Food Planet',icon:'✏️'},
+  {id:8,name:'Weather Mountain',ru:'Гора погоды',subtitle:'Смотрим на небо и погоду',emoji:'⛅',tone:'sky',goal:'Описывай погоду словами It is…',wordStart:70,lessons:['Небо','Тепло или холодно','Какая погода?','Прогноз погоды'],phrase:'It is sunny.',mission:'Стань ведущим прогноза погоды для островов.',unlock:'Пройди 3 миссии в School Station',icon:'🌦️'},
+  {id:9,name:'Action Planet',ru:'Планета движений',subtitle:'Двигаемся и танцуем',emoji:'🪇',tone:'mint',goal:'Понимай команды и говори I can…',wordStart:80,lessons:['Лицо','Двигайся','Танцевальная пауза','Я умею'],phrase:'I can jump!',mission:'Повтори движения за Фином и устрой танец.',unlock:'Пройди 3 миссии в Weather Mountain',icon:'🤸'},
+  {id:10,name:'Play Valley',ru:'Долина игр',subtitle:'Одежда, игрушки и веселье',emoji:'🎈',tone:'lilac',goal:'Называй одежду, игрушки и приглашай играть.',wordStart:90,lessons:['Что надеть?','Наряд для праздника','Игрушки','Игровой день'],phrase:'Let’s play!',mission:'Устрой большой праздник вместе со всеми друзьями.',unlock:'Пройди 3 миссии в Action Planet',icon:'🧸'}
 ];
 
 const STORIES = [
-  { id:'balloon', worldId:'colors', title:"Finn's Red Balloon", titleRu:'Красный шарик Фина',
-    emoji:'🎈', scenes:[
-      {en:'Finn has a red balloon.', ru:'У Фина есть красный воздушный шар.', emoji:'🦊🔴🎈'},
-      {en:'The balloon is big. The sky is blue.', ru:'Шар большой. Небо синее.', emoji:'🎈🌤️'},
-      {en:'"Oh no!" says Finn. The balloon flies away.', ru:'«О нет!» — говорит Фин. Шар улетает.', emoji:'🦊😱💨'},
-      {en:'Oli sees the balloon in a green tree.', ru:'Оли видит шар на зелёном дереве.', emoji:'🦉🌳🎈'},
-      {en:'"Look up!" says Oli. "I can help!"', ru:'«Посмотри вверх!» — говорит Оли. «Я могу помочь!»', emoji:'🦉👀'},
-      {en:'Bip brings a yellow ladder. Finn gets the red balloon.', ru:'Бип приносит жёлтую лестницу. Фин достаёт красный шар.', emoji:'🤖🪜🎈'},
-      {en:'"Thank you, friends!" says Finn. They are happy.', ru:'«Спасибо, друзья!» — говорит Фин. Они счастливы.', emoji:'🦊🦉🤖😊'}
-    ],
-    questions:[
-      {q:'What colour is the balloon?', options:['red','blue','green'], answer:'red'},
-      {q:'Where is the balloon?', options:['in a tree','in a house'], answer:'in a tree'},
-      {q:'Who helps Finn?', options:['Oli and Bip','the duck'], answer:'Oli and Bip'}
-    ]
-  },
-  { id:'picnic', worldId:'food', title:'A Picnic on Planet Yum', titleRu:'Пикник на Планете Вкусняшек',
-    emoji:'🧺', scenes:[
-      {en:'Finn, Oli and Bip are on Planet Yum.', ru:'Фин, Оли и Бип на Планете Вкусняшек.', emoji:'🦊🦉🤖🌍'},
-      {en:'They have apples, bananas and bread.', ru:'У них есть яблоки, бананы и хлеб.', emoji:'🍎🍌🍞'},
-      {en:'"I like apples," says Oli.', ru:'«Я люблю яблоки», — говорит Оли.', emoji:'🦉🍎'},
-      {en:'"I like bananas," says Finn.', ru:'«Я люблю бананы», — говорит Фин.', emoji:'🦊🍌'},
-      {en:'Bip says, "Water, please!"', ru:'Бип говорит: «Воды, пожалуйста!»', emoji:'🤖💧'},
-      {en:'Oh! The picnic basket is empty. Where is the food?', ru:'Ой! Корзина для пикника пуста. Где еда?', emoji:'🧺❓'},
-      {en:'A little duck has the basket. "Here you are!"', ru:'У маленькой утки корзина. «Вот, держите!»', emoji:'🦆🧺'},
-      {en:'"Thank you!" The friends share the food. "Yum, yum!"', ru:'«Спасибо!» Друзья делятся едой. «Ням-ням!»', emoji:'🦊🦉🤖😋'}
-    ],
-    questions:[
-      {q:'What does Oli like?', options:['Apples','Bananas'], answer:'Apples'},
-      {q:'What does Finn like?', options:['Apples','Bananas'], answer:'Bananas'},
-      {q:'What does Bip ask for?', options:['Water','Milk'], answer:'Water'},
-      {q:'Who has the basket?', options:['A little duck','Finn'], answer:'A little duck'}
-    ]
-  },
-  { id:'bag', worldId:'home', title:'Where Is My Blue Bag?', titleRu:'Где моя синяя сумка?',
-    emoji:'🎒', scenes:[
-      {en:'Oli has a blue bag.', ru:'У Оли синяя сумка.', emoji:'🦉🎒'},
-      {en:'She looks in the bedroom. The bag is not there.', ru:'Она ищет в спальне. Сумки там нет.', emoji:'🦉🌙❓'},
-      {en:'She looks in the kitchen. The bag is not there.', ru:'Она ищет на кухне. Сумки там нет.', emoji:'🦉🍳❓'},
-      {en:'Finn says, "Look under the table!"', ru:'Фин говорит: «Посмотри под столом!»', emoji:'🦊🍽️👇'},
-      {en:'The blue bag is under the table. "Thank you, Finn!"', ru:'Синяя сумка под столом. «Спасибо, Фин!»', emoji:'🦉🎒😊'}
-    ],
-    questions:[
-      {q:'What colour is the bag?', options:['Blue','Red'], answer:'Blue'},
-      {q:'Where is the bag?', options:['under the table','in the bedroom'], answer:'under the table'},
-      {q:'Who helps Oli?', options:['Finn','Bip'], answer:'Finn'}
-    ]
-  }
+  {id:'balloon',title:'Finn’s Red Balloon',ru:'Красный шар Фина',emoji:'🎈',level:'Для начинающих',duration:'2–3 мин',cover:'🦊🎈',scenes:[
+    {en:'Finn has a red balloon.',ru:'У Фина есть красный воздушный шар.'},{en:'The balloon is big. The sky is blue.',ru:'Шар большой. Небо синее.'},{en:'“Oh no!” says Finn. The balloon flies away.',ru:'«О нет!» — говорит Фин. Шар улетает.'},{en:'Oli sees the balloon in a green tree.',ru:'Оли видит шар на зелёном дереве.'},{en:'“Look up!” says Oli. “I can help!”',ru:'«Посмотри вверх!» — говорит Оли. «Я могу помочь!»'},{en:'Bip brings a yellow ladder. Finn gets the red balloon.',ru:'Бип приносит жёлтую лестницу. Фин достаёт красный шар.'},{en:'“Thank you, friends!” says Finn. They are happy.',ru:'«Спасибо, друзья!» — говорит Фин. Они счастливы.'}
+  ],questions:[{q:'What colour is the balloon?',opts:['red','blue','green'],a:'red'},{q:'Where is the balloon?',opts:['in a tree','in a house'],a:'in a tree'},{q:'Who helps Finn?',opts:['Oli and Bip','A duck'],a:'Oli and Bip'}]},
+  {id:'picnic',title:'A Picnic on Planet Yum',ru:'Пикник на Планете вкусняшек',emoji:'🧺',level:'Для начинающих',duration:'3 мин',cover:'🦉🍎',scenes:[
+    {en:'Finn, Oli and Bip are on Planet Yum.',ru:'Фин, Оли и Бип на Планете вкусняшек.'},{en:'They have apples, bananas and bread.',ru:'У них есть яблоки, бананы и хлеб.'},{en:'“I like apples,” says Oli.',ru:'«Я люблю яблоки», — говорит Оли.'},{en:'“I like bananas,” says Finn.',ru:'«Я люблю бананы», — говорит Фин.'},{en:'Bip says, “Water, please!”',ru:'Бип говорит: «Воды, пожалуйста!»'},{en:'Oh! The picnic basket is empty. Where is the food?',ru:'Ой! Корзина для пикника пуста. Где еда?'},{en:'A little duck has the basket. “Here you are!” says the duck.',ru:'У маленькой утки корзина. «Вот, держите!» — говорит утка.'},{en:'“Thank you!” The friends share the food. “Yum, yum!” says Bip.',ru:'«Спасибо!» Друзья делятся едой. «Ням-ням!» — говорит Бип.'}
+  ],questions:[{q:'What does Oli like?',opts:['apples','bananas','pizza'],a:'apples'},{q:'What does Finn like?',opts:['milk','bananas','bread'],a:'bananas'},{q:'What does Bip ask for?',opts:['water','juice','cheese'],a:'water'},{q:'Who has the basket?',opts:['a little duck','a rabbit'],a:'a little duck'}]},
+  {id:'bag',title:'Where Is My Blue Bag?',ru:'Где моя синяя сумка?',emoji:'🎒',level:'Для начинающих',duration:'2 мин',cover:'🦉🎒',scenes:[
+    {en:'Oli has a blue bag.',ru:'У Оли синяя сумка.'},{en:'She looks in the bedroom. The bag is not there.',ru:'Она ищет в спальне. Сумки там нет.'},{en:'She looks in the kitchen. The bag is not there.',ru:'Она ищет на кухне. Сумки там нет.'},{en:'Finn says, “Look under the table!”',ru:'Фин говорит: «Посмотри под столом!»'},{en:'The blue bag is under the table. “Thank you, Finn!”',ru:'Синяя сумка под столом. «Спасибо, Фин!»'}
+  ],questions:[{q:'What colour is the bag?',opts:['blue','red','yellow'],a:'blue'},{q:'Where does Oli look first?',opts:['in the bedroom','in the garden'],a:'in the bedroom'},{q:'Where is the bag?',opts:['under the table','in the rocket'],a:'under the table'}]}
 ];
 
-const CHARACTERS = {
-  finn:{emoji:'🦊', name:'Фин'},
-  oli:{emoji:'🦉', name:'Оли'},
-  bip:{emoji:'🤖', name:'Бип'}
-};
-const CHARACTER_HINTS = {
-  correct:['Great job!','You did it!','Well done!','Отлично!','Молодец!'],
-  wrong:['Try one more time.','Попробуй ещё раз!','Не страшно! Попробуем ещё.','Almost there!'],
-  intro:['Listen carefully.','Tap the picture.','Смотри и слушай!','Поехали!']
-};
 
-/* ============================================================
-   STATE + STORAGE
-   ============================================================ */
-const STORAGE_KEY = 'english_quest_v1';
-let state = null;
 
-function defaultState(){
-  return {
-    profile: null,
-    stars: 0,
-    stickers: [],
-    progress: {},
-    words: {},
-    daily: {},
-    settings: { sound:true, dailyGoal:15, reminders:false }
-  };
-}
-function loadState(){
-  try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(raw) return Object.assign(defaultState(), JSON.parse(raw));
-  }catch(e){}
-  return defaultState();
-}
-function save(){
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
-  const el = document.getElementById('stat-stars');
-  if(el) el.textContent = state.stars;
-}
+const DIALOGUES = [
+  {id:'toyshop',title:'At the toy shop',ru:'В магазине игрушек',emoji:'🧸',lines:[['Shop robot','Hello!'],['Child','Hello! I want a ball, please.'],['Shop robot','What colour?'],['Child','Red, please.'],['Shop robot','Here you are!'],['Child','Thank you!'],['Shop robot','You’re welcome!']]},
+  {id:'school',title:'At school',ru:'В школе',emoji:'✏️',lines:[['Oli','Hello!'],['Finn','Hi, Oli!'],['Oli','Do you have a pencil?'],['Finn','Yes, I do. Here you are.'],['Oli','Thank you!'],['Finn','You’re welcome!']]},
+  {id:'playtime',title:'Play time',ru:'Время играть',emoji:'🎈',lines:[['Finn','Let’s play!'],['Oli','Great!'],['Finn','I have a ball.'],['Oli','I can jump!'],['Bip','Beep! Let’s dance!']]}
+];
 
-/* ============================================================
-   UTILS
-   ============================================================ */
-let audioCtx = null;
-function beep(freq, dur, type='sine', vol=0.07){
-  if(!state || !state.settings.sound) return;
-  try{
-    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = type; osc.frequency.value = freq;
-    gain.gain.setValueAtTime(vol, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start(); osc.stop(audioCtx.currentTime + dur);
-  }catch(e){}
-}
-const soundOk = ()=>{ beep(660,.1); setTimeout(()=>beep(880,.14),100); };
-const soundBad = ()=> beep(200,.18,'triangle',.05);
-const soundWin = ()=> [523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.16),i*100));
+const MISSION_TYPES = ['learn','listen','match','quest'];
 
-function speak(text, lang='en-US', rate=0.9){
-  if(!state || !state.settings.sound) return;
-  if(!('speechSynthesis' in window)) return;
-  try{
+  </script>
+  <script>
+/* English Quest — клиентская логика. Работает без сервера и хранит прогресс в localStorage. */
+(() => {
+  'use strict';
+  const STORAGE_KEY = 'englishQuestProgress_v1';
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+  const shuffle = (items) => [...items].sort(() => Math.random() - .5);
+  const escapeHtml = (value) => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const defaultState = () => ({name:'Исследователь',avatar:'🦊',completed:[],learned:[],stars:0,stickers:[],sound:true,createdAt:new Date().toISOString()});
+  let state = loadState();
+  let activeView = 'home';
+  let activeWorld = null;
+  let activeLesson = null;
+  let selectedAvatar = state.avatar || '🦊';
+  let gateAnswer = 12;
+  let gateA = 7;
+  let gateB = 5;
+  let toastTimer = null;
+
+  function loadState(){
+    try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)); return saved && typeof saved === 'object' ? {...defaultState(),...saved} : defaultState(); }
+    catch { return defaultState(); }
+  }
+  function hasStoredState(){ try { return Boolean(localStorage.getItem(STORAGE_KEY)); } catch { return true; } }
+  function saveState(){
+    state.stars = state.completed.length;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* приватный режим браузера может запрещать localStorage */ }
+    updateTopStats();
+  }
+  function toast(message){
+    const box = $('#toast'); if (!box) return;
+    box.textContent = message; box.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(()=>box.classList.remove('show'),2300);
+  }
+  function speak(text, lang='en-US'){
+    if(!state.sound) { toast('Звук выключен'); return; }
+    if(!('speechSynthesis' in window)){ toast('В этом браузере нет озвучки. Попробуй Chrome или Edge.'); return; }
     window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = lang; u.rate = rate; u.pitch = 1.05;
-    const voice = window.speechSynthesis.getVoices().find(v=>v.lang.startsWith(lang.split('-')[0]));
-    if(voice) u.voice = voice;
-    window.speechSynthesis.speak(u);
-  }catch(e){}
-}
-function shuffle(arr){
-  const a = [...arr];
-  for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
-  return a;
-}
-function randInt(max){ return Math.floor(Math.random()*max); }
-function esc(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function capitalize(s){ return s.charAt(0).toUpperCase()+s.slice(1); }
-function article(word){ return /^[aeiou]/i.test(word) ? 'an' : 'a'; }
-
-function getExample(word){
-  if(word.example) return {en: word.example, ru: word.exRu};
-  switch(word.topic){
-    case 'hello': return {en:`${capitalize(word.en)}!`, ru:`${capitalize(word.ru)}!`};
-    case 'colors': return {en:`It is ${word.en}.`, ru:`Это ${word.ru} цвет.`};
-    case 'numbers': return {en:`I have ${word.en}.`, ru:`У меня есть ${word.ru}.`};
-    case 'animals': return {en:`It is ${article(word.en)} ${word.en}.`, ru:`Это ${word.ru}.`};
-    case 'home': return {en:`This is my ${word.en}.`, ru:`Это моя/мой ${word.ru}.`};
-    case 'food': return {en:`I like ${word.en}.`, ru:`Я люблю ${word.ru}.`};
-    case 'school': return {en:`I have ${article(word.en)} ${word.en}.`, ru:`У меня есть ${word.ru}.`};
-    case 'weather': return {en:`It is ${word.en}.`, ru:`Сейчас ${word.ru}.`};
-    case 'action':
-      if(['run','jump','dance'].includes(word.en)) return {en:`I can ${word.en}.`, ru:`Я умею ${word.ru}.`};
-      return {en:`Touch your ${word.en}.`, ru:`Дотронься до ${word.ru}.`};
-    case 'play': return {en:`This is my ${word.en}.`, ru:`Это моя/мой ${word.ru}.`};
-    default: return {en: word.en, ru: word.ru};
+    const utterance = new SpeechSynthesisUtterance(String(text));
+    utterance.lang = lang; utterance.rate = lang.startsWith('en') ? .82 : .92; utterance.pitch = 1.06;
+    const voices = window.speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang.toLowerCase().startsWith(lang.toLowerCase().slice(0,2)));
+    if(voice) utterance.voice = voice;
+    window.speechSynthesis.speak(utterance);
   }
-}
-function wordStatus(wordId){
-  const w = state.words[wordId];
-  if(!w || w.correct === 0) return 'new';
-  if(w.correct >= 3) return 'known';
-  return 'learning';
-}
+  function updateTopStats(){
+    $('#topStars').textContent = state.completed.length;
+    $('#statStars').textContent = state.completed.length;
+    $('#statWords').innerHTML = `${state.learned.length} <small>/ 100</small>`;
+    $('#statMissions').innerHTML = `${state.completed.length} <small>/ 40</small>`;
+    $('#sidebarName').textContent = state.name || 'Исследователь';
+    $('.sidebar-profile .avatar').textContent = state.avatar || '🦊';
+    $('#soundToggle').textContent = state.sound ? '🔊' : '🔇';
+    $('#soundToggle').setAttribute('aria-label', state.sound ? 'Выключить звук' : 'Включить звук');
+  }
+  function missionKey(worldId, lessonIndex){ return `${worldId}-${lessonIndex+1}`; }
+  function completedCount(world){ return state.completed.filter(key=>key.startsWith(`${world.id}-`)).length; }
+  function worldUnlocked(world){ return world.id === 1 || completedCount(WORLDS.find(w=>w.id===world.id-1) || {id:0}) >= 3; }
+  function wordsForWorld(world){ return WORDS.slice(world.wordStart, world.wordStart+10); }
+  function wordsForLesson(world, index){
+    const words = wordsForWorld(world);
+    if(index===0) return words.slice(0,5);
+    if(index===1) return words.slice(3,8);
+    if(index===2) return words.slice(5,10);
+    return [words[1],words[3],words[6],words[8],words[9]].filter(Boolean);
+  }
+  function currentMission(world){
+    const count = completedCount(world);
+    return world.lessons.findIndex((_,i)=>!state.completed.includes(missionKey(world.id,i)));
+  }
+  function updateNav(view){
+    activeView = view;
+    $$('.view').forEach(node=>node.classList.toggle('active',node.id===`view-${view}`));
+    $$('.nav-item[data-view]').forEach(node=>node.classList.toggle('active',node.dataset.view===view));
+    const names = {home:'Карта островов',vocabulary:'Мой словарик',phrases:'Полезные фразы',stories:'Истории',album:'Альбом наград',parent:'Для родителей'};
+    $('#pageCrumb').textContent = names[view] || 'English Quest';
+    $('#sidebar').classList.remove('open');
+    if(view==='home') renderHome();
+    if(view==='vocabulary') renderVocabulary();
+    if(view==='phrases') renderPhrases();
+    if(view==='stories') renderStories();
+    if(view==='album') renderAlbum();
+    if(view==='parent') renderParent();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function renderHome(){
+    updateTopStats();
+    const grid = $('#islandGrid');
+    grid.innerHTML = WORLDS.map(world=>{
+      const done = completedCount(world), unlocked = worldUnlocked(world), percent = Math.round(done/4*100);
+      const status = done===4 ? '✓' : unlocked ? '•' : '🔒';
+      return `<article class="island-card ${unlocked?'':'locked'}" data-island="${world.id}" tabindex="${unlocked?'0':'-1'}" aria-label="${escapeHtml(world.name)}${unlocked?'':' — закрыт'}">
+        <div class="island-art tone-${world.tone}"><span class="island-number">ОСТРОВ ${String(world.id).padStart(2,'0')}</span><span class="island-status">${status}</span><span class="island-emoji">${world.emoji}</span></div>
+        <h3>${escapeHtml(world.name)}</h3><p>${escapeHtml(world.subtitle)}</p>
+        <div class="island-progress"><span style="width:${percent}%"></span></div>
+        <div class="island-footer"><span>${done}/4 миссии</span><b>${done===4?'Готово':unlocked?'Открыт':'Закрыт'}</b></div>
+      </article>`;
+    }).join('');
+    $$('.island-card:not(.locked)').forEach(card=>{
+      card.addEventListener('click',()=>openIsland(Number(card.dataset.island)));
+      card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openIsland(Number(card.dataset.island));}});
+    });
+  }
+  function openIsland(id){
+    const world = WORLDS.find(w=>w.id===id); if(!world) return;
+    if(!worldUnlocked(world)){toast(world.unlock);return;}
+    activeWorld = world;
+    const completed = completedCount(world);
+    $('#islandModalContent').innerHTML = `
+      <button class="modal-close" data-close="islandModal" aria-label="Закрыть">×</button>
+      <div class="island-modal-head"><div class="island-modal-art tone-${world.tone}">${world.emoji}</div><div><div class="eyebrow">ОСТРОВ ${String(world.id).padStart(2,'0')}</div><h2>${escapeHtml(world.name)}</h2><p>${escapeHtml(world.ru)} · ${completed}/4 миссии</p></div></div>
+      <div class="modal-goal"><b>🎯 Цель:</b> ${escapeHtml(world.goal)}</div>
+      <div class="mission-list">${world.lessons.map((lesson,i)=>{
+        const isDone=state.completed.includes(missionKey(world.id,i));
+        return `<div class="mission-row"><div class="mission-num">${isDone?'✓':i+1}</div><div class="mission-copy"><b>${escapeHtml(lesson)}</b><small>${['Познакомься с новыми словами','Тренировка на слух','Игровое закрепление','Большая миссия'][i]}</small></div>${isDone?'<span class="mission-state">✓ </span>':''}<button data-start-lesson="${i}">${isDone?'Повторить':'Играть'}</button></div>`;
+      }).join('')}</div>
+      <div class="modal-goal" style="margin-bottom:0"><b>🔓 Следующий шаг:</b> ${completed>=3?'Ты выполнил условие открытия следующего острова!':`Пройди ещё ${3-completed} ${plural(3-completed,'миссию','миссии','миссий')} — и откроется следующий остров.`}</div>`;
+    $('#islandModal').classList.remove('hidden');
+    $('#islandModalContent [data-close="islandModal"]')?.addEventListener('click',()=>closeModal('islandModal'));
+    $$('[data-start-lesson]').forEach(btn=>btn.addEventListener('click',()=>{
+      const index=Number(btn.dataset.startLesson); closeModal('islandModal'); startLesson(world,index);
+    }));
+  }
+  function plural(n,one,few,many){const m=n%10, m100=n%100;return m===1&&m100!==11?one:m>=2&&m<=4&&(m100<12||m100>14)?few:many;}
+  function closeModal(id){ const node=$(`#${id}`); if(node) node.classList.add('hidden'); if(id==='lessonModal'&&'speechSynthesis'in window)window.speechSynthesis.cancel(); }
 
-/* ============================================================
-   LESSON GENERATION
-   ============================================================ */
-function buildLessons(world){
-  const w = world.words;
-  const [w0,w1,w2,w3,w4,w5,w6,w7,w8,w9] = w;
-  const story = STORIES.find(s => s.worldId === world.id);
-
-  return [
-    {
-      id: world.id+'_1', title:'Разведка', objective:'Познакомиться с 5 новыми словами',
-      tasks:[
-        {type:'learn_card', word:w0},
-        {type:'learn_card', word:w1},
-        {type:'learn_card', word:w2},
-        {type:'learn_card', word:w3},
-        {type:'learn_card', word:w4},
-        {type:'listen_and_choose', word:w0, options:[w0,w1,w2,w3]},
-        {type:'listen_and_choose', word:w1, options:[w0,w1,w2,w4]}
-      ]
-    },
-    {
-      id: world.id+'_2', title:'Слушай внимательно', objective:'Узнавать слова на слух',
-      tasks:[
-        {type:'learn_card', word:w5},
-        {type:'learn_card', word:w6},
-        {type:'learn_card', word:w7},
-        {type:'learn_card', word:w8},
-        {type:'learn_card', word:w9},
-        {type:'listen_and_choose', word:w5, options:[w5,w6,w7,w8]},
-        {type:'listen_and_choose', word:w6, options:[w5,w6,w7,w9]},
-        {type:'what_missing', words:[w5,w6,w7]}
-      ]
-    },
-    {
-      id: world.id+'_3', title:'Игровая тренировка', objective:'Собирать слова и находить пары',
-      tasks:[
-        {type:'spell', word:w0},
-        {type:'spell', word:w5},
-        {type:'match_pairs', pairs:[w0,w1,w6,w7]},
-        {type:'listen_and_choose', word:w2, options:[w0,w2,w3,w8]}
-      ]
-    },
-    {
-      id: world.id+'_4', title:'Большая миссия', objective:'Применить слова в контексте',
-      tasks: buildFinalTasks(world, story)
+  function startLesson(world,index){
+    const key=missionKey(world.id,index);
+    if(state.completed.includes(key)){toast('Эта миссия уже пройдена. Можно повторить её!');}
+    const targets=wordsForLesson(world,index);
+    activeLesson={world,index,key,targets,phase:'intro',flash:0,round:0,correct:0,selected:null,matched:[],leftOrder:shuffle(targets.slice(0,4)),rightOrder:shuffle(targets.slice(0,4)),phraseOrder:[],phraseBuilt:[],phraseUsed:[],storyIndex:0};
+    if(index===3){activeLesson.type='quest';} else activeLesson.type=MISSION_TYPES[index];
+    $('#lessonModal').classList.remove('hidden');
+    renderLesson();
+  }
+  function renderLesson(){
+    if(!activeLesson)return;
+    const l=activeLesson,w=l.world;
+    const phaseProgress={intro:0,learn:15,quiz:48,match:55,phrase:65,done:100};
+    const progress=phaseProgress[l.phase] ?? 15;
+    const head=`<div class="lesson-top"><button class="lesson-close" id="lessonClose" aria-label="Закрыть">×</button><div class="lesson-top-copy"><b>${escapeHtml(w.name)} · ${escapeHtml(w.lessons[l.index])}</b><small>Миссия ${l.index+1} из 4</small></div><div class="lesson-progress"><span style="width:${progress}%"></span></div></div>`;
+    let content='';
+    if(l.phase==='intro') content=renderLessonIntro(l);
+    if(l.phase==='learn') content=renderLearn(l);
+    if(l.phase==='quiz') content=renderQuiz(l);
+    if(l.phase==='match') content=renderMatch(l);
+    if(l.phase==='phrase') content=renderPhrase(l);
+    if(l.phase==='done') content=renderSuccess(l);
+    $('#lessonWindow').innerHTML=head+`<div class="lesson-content">${content}</div>`;
+    $('#lessonClose').addEventListener('click',()=>closeModal('lessonModal'));
+    bindLessonControls();
+  }
+  function renderLessonIntro(l){
+    const w=l.world;
+    const intro=l.index===3?`<div class="lesson-story"><p><b>🦊 Фин:</b> ${escapeHtml(w.mission)}</p><small>Наша фраза дня: ${escapeHtml(w.phrase)}</small></div>`:`<div class="lesson-story"><p><b>🦊 Фин:</b> Hello, explorer!</p><small>Привет, исследователь! Сегодня мы отправляемся на остров ${escapeHtml(w.ru.toLowerCase())}.</small><p style="margin-top:10px"><b>🦉 Оли:</b> ${escapeHtml(w.goal)}</p></div>`;
+    return `<div class="lesson-kicker">НОВАЯ МИССИЯ</div><div class="lesson-hero-emoji">${w.emoji}</div><h2>${escapeHtml(w.lessons[l.index])}</h2><p>${escapeHtml(w.goal)}</p>${intro}<div class="lesson-controls"><button class="primary-btn" id="beginLesson">Начать игру <span>➜</span></button></div>`;
+  }
+  function renderLearn(l){
+    const word=l.targets[l.flash]; if(!word){l.phase=nextPhase(l);return renderLesson();}
+    return `<div class="lesson-kicker">ШАГ 1 · ЗАПОМИНАЕМ</div><h2>Посмотри и послушай</h2><p>Нажми на звук, повтори слово, а затем переходи к следующей карточке.</p>
+      <div class="learn-card"><div class="learn-card-emoji">${word.emoji}</div><b>${escapeHtml(word.en)}</b><small>${escapeHtml(word.ru)}</small><button class="audio-button" data-speak-word="${word.id}" aria-label="Послушать ${escapeHtml(word.en)}">🔊</button></div>
+      <div class="lesson-kicker">КАРТОЧКА ${l.flash+1} ИЗ ${l.targets.length}</div><div class="lesson-controls"><button class="soft-btn" id="learnRepeat">🔊 Послушать ещё</button><button class="primary-btn" id="learnNext">${l.flash===l.targets.length-1?'Перейти к игре':'Дальше'} <span>➜</span></button></div>`;
+  }
+  function nextPhase(l){return l.type==='match'?'match':l.type==='quest'?'phrase':'quiz';}
+  function makeQuestions(l){
+    const pool=WORDS.filter(w=>w.id!==0);
+    return Array.from({length:5},(_,i)=>{
+      const target=l.targets[i%l.targets.length];
+      const distractors=shuffle(pool.filter(w=>w.id!==target.id)).slice(0,2);
+      return {target,options:shuffle([target,...distractors])};
+    });
+  }
+  function renderQuiz(l){
+    if(!l.questions)l.questions=makeQuestions(l);
+    const q=l.questions[l.round];
+    if(!q){l.phase='done';return renderLesson();}
+    const listen=l.type==='listen';
+    return `<div class="lesson-kicker">ШАГ 2 · ${listen?'ТРЕНИРУЕМ СЛУХ':'ИГРАЕМ И ВСПОМИНАЕМ'}</div><h2>${listen?'Послушай и найди!':'Выбери правильный ответ'}</h2><p>${listen?'Нажми на динамик и найди картинку, которую ты услышал.':'Посмотри на картинку и выбери английское слово.'}</p>
+      ${listen?`<div class="lesson-hero-emoji">🎧</div><button class="primary-btn" id="questionSpeak">🔊 Послушать слово</button>`:`<div class="lesson-hero-emoji">${q.target.emoji}</div><div class="eyebrow">${escapeHtml(q.target.ru).toUpperCase()}</div>`}
+      <div class="answer-grid">${q.options.map(option=>`<button class="answer-card" data-answer-id="${option.id}">${listen?`<span class="answer-emoji">${option.emoji}</span><b>${escapeHtml(option.ru)}</b>`:`<span class="answer-emoji">${option.emoji}</span><b>${escapeHtml(option.en)}</b>`}</button>`).join('')}</div>
+      <div class="feedback-line" id="quizFeedback">Вопрос ${l.round+1} из 5</div>
+      <div class="lesson-controls"><button class="soft-btn" id="quizHint">💡 Подсказка</button></div>`;
+  }
+  function renderMatch(l){
+    const left=l.leftOrder, right=l.rightOrder;
+    return `<div class="lesson-kicker">ШАГ 2 · ИГРА НА ПАМЯТЬ</div><h2>Найди пары!</h2><p>Нажми на английское слово слева, а затем выбери его перевод справа.</p>
+      <div class="match-list"><div class="match-col">${left.map(word=>`<button class="match-option ${l.matched.includes(word.id)?'matched':''} ${l.selected===word.id?'selected':''}" data-match-left="${word.id}" ${l.matched.includes(word.id)?'disabled':''}>${escapeHtml(word.en)}</button>`).join('')}</div><div class="match-col">${right.map(word=>`<button class="match-option ${l.matched.includes(word.id)?'matched':''}" data-match-right="${word.id}" ${l.matched.includes(word.id)?'disabled':''}>${escapeHtml(word.ru)} ${word.emoji}</button>`).join('')}</div></div>
+      <div class="feedback-line" id="matchFeedback">Совпадений: ${l.matched.length} из ${left.length}</div>`;
+  }
+  function phraseTokens(phrase){return phrase.replace(/[.!?…]/g,'').split(/\s+/).filter(Boolean);}
+  function renderPhrase(l){
+    const tokens=phraseTokens(l.world.phrase);
+    if(!l.phraseOrder.length){
+      const distractors=['please','hello','blue','friend','look'].filter(w=>!tokens.some(t=>t.toLowerCase()===w));
+      l.phraseOrder=shuffle([...tokens,...distractors.slice(0,2)]);
+      l.phraseBuilt=[];l.phraseUsed=[];
     }
-  ];
-}
-
-function buildFinalTasks(world, story){
-  const w = world.words;
-  const tasks = [];
-
-  if(story){
-    tasks.push({type:'story', story});
-    tasks.push({type:'speak_practice', phrase:'Thank you, friends!', ru:'Спасибо, друзья!'});
-    return tasks;
+    return `<div class="lesson-kicker">ШАГ 3 · БОЛЬШАЯ МИССИЯ</div><h2>Собери фразу!</h2><p>${escapeHtml(l.world.mission)}<br>Нажимай на слова в правильном порядке.</p>
+      <div class="lesson-story"><p><b>Фраза дня:</b> ${escapeHtml(l.world.phrase)}</p><small>Послушай, как она звучит, и собери её самостоятельно.</small><button class="audio-button" id="phraseSpeak" aria-label="Послушать фразу">🔊</button></div>
+      <div class="phrase-build">${tokens.map((_,i)=>`<span class="phrase-slot ${l.phraseBuilt[i]?'filled':''}">${l.phraseBuilt[i]?escapeHtml(l.phraseBuilt[i]):'···'}</span>`).join('')}</div>
+      <div class="phrase-build">${l.phraseOrder.map((token,i)=>`<button class="word-chip" data-phrase-token="${i}" ${l.phraseUsed.includes(i)?'disabled':''}>${escapeHtml(token)}</button>`).join('')}</div>
+      <div class="feedback-line" id="phraseFeedback">${l.phraseBuilt.length} из ${tokens.length} слов</div>
+      <div class="lesson-controls"><button class="soft-btn" id="phraseReset">Начать заново</button></div>`;
   }
-
-  if(world.id === 'hello'){
-    tasks.push(
-      {type:'build_phrase', target:'Hello friend', ru:'Привет, друг', distractors:['goodbye','happy']},
-      {type:'build_phrase', target:'My name is Finn', ru:'Меня зовут Финн', distractors:['you','what']},
-      {type:'speak_practice', phrase:'Hello! My name is ...', ru:'Привет! Меня зовут ...'},
-      {type:'listen_and_choose', word:w[7], options:[w[7],w[0],w[9],w[8]]}
-    );
-  } else if(world.id === 'numbers'){
-    tasks.push(
-      {type:'count', emoji:'🍎', count:3},
-      {type:'count', emoji:'⭐', count:5},
-      {type:'count', emoji:'🎈', count:2},
-      {type:'listen_and_choose', word:w[6], options:[w[6],w[3],w[8],w[1]]}
-    );
-  } else if(world.id === 'animals'){
-    tasks.push(
-      {type:'build_phrase', target:'It is a cat', ru:'Это кот', distractors:['dog','is']},
-      {type:'build_phrase', target:'I like dogs', ru:'Мне нравятся собаки', distractors:['cat','is']},
-      {type:'speak_practice', phrase:'It is a cat.', ru:'Это кот.'},
-      {type:'listen_and_choose', word:w[8], options:[w[8],w[2],w[6],w[4]]}
-    );
-  } else if(world.id === 'school'){
-    tasks.push(
-      {type:'build_phrase', target:'I have a book', ru:'У меня есть книга', distractors:['pen','is']},
-      {type:'build_phrase', target:'This is my bag', ru:'Это мой рюкзак', distractors:['desk','a']},
-      {type:'speak_practice', phrase:'I have a pencil.', ru:'У меня есть карандаш.'},
-      {type:'listen_and_choose', word:w[4], options:[w[4],w[0],w[8],w[2]]}
-    );
-  } else if(world.id === 'weather'){
-    tasks.push(
-      {type:'build_phrase', target:'It is sunny', ru:'Сейчас солнечно', distractors:['rainy','the']},
-      {type:'build_phrase', target:'It is cold', ru:'Сейчас холодно', distractors:['hot','a']},
-      {type:'speak_practice', phrase:'It is sunny today.', ru:'Сегодня солнечно.'},
-      {type:'listen_and_choose', word:w[8], options:[w[8],w[6],w[2],w[5]]}
-    );
-  } else if(world.id === 'action'){
-    tasks.push(
-      {type:'build_phrase', target:'I can jump', ru:'Я умею прыгать', distractors:['run','is']},
-      {type:'build_phrase', target:'I can dance', ru:'Я умею танцевать', distractors:['run','a']},
-      {type:'speak_practice', phrase:'I can run and jump!', ru:'Я умею бегать и прыгать!'},
-      {type:'listen_and_choose', word:w[3], options:[w[3],w[0],w[6],w[2]]}
-    );
-  } else if(world.id === 'play'){
-    tasks.push(
-      {type:'build_phrase', target:'Let us play', ru:'Давай играть', distractors:['run','the']},
-      {type:'build_phrase', target:'I have a ball', ru:'У меня есть мяч', distractors:['kite','is']},
-      {type:'speak_practice', phrase:'Let us play together!', ru:'Давай играть вместе!'},
-      {type:'listen_and_choose', word:w[6], options:[w[6],w[0],w[8],w[3]]}
-    );
-  } else {
-    tasks.push(
-      {type:'listen_and_choose', word:w[0], options:[w[0],w[1],w[2],w[3]]},
-      {type:'speak_practice', phrase:'Great job!', ru:'Отличная работа!'}
-    );
+  function renderSuccess(l){
+    const already=state.completed.includes(l.key);
+    return `<div class="success-panel"><div class="success-stars">${already?'🌟':'⭐🌟⭐'}</div><div class="lesson-kicker">МИССИЯ ${already?'ПОВТОРЕНА':'ПРОЙДЕНА'}!</div><h2>${already?'Отличная тренировка!':'Ты справился!'}</h2><p>${already?'Ты ещё раз повторил важные слова. Так они запомнятся лучше.':'Фин, Оли и Бип тобой гордятся. Ты сделал ещё один шаг в английском!'}</p><div class="success-reward">${already?'🔁 Повторение — тоже победа!':'+1 ⭐ звезда путешественника'}</div><p><b>Сегодня ты тренировался:</b><br>${l.targets.map(w=>escapeHtml(w.en)).join(' · ')}</p><div class="lesson-controls"><button class="primary-btn" id="finishLesson">Вернуться на остров <span>➜</span></button></div></div>`;
   }
-  return tasks;
-}
-
-/* ============================================================
-   ROUTER
-   ============================================================ */
-let currentScreen = null;
-let currentParams = {};
-
-function goHome(){
-  if(!state || !state.profile){ goTo('welcome'); return; }
-  goTo('map');
-}
-function goTo(screen, params={}){
-  if('speechSynthesis' in window) try{ window.speechSynthesis.cancel(); }catch(e){}
-  currentScreen = screen; currentParams = params;
-  document.body.classList.toggle('lesson-mode', screen === 'lesson' || screen === 'storyPlayer');
-  updateNav();
-  const app = document.getElementById('app');
-  app.innerHTML = '';
-  const el = document.createElement('div');
-  el.className = 'screen';
-  app.appendChild(el);
-  if(screen === 'welcome') renderWelcome(el);
-  else if(screen === 'map') renderMap(el);
-  else if(screen === 'world') renderWorld(el, params.worldId);
-  else if(screen === 'lesson') renderLesson(el);
-  else if(screen === 'reward') renderReward(el, params);
-  else if(screen === 'dictionary') renderDictionary(el);
-  else if(screen === 'album') renderAlbum(el);
-  else if(screen === 'stories') renderStories(el);
-  else if(screen === 'storyPlayer') renderStoryPlayer(el, params.storyId);
-  window.scrollTo({top:0, behavior:'instant'});
-}
-function updateNav(){
-  document.querySelectorAll('.nav-btn').forEach(b=>{
-    b.classList.toggle('active', b.dataset.nav === currentScreen);
-  });
-}
-function goMap(){ goTo('map'); }
-function goDictionary(){ goTo('dictionary'); }
-function goAlbum(){ goTo('album'); }
-function goStories(){ goTo('stories'); }
-
-/* ============================================================
-   SCREEN: WELCOME
-   ============================================================ */
-let welcomeDraft = {nickname:'', avatar:'🦊', ageBand:'6-7'};
-const AVATARS = ['🦊','🐰','🐼','🐨','🦁','🐯','🐸','🐵','🦉','🐙'];
-
-function renderWelcome(el){
-  el.innerHTML = `
-    <div class="welcome">
-      <div class="welcome-char">🦊</div>
-      <h1>Привет, исследователь!</h1>
-      <p>Фин и Оли ждут тебя. Давай вернём цвет островам!</p>
-      <label class="field-label" for="nickname">Как тебя зовут? (можно псевдоним)</label>
-      <input class="input" id="nickname" type="text" maxlength="20" placeholder="Например, Искатель" value="${esc(welcomeDraft.nickname)}" autocomplete="off">
-      <label class="field-label">Выбери аватара</label>
-      <div class="avatar-grid" id="avatars">
-        ${AVATARS.map(a=>`<button class="avatar-btn ${welcomeDraft.avatar===a?'selected':''}" data-av="${a}" aria-label="Аватар ${a}">${a}</button>`).join('')}
-      </div>
-      <label class="field-label">Сколько тебе лет?</label>
-      <div class="option-grid" id="ageband">
-        <button class="option-btn ${welcomeDraft.ageBand==='6-7'?'selected':''}" data-age="6-7">🧒 6–7 лет</button>
-        <button class="option-btn ${welcomeDraft.ageBand==='8-10'?'selected':''}" data-age="8-10">👦 8–10 лет</button>
-      </div>
-      <button class="primary-btn" id="start-btn">Начать приключение →</button>
-    </div>
-  `;
-  el.querySelector('#nickname').oninput = e => welcomeDraft.nickname = e.target.value;
-  el.querySelectorAll('.avatar-btn').forEach(b=>{
-    b.onclick = ()=>{
-      welcomeDraft.avatar = b.dataset.av;
-      el.querySelectorAll('.avatar-btn').forEach(x=>x.classList.toggle('selected', x===b));
-    };
-  });
-  el.querySelectorAll('#ageband .option-btn').forEach(b=>{
-    b.onclick = ()=>{
-      welcomeDraft.ageBand = b.dataset.age;
-      el.querySelectorAll('#ageband .option-btn').forEach(x=>x.classList.toggle('selected', x===b));
-    };
-  });
-  el.querySelector('#start-btn').onclick = ()=>{
-    const name = welcomeDraft.nickname.trim() || 'Искатель';
-    state.profile = { nickname:name, avatar:welcomeDraft.avatar, ageBand:welcomeDraft.ageBand };
-    save();
-    goTo('map');
-  };
-}
-
-/* ============================================================
-   SCREEN: MAP
-   ============================================================ */
-function worldUnlocked(idx){
-  if(idx === 0) return true;
-  const prev = WORLDS[idx-1];
-  const p = state.progress[prev.id];
-  return p && p.done && p.done.length >= 3;
-}
-function worldDone(worldId){
-  const p = state.progress[worldId];
-  return p && p.done ? p.done.length : 0;
-}
-function getNextLesson(){
-  for(let i=0; i<WORLDS.length; i++){
-    if(!worldUnlocked(i)) break;
-    const w = WORLDS[i];
-    const done = worldDone(w.id);
-    if(done < 4){
-      const p = state.progress[w.id] || {done:[]};
-      for(let j=0; j<4; j++) if(!p.done.includes(j)) return {worldId:w.id, lessonIndex:j};
+  function bindLessonControls(){
+    const l=activeLesson;if(!l)return;
+    $('#beginLesson')?.addEventListener('click',()=>{l.phase='learn';l.flash=0;renderLesson();});
+    $('#learnRepeat')?.addEventListener('click',()=>speak(l.targets[l.flash]?.en||''));
+    $('#learnNext')?.addEventListener('click',()=>{if(l.flash<l.targets.length-1){l.flash++;renderLesson();}else{l.phase=nextPhase(l);renderLesson();}});
+    $$('[data-speak-word]').forEach(btn=>btn.addEventListener('click',()=>{const word=WORDS.find(w=>w.id===Number(btn.dataset.speakWord));if(word)speak(word.en);}));
+    $('#questionSpeak')?.addEventListener('click',()=>speak(l.questions?.[l.round]?.target.en||''));
+    $$('[data-answer-id]').forEach(btn=>btn.addEventListener('click',()=>answerQuiz(Number(btn.dataset.answerId),btn)));
+    $('#quizHint')?.addEventListener('click',()=>{const q=l.questions?.[l.round]; if(q)toast(`Подсказка: слово начинается на «${q.target.en[0].toUpperCase()}»`);});
+    $$('[data-match-left]').forEach(btn=>btn.addEventListener('click',()=>{l.selected=Number(btn.dataset.matchLeft);renderLesson();}));
+    $$('[data-match-right]').forEach(btn=>btn.addEventListener('click',()=>answerMatch(Number(btn.dataset.matchRight))));
+    $('#phraseSpeak')?.addEventListener('click',()=>speak(l.world.phrase));
+    $$('[data-phrase-token]').forEach(btn=>btn.addEventListener('click',()=>choosePhraseToken(Number(btn.dataset.phraseToken))));
+    $('#phraseReset')?.addEventListener('click',()=>{l.phraseBuilt=[];l.phraseUsed=[];renderLesson();});
+    $('#finishLesson')?.addEventListener('click',()=>finishLesson());
+  }
+  function answerQuiz(id,button){
+    const l=activeLesson,q=l.questions[l.round],feedback=$('#quizFeedback');
+    $$('.answer-card').forEach(b=>b.disabled=true);
+    if(id===q.target.id){button.classList.add('correct');l.correct++;feedback.textContent='Правильно! Отличная работа! ✨';feedback.classList.remove('bad');}
+    else{button.classList.add('wrong');const correct=$(`[data-answer-id="${q.target.id}"]`);correct?.classList.add('correct');feedback.textContent=`Почти! Это ${q.target.en}. Попробуем дальше!`;feedback.classList.add('bad');}
+    if(id===q.target.id) speak(q.target.en);
+    setTimeout(()=>{l.round++;if(l.round>=l.questions.length){l.phase='done';}renderLesson();},850);
+  }
+  function answerMatch(rightId){
+    const l=activeLesson;if(l.selected===null){toast('Сначала выбери английское слово слева.');return;}
+    const left=l.targets.find(w=>w.id===l.selected);
+    if(left&&left.id===rightId){l.matched.push(rightId);l.selected=null;speak(left.en);if(l.matched.length>=l.leftOrder.length){l.phase='done';}renderLesson();}
+    else{const feedback=$('#matchFeedback');if(feedback){feedback.textContent='Не беда! Попробуй ещё раз.';feedback.classList.add('bad');}setTimeout(()=>{if(activeLesson&&activeLesson.phase==='match')renderLesson();},650);}
+  }
+  function choosePhraseToken(index){
+    const l=activeLesson,tokens=phraseTokens(l.world.phrase),token=l.phraseOrder[index];
+    if(l.phraseUsed.includes(index))return;
+    const expected=tokens[l.phraseBuilt.length];
+    if(String(token).toLowerCase()===String(expected).toLowerCase()){
+      l.phraseBuilt.push(token);l.phraseUsed.push(index);
+      if(l.phraseBuilt.length===tokens.length){l.phase='done';renderLesson();speak(l.world.phrase);return;}
+      renderLesson();
+    }else{
+      const f=$('#phraseFeedback');if(f){f.textContent='Почти! Посмотри внимательно на порядок слов.';f.classList.add('bad');}
+      toast('Попробуй другое слово — у тебя получится!');
     }
   }
-  return null;
-}
+  function finishLesson(){
+    const l=activeLesson;
+    if(!state.completed.includes(l.key)){state.completed.push(l.key);state.stars=state.completed.length;}
+    l.targets.forEach(word=>{if(!state.learned.includes(word.id))state.learned.push(word.id);});
+    if(completedCount(l.world)>=3&&!state.stickers.includes(l.world.id)){
+      state.stickers.push(l.world.id);
+      toast(`Новая наклейка: ${l.world.ru}!`);
+    }
+    saveState();closeModal('lessonModal');activeLesson=null;renderHome();
+    if(completedCount(l.world)>=3&&l.world.id<WORLDS.length){toast(`Ура! Открылся остров ${WORLDS[l.world.id].name}!`);}
+  }
 
-function renderMap(el){
-  const next = getNextLesson();
-  let continueHTML = '';
-  if(next){
-    const w = WORLDS.find(x=>x.id===next.worldId);
-    const lesson = buildLessons(w)[next.lessonIndex];
-    continueHTML = `
-      <button class="continue-card" onclick="goLesson('${w.id}',${next.lessonIndex})" aria-label="Продолжить: ${esc(lesson.title)}">
-        <div class="continue-icon">▶️</div>
-        <div class="continue-body">
-          <div class="continue-label">Продолжить</div>
-          <div class="continue-title">${w.emoji} ${esc(w.name)}</div>
-          <div class="continue-meta">Миссия ${next.lessonIndex+1} · ${esc(lesson.title)}</div>
+  function renderVocabulary(){
+    const categories=[...new Set(WORDS.map(w=>w.category))];
+    const select=$('#wordCategory');
+    if(select.options.length<=1)select.innerHTML='<option value="all">Все темы</option>'+categories.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+    drawVocabulary();
+    $('#wordSearch').oninput=drawVocabulary;select.onchange=drawVocabulary;
+    $('#vocabCount').textContent=`${state.learned.length} / 100 знаю`;
+  }
+  function drawVocabulary(){
+    const search=$('#wordSearch').value.trim().toLowerCase(),cat=$('#wordCategory').value;
+    const list=WORDS.filter(w=>(cat==='all'||w.category===cat)&&(!search||w.en.toLowerCase().includes(search)||w.ru.toLowerCase().includes(search)));
+    $('#vocabGrid').innerHTML=list.map(w=>{
+      const learned=state.learned.includes(w.id);
+      return `<article class="word-card ${learned?'learned':''}"><span class="category-chip">${escapeHtml(w.category)}</span><div class="word-emoji">${w.emoji}</div><b>${escapeHtml(w.en)}</b><small>${escapeHtml(w.ru)}</small><div class="word-actions"><button data-word-speak="${w.id}" aria-label="Послушать ${escapeHtml(w.en)}">🔊</button><button class="know-toggle" data-word-known="${w.id}">${learned?'✓ Знаю':'Я знаю'}</button></div></article>`;
+    }).join('')||'<div class="parent-panel">Ничего не найдено. Попробуй другое слово.</div>';
+    $$('[data-word-speak]').forEach(btn=>btn.addEventListener('click',()=>{const word=WORDS.find(w=>w.id===Number(btn.dataset.wordSpeak));if(word)speak(word.en);}));
+    $$('[data-word-known]').forEach(btn=>btn.addEventListener('click',()=>{
+      const id=Number(btn.dataset.wordKnown);if(state.learned.includes(id))state.learned=state.learned.filter(x=>x!==id);else state.learned.push(id);
+      saveState();drawVocabulary();$('#vocabCount').textContent=`${state.learned.length} / 100 знаю`;
+    }));
+  }
+  function renderPhrases(){
+    $('#phraseGrid').innerHTML=PHRASES.map(p=>`<article class="phrase-card"><div class="phrase-emoji">${p.emoji}</div><div class="phrase-copy"><b>${escapeHtml(p.en)}</b><small>${escapeHtml(p.ru)}</small></div><button class="play-small" data-phrase-speak="${p.id}" aria-label="Послушать ${escapeHtml(p.en)}">🔊</button></article>`).join('');
+    $$('[data-phrase-speak]').forEach(btn=>btn.addEventListener('click',()=>{const phrase=PHRASES.find(p=>p.id===Number(btn.dataset.phraseSpeak));if(phrase)speak(phrase.en);}));
+    $('#dialogueGrid').innerHTML=DIALOGUES.map(d=>`<article class="dialogue-card"><div class="dialogue-card-head"><span>${d.emoji}</span><div><b>${escapeHtml(d.title)}</b><small>${escapeHtml(d.ru)}</small></div><button class="play-small" data-dialogue-play="${d.id}" title="Прослушать весь диалог">▶</button></div><div class="dialogue-lines">${d.lines.map(([speaker,line],i)=>`<button data-dialogue-line="${d.id}" data-line-index="${i}"><b>${escapeHtml(speaker)}</b><span>${escapeHtml(line)}</span><i>🔊</i></button>`).join('')}</div></article>`).join('');
+    $$('[data-dialogue-line]').forEach(btn=>btn.addEventListener('click',()=>{const d=DIALOGUES.find(x=>x.id===btn.dataset.dialogueLine);if(d)speak(d.lines[Number(btn.dataset.lineIndex)][1]);}));
+    $$('[data-dialogue-play]').forEach(btn=>btn.addEventListener('click',()=>{const d=DIALOGUES.find(x=>x.id===btn.dataset.dialoguePlay);if(d){d.lines.forEach((line,i)=>setTimeout(()=>{if(state.sound)speak(`${line[0]}. ${line[1]}`);},i*2300));}}));
+  }
+  function renderStories(){
+    $('#storyGrid').innerHTML=STORIES.map(s=>`<article class="story-card"><div class="story-cover">${s.cover}</div><div class="story-body"><h3>${escapeHtml(s.title)}</h3><p>${escapeHtml(s.ru)}</p><div class="story-meta"><span>📗 ${s.level}</span><span>⏱ ${s.duration}</span><span>🔊 Аудио</span></div><button class="primary-btn" data-open-story="${s.id}">Читать историю <span>➜</span></button></div></article>`).join('');
+    $$('[data-open-story]').forEach(btn=>btn.addEventListener('click',()=>openStory(btn.dataset.openStory)));
+  }
+  function openStory(id){
+    const story=STORIES.find(s=>s.id===id);if(!story)return;
+    $('#storyReader').classList.remove('hidden');
+    $('#storyReader').innerHTML=`<div class="story-reader-head"><div><div class="eyebrow">ИСТОРИЯ</div><h2>${escapeHtml(story.title)}</h2></div><button class="secondary-btn" id="closeStory">Свернуть ×</button></div><div class="story-scenes">${story.scenes.map((scene,i)=>`<div class="scene-line"><b>${escapeHtml(scene.en)}</b><small>${escapeHtml(scene.ru)}</small><button data-read-scene="${i}">🔊 Послушать</button></div>`).join('')}</div><div class="story-questions"><h3>Проверим, что ты запомнил</h3>${story.questions.map((q,i)=>`<div class="story-question"><b>${i+1}. ${escapeHtml(q.q)}</b>${q.opts.map(opt=>`<button data-story-answer="${i}" data-answer="${escapeHtml(opt)}">${escapeHtml(opt)}</button>`).join('')}</div>`).join('')}</div>`;
+    $('#closeStory').addEventListener('click',()=>$('#storyReader').classList.add('hidden'));
+    $$('[data-read-scene]').forEach(btn=>btn.addEventListener('click',()=>speak(story.scenes[Number(btn.dataset.readScene)].en)));
+    $$('[data-story-answer]').forEach(btn=>btn.addEventListener('click',()=>{
+      const q=story.questions[Number(btn.dataset.storyAnswer)];
+      $$(`[data-story-answer="${btn.dataset.storyAnswer}"]`).forEach(b=>{b.disabled=true;if(b.dataset.answer===q.a)b.classList.add('correct');});
+      if(btn.dataset.answer===q.a){btn.classList.add('correct');toast('Правильно! Ты внимательно слушал!');}else{btn.classList.add('wrong');toast(`Верный ответ: ${q.a}`);}
+    }));
+    $('#storyReader').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function renderAlbum(){
+    $('#albumSummary').innerHTML=`<div><b>${state.completed.length}</b><span>миссий пройдено</span></div><div><b>${state.stars}</b><span>звёзд собрано</span></div><div><b>${state.stickers.length}</b><span>наклеек открыто</span></div>`;
+    $('#stickerGrid').innerHTML=WORLDS.map(w=>{const on=state.stickers.includes(w.id);return `<div class="sticker ${on?'unlocked':''}"><span>${on?w.emoji:'🔒'}</span><b>${escapeHtml(on?w.ru:`Остров ${w.id}`)}</b></div>`;}).join('');
+  }
+  function renderParent(){
+    $('#parentContent').classList.add('hidden');$('#parentGate').classList.remove('hidden');
+    gateA=Math.floor(Math.random()*8)+4;gateB=Math.floor(Math.random()*8)+3;gateAnswer=gateA+gateB;
+    $('#gateEquation').textContent=`${gateA} + ${gateB} = ?`;$('#gateAnswer').value='';$('#gateError').textContent='';
+    $('#gateSubmit').onclick=()=>{
+      if(Number($('#gateAnswer').value)===gateAnswer){$('#parentGate').classList.add('hidden');$('#parentContent').classList.remove('hidden');renderParentContent();}
+      else $('#gateError').textContent='Ответ не совпал. Попробуй ещё раз.';
+    };
+  }
+  function renderParentContent(){
+    const perWorld=WORLDS.map(w=>({world:w,count:completedCount(w)}));
+    const next=WORLDS.find(w=>worldUnlocked(w)&&completedCount(w)<4);
+    $('#parentContent').innerHTML=`
+      <div class="parent-panel"><h3>Общий прогресс</h3><div class="parent-kpi">${state.completed.length} <small style="font-size:13px;color:#9ba3b3">/ 40 миссий</small></div><p>Пройдено учебных заданий</p><div class="parent-progress"><span style="width:${state.completed.length/40*100}%"></span></div><p>${state.learned.length} из 100 слов отмечено как знакомые</p></div>
+      <div class="parent-panel"><h3>Награды</h3><div class="parent-kpi">⭐ ${state.stars}</div><p>Звёзды за завершённые миссии</p><div class="parent-progress"><span style="width:${state.stickers.length/10*100}%"></span></div><p>${state.stickers.length} из 10 наклеек альбома</p></div>
+      <div class="parent-panel"><h3>Прогресс по островам</h3><div class="parent-list">${perWorld.map(({world,count})=>`<div><span>${world.emoji} ${escapeHtml(world.ru)}</span><b>${count}/4</b></div>`).join('')}</div></div>
+      <div class="parent-panel"><h3>Следующий шаг</h3><p>${next?`Ребёнок сейчас может заниматься на острове «${escapeHtml(next.ru)}».`:'Все доступные миссии пройдены — можно повторить материал.'}</p><div class="parent-actions"><button class="secondary-btn" id="printProgress">Распечатать прогресс</button><button class="secondary-btn danger" id="resetProgress">Сбросить прогресс</button></div></div>`;
+    $('#printProgress').addEventListener('click',()=>window.print());
+    $('#resetProgress').addEventListener('click',()=>{
+      if(confirm('Сбросить все звёзды, наклейки и изученные слова? Профиль ребёнка останется.')){
+        state.completed=[];state.learned=[];state.stars=0;state.stickers=[];saveState();renderParentContent();toast('Прогресс сброшен. Можно начать новое путешествие!');
+      }
+    });
+  }
+
+  function openProfile(){
+    $('#childNameInput').value=state.name==='Исследователь'?'':state.name;
+    selectedAvatar=state.avatar||'🦊';
+    $$('.avatar-choice').forEach(b=>b.classList.toggle('selected',b.dataset.avatar===selectedAvatar));
+    $('#profileModal').classList.remove('hidden');
+  }
+  function init(){
+    updateTopStats();
+    $$('.nav-item[data-view]').forEach(btn=>btn.addEventListener('click',()=>updateNav(btn.dataset.view)));
+    $('#continueBtn').addEventListener('click',()=>{
+      const world=WORLDS.find(w=>worldUnlocked(w)&&currentMission(w)>=0)||WORLDS[WORLDS.length-1];
+      if(world){if(currentMission(world)<0){toast('Все миссии пройдены! Загляни в словарик или истории.');openIsland(world.id);}else{openIsland(world.id);}}
+    });
+    $('#mobileMenuBtn').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));
+    $('#soundToggle').addEventListener('click',()=>{state.sound=!state.sound;saveState();toast(state.sound?'Звук включён':'Звук выключен');});
+    $('#editProfileBtn').addEventListener('click',openProfile);
+    $('#avatarPicker').addEventListener('click',e=>{const btn=e.target.closest('[data-avatar]');if(!btn)return;selectedAvatar=btn.dataset.avatar;$$('.avatar-choice').forEach(b=>b.classList.toggle('selected',b===btn));});
+    $('#saveProfileBtn').addEventListener('click',()=>{
+      const name=$('#childNameInput').value.trim();state.name=name||'Исследователь';state.avatar=selectedAvatar;saveState();closeModal('profileModal');toast(`Привет, ${state.name}! Пора в путь!`);renderHome();
+    });
+    $$('[data-close]').forEach(btn=>btn.addEventListener('click',()=>closeModal(btn.dataset.close)));
+    $$('.modal-backdrop').forEach(backdrop=>backdrop.addEventListener('click',e=>{if(e.target===backdrop)closeModal(backdrop.id);}));
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){$$('.modal-backdrop:not(.hidden)').forEach(m=>closeModal(m.id));}});
+    renderHome();
+    if(!hasStoredState()){openProfile();}
+  }
+  document.addEventListener('DOMContentLoaded',init);
+})();
+
+  </script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#home" aria-label="English Quest — на главную">
+        <span class="brand-mark">✦</span>
+        <span><b>English</b><strong>Quest</strong><small>ОСТРОВА ОТКРЫТИЙ</small></span>
+      </a>
+      <div class="sidebar-profile">
+        <div class="avatar avatar-finn">🦊</div>
+        <div><b id="sidebarName">Исследователь</b><small>Юный путешественник</small></div>
+        <button class="icon-button tiny" id="editProfileBtn" title="Профиль" aria-label="Редактировать профиль">✎</button>
+      </div>
+      <nav class="main-nav" aria-label="Главная навигация">
+        <button class="nav-item active" data-view="home"><span>🗺️</span> Карта островов</button>
+        <button class="nav-item" data-view="vocabulary"><span>📚</span> Мой словарик</button>
+        <button class="nav-item" data-view="phrases"><span>💬</span> Полезные фразы</button>
+        <button class="nav-item" data-view="stories"><span>📖</span> Истории</button>
+        <button class="nav-item" data-view="album"><span>🏅</span> Альбом наград</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="side-quest-card">
+          <div class="side-quest-icon">🚀</div>
+          <b>Каждый день —<br>маленькое приключение!</b>
+          <span>10–15 минут игры</span>
         </div>
-      </button>`;
-  }
-
-  el.innerHTML = `
-    <h2 class="section-title">🗺️ Карта островов</h2>
-    ${continueHTML}
-    <div class="island-grid" id="islands">
-      ${WORLDS.map((w,i)=>{
-        const unlocked = worldUnlocked(i);
-        const done = worldDone(w.id);
-        const pct = Math.round(done/4*100);
-        return `
-          <button class="island ${unlocked?'':'locked'}" style="--wc:${w.color}" ${unlocked?`onclick="goWorld('${w.id}')"`:'disabled aria-disabled="true"'}>
-            <div class="island-emoji">${w.emoji}</div>
-            <div class="island-name">${esc(w.name)}</div>
-            <div class="island-theme">${esc(w.theme)}</div>
-            <div class="island-progress"><i style="width:${pct}%"></i></div>
-            ${!unlocked ? '<span class="island-lock">🔒</span>' : ''}
-          </button>`;
-      }).join('')}
-    </div>
-  `;
-}
-
-function goWorld(worldId){
-  if(!worldUnlocked(WORLDS.findIndex(w=>w.id===worldId))) return;
-  goTo('world', {worldId});
-}
-
-/* ============================================================
-   SCREEN: WORLD
-   ============================================================ */
-function renderWorld(el, worldId){
-  const world = WORLDS.find(w=>w.id===worldId);
-  if(!world){ goMap(); return; }
-  const lessons = buildLessons(world);
-  const done = (state.progress[world.id] && state.progress[world.id].done) || [];
-  const prog = Math.round(done.length/4*100);
-
-  el.innerHTML = `
-    <button class="back-btn" onclick="goMap()">← На карту</button>
-    <div class="world-banner">
-      <div class="guide">${world.emoji}</div>
-      <h1>${esc(world.name)}</h1>
-      <p>${esc(world.theme)}</p>
-      <div style="margin-top:14px; height:10px; background:rgba(23,37,84,.08); border-radius:50px; overflow:hidden;">
-        <div style="height:100%; width:${prog}%; background:${world.color}; border-radius:50px; transition:width .4s;"></div>
+        <button class="nav-item parent-link" data-view="parent"><span>👨‍👩‍👧</span> Для родителей</button>
+        <div class="sidebar-foot">Учимся играя · Версия 1.0</div>
       </div>
-      <div style="margin-top:6px; font-size:13px; color:var(--text-soft); font-weight:700;">${done.length} / 4 миссий</div>
-    </div>
-    <div class="mission-list">
-      ${lessons.map((l,i)=>{
-        const isDone = done.includes(i);
-        return `
-          <button class="mission ${isDone?'done':''}" onclick="goLesson('${world.id}',${i})">
-            <div class="mission-num">${isDone?'✓':i+1}</div>
-            <div class="mission-body">
-              <div class="mission-title">${esc(l.title)}</div>
-              <div class="mission-objective">${esc(l.objective)}</div>
-            </div>
-            <div class="mission-status">${isDone?'⭐':'▶️'}</div>
-          </button>`;
-      }).join('')}
-    </div>
-  `;
-}
+    </aside>
 
-/* ============================================================
-   LESSON ENGINE
-   ============================================================ */
-let lessonSession = null;
-let taskLocked = false;
-
-function goLesson(worldId, lessonIndex){
-  const world = WORLDS.find(w=>w.id===worldId);
-  if(!world) return;
-  const lessons = buildLessons(world);
-  const lesson = lessons[lessonIndex];
-  if(!lesson) return;
-  lessonSession = {
-    world, lesson, lessonIndex,
-    tasks: lesson.tasks,
-    index: 0, correct: 0, scored: 0,
-    startTime: Date.now()
-  };
-  taskLocked = false;
-  goTo('lesson');
-}
-
-function updateLessonProgress(){
-  const el = document.getElementById('lesson-progress-bar');
-  const cnt = document.getElementById('lesson-count');
-  if(!el || !lessonSession) return;
-  const total = lessonSession.tasks.length;
-  const cur = Math.min(lessonSession.index, total);
-  el.style.width = `${Math.round(cur/total*100)}%`;
-  cnt.textContent = `${cur}/${total}`;
-}
-
-function setCharacterMsg(msg, character='finn'){
-  const bar = document.getElementById('character-bar');
-  if(!bar) return;
-  const c = CHARACTERS[character] || CHARACTERS.finn;
-  bar.innerHTML = `<div class="char">${c.emoji}</div><div class="msg">${msg}</div>`;
-}
-
-function showFeedback(text, ok){
-  const fb = document.getElementById('feedback');
-  if(!fb) return;
-  fb.className = 'feedback show ' + (ok?'ok':'bad');
-  fb.textContent = text;
-}
-
-/* ✔ FIXED: renderLesson умеет работать без явного el */
-function renderLesson(el){
-  if(!el) el = document.querySelector('#app .screen');
-  if(!el || !lessonSession){ goMap(); return; }
-
-  const task = lessonSession.tasks[lessonSession.index];
-  if(!task){ finishLesson(); return; }
-
-  el.innerHTML = `
-    <div class="lesson-head">
-      <button class="back-btn" onclick="if(confirm('Выйти из урока? Прогресс не сохранится.')) goWorld('${lessonSession.world.id}')" style="margin:0">← Назад</button>
-      <div class="lesson-progress"><i id="lesson-progress-bar" style="width:0%"></i></div>
-      <div class="lesson-count" id="lesson-count">0/0</div>
-    </div>
-    <div class="character-bar" id="character-bar"></div>
-    <div class="task-card" id="task-card"></div>
-  `;
-  updateLessonProgress();
-
-  const card = el.querySelector('#task-card');
-  if(!card){ goMap(); return; }
-
-  if(task.type === 'learn_card') taskLearnCard(card, task);
-  else if(task.type === 'listen_and_choose') taskListenChoose(card, task);
-  else if(task.type === 'spell') taskSpell(card, task);
-  else if(task.type === 'match_pairs') taskMatchPairs(card, task);
-  else if(task.type === 'what_missing') taskWhatMissing(card, task);
-  else if(task.type === 'build_phrase') taskBuildPhrase(card, task);
-  else if(task.type === 'count') taskCount(card, task);
-  else if(task.type === 'speak_practice') taskSpeakPractice(card, task);
-  else if(task.type === 'story') taskStory(card, task);
-}
-
-/* ✔ FIXED: advanceLesson явно находит экран и передаёт в renderLesson */
-function advanceLesson(correct){
-  if(taskLocked) return;
-  taskLocked = true;
-
-  if(correct !== null && correct !== undefined){
-    lessonSession.scored++;
-    if(correct){
-      lessonSession.correct++;
-      soundOk();
-    } else {
-      soundBad();
-    }
-  }
-
-  setTimeout(()=>{
-    taskLocked = false;
-    if(!lessonSession){ goMap(); return; }
-    lessonSession.index++;
-
-    if(lessonSession.index >= lessonSession.tasks.length){
-      finishLesson();
-    } else {
-      const el = document.querySelector('#app .screen');
-      if(el){
-        if('speechSynthesis' in window) try{ window.speechSynthesis.cancel(); }catch(e){}
-        renderLesson(el);
-      } else {
-        goMap();
-      }
-    }
-  }, 700);
-}
-
-/* ============================================================
-   TASK RENDERERS
-   ============================================================ */
-function taskLearnCard(container, task){
-  const w = task.word;
-  const ex = getExample(w);
-  setCharacterMsg('Слушай внимательно. Нажми 🔊 чтобы услышать ещё раз.', 'oli');
-  container.innerHTML = `
-    <div class="big-emoji">${w.emoji}</div>
-    <button class="speak-btn" id="speak-word" aria-label="Прослушать слово">🔊</button>
-    <div class="word-en">${esc(w.en)}</div>
-    <div class="word-ru">${esc(w.ru)}</div>
-    <div class="example-en">${esc(ex.en)}</div>
-    <div class="example-ru">${esc(ex.ru)}</div>
-    <div class="feedback" id="feedback"></div>
-    <button class="primary-btn" id="next-btn">Дальше →</button>
-  `;
-  container.querySelector('#speak-word').onclick = ()=> speak(w.en);
-  container.querySelector('#next-btn').onclick = ()=> advanceLesson(null);
-  setTimeout(()=>speak(w.en), 300);
-}
-
-function taskListenChoose(container, task){
-  const w = task.word;
-  const opts = shuffle(task.options);
-  setCharacterMsg('Слушай и выбери картинку.', 'finn');
-  container.innerHTML = `
-    <button class="speak-btn" id="speak-word" aria-label="Прослушать ещё раз">🔊</button>
-    <div class="word-ru" style="margin-top:6px; font-size:15px;">Какая картинка соответствует слову?</div>
-    <div class="options-grid" id="opts">
-      ${opts.map(o=>`<button class="opt-emoji" data-id="${esc(o.id)}" aria-label="${esc(o.en)}">${o.emoji}</button>`).join('')}
-    </div>
-    <div class="feedback" id="feedback"></div>
-  `;
-  container.querySelector('#speak-word').onclick = ()=> speak(w.en);
-  setTimeout(()=>speak(w.en), 300);
-
-  let mistakes = 0;
-  container.querySelectorAll('.opt-emoji').forEach(btn=>{
-    btn.onclick = ()=>{
-      if(btn.classList.contains('disabled')) return;
-      if(btn.dataset.id === w.id){
-        btn.classList.add('correct');
-        if(!state.words[w.id]) state.words[w.id] = {correct:0, seen:0};
-        state.words[w.id].seen++;
-        if(mistakes === 0) state.words[w.id].correct++;
-        save();
-        container.querySelectorAll('.opt-emoji').forEach(b=>{
-          if(b !== btn) b.classList.add('disabled');
-        });
-        showFeedback('🎉 ' + CHARACTER_HINTS.correct[randInt(CHARACTER_HINTS.correct.length)], true);
-        advanceLesson(mistakes === 0);
-      } else {
-        btn.classList.add('wrong');
-        setTimeout(()=>btn.classList.remove('wrong'), 500);
-        mistakes++;
-        showFeedback('Попробуй ещё раз!', false);
-        setCharacterMsg(CHARACTER_HINTS.wrong[randInt(CHARACTER_HINTS.wrong.length)], 'oli');
-      }
-    };
-  });
-}
-
-function taskSpell(container, task){
-  const w = task.word;
-  const cleanWord = w.en.replace(/\s/g,'');
-  const letters = cleanWord.split('');
-  const pool = letters.map((l,i)=>({l, id:i}));
-  let shuffledPool = shuffle(pool);
-  if(cleanWord.length > 1){
-    for(let t=0;t<8;t++){
-      if(shuffledPool.map(x=>x.l).join('') !== cleanWord) break;
-      shuffledPool = shuffle(pool);
-    }
-  }
-  let answer = [];
-  let mistakes = 0;
-
-  setCharacterMsg('Собери слово из букв. Можно вернуть букву, нажав на слот.', 'oli');
-  render();
-
-  function render(){
-    container.innerHTML = `
-      <div class="big-emoji" style="font-size:56px;">${w.emoji}</div>
-      <button class="speak-btn" id="speak-word" aria-label="Прослушать слово">🔊</button>
-      <div class="word-ru">${esc(w.ru)}</div>
-      <div class="spell-slots" id="slots">
-        ${cleanWord.split('').map((_,i)=>{
-          const t = answer[i];
-          return `<div class="spell-slot ${t?'filled':''}" data-i="${i}">${t?esc(t.l):''}</div>`;
-        }).join('')}
-      </div>
-      <div class="letter-pool" id="pool">
-        ${shuffledPool.map(t=>`<button class="letter-btn" data-id="${t.id}">${esc(t.l)}</button>`).join('')}
-      </div>
-      <div class="feedback" id="feedback"></div>
-    `;
-    container.querySelector('#speak-word').onclick = ()=> speak(w.en);
-    container.querySelectorAll('.spell-slot').forEach(s=>{
-      s.onclick = ()=>{
-        const i = +s.dataset.i;
-        if(answer[i]){
-          shuffledPool.push(answer[i]);
-          answer.splice(i,1);
-          render();
-        }
-      };
-    });
-    container.querySelectorAll('.letter-btn').forEach(b=>{
-      b.onclick = ()=>{
-        const id = +b.dataset.id;
-        const idx = shuffledPool.findIndex(t=>t.id === id);
-        if(idx === -1) return;
-        const [t] = shuffledPool.splice(idx,1);
-        answer.push(t);
-        beep(520,.05);
-        render();
-        if(answer.length === cleanWord.length){
-          checkSpell();
-        }
-      };
-    });
-  }
-  function checkSpell(){
-    const attempt = answer.map(a=>a.l).join('');
-    if(attempt === cleanWord){
-      const fb = container.querySelector('#feedback');
-      if(fb){ fb.className = 'feedback show ok'; fb.textContent = '🎉 Правильно!'; }
-      if(!state.words[w.id]) state.words[w.id] = {correct:0, seen:0};
-      state.words[w.id].seen++;
-      if(mistakes === 0) state.words[w.id].correct++;
-      save();
-      speak(w.en);
-      advanceLesson(mistakes === 0);
-    } else {
-      mistakes++;
-      const fb = container.querySelector('#feedback');
-      if(fb){ fb.className = 'feedback show bad'; fb.textContent = '😊 Почти! Попробуй ещё'; }
-      soundBad();
-      setTimeout(()=>{
-        shuffledPool = [...shuffledPool, ...answer];
-        answer = [];
-        render();
-      }, 700);
-    }
-  }
-  setTimeout(()=>speak(w.en), 300);
-}
-
-function taskMatchPairs(container, task){
-  const pairs = task.pairs;
-  const words = shuffle(pairs);
-  const imgs = shuffle(pairs);
-  let selectedWord = null;
-  let matched = 0;
-  let mistakes = 0;
-
-  setCharacterMsg('Найди пару: сначала слово, потом картинку.', 'finn');
-  render();
-
-  function render(){
-    container.innerHTML = `
-      <div class="word-ru" style="margin-bottom:10px;">Найди пары «слово — картинка»</div>
-      <div class="match-columns">
-        <div class="match-col" id="words">
-          ${words.map(w=>`<button class="match-item word" data-id="${esc(w.id)}">${esc(w.en)}</button>`).join('')}
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu icon-button" id="mobileMenuBtn" aria-label="Открыть меню">☰</button>
+        <div class="breadcrumb"><span>English Quest</span><i>›</i><b id="pageCrumb">Карта островов</b></div>
+        <div class="top-actions">
+          <div class="streak-pill" title="Твой прогресс"><span>⭐</span><b id="topStars">0</b><small>звёзд</small></div>
+          <button class="sound-toggle" id="soundToggle" aria-label="Выключить звук" title="Звук">🔊</button>
         </div>
-        <div class="match-col" id="imgs">
-          ${imgs.map(w=>`<button class="match-item image" data-id="${esc(w.id)}">${w.emoji}</button>`).join('')}
-        </div>
-      </div>
-      <div class="feedback" id="feedback"></div>
-    `;
-    container.querySelectorAll('#words .match-item').forEach(b=>{
-      b.onclick = ()=>{
-        if(b.classList.contains('matched')) return;
-        container.querySelectorAll('.match-item.selected').forEach(x=>x.classList.remove('selected'));
-        b.classList.add('selected');
-        selectedWord = b.dataset.id;
-      };
-    });
-    container.querySelectorAll('#imgs .match-item').forEach(b=>{
-      b.onclick = ()=>{
-        if(!selectedWord || b.classList.contains('matched')) return;
-        if(b.dataset.id === selectedWord){
-          container.querySelectorAll(`.match-item[data-id="${selectedWord}"]`).forEach(x=>{
-            x.classList.add('matched'); x.classList.remove('selected');
-          });
-          matched++;
-          beep(660,.08);
-          selectedWord = null;
-          if(matched === pairs.length){
-            const fb = container.querySelector('#feedback');
-            if(fb){ fb.className = 'feedback show ok'; fb.textContent = '🎉 Все пары найдены!'; }
-            pairs.forEach(w=>{
-              if(!state.words[w.id]) state.words[w.id] = {correct:0, seen:0};
-              state.words[w.id].seen++;
-              if(mistakes === 0) state.words[w.id].correct++;
-            });
-            save();
-            advanceLesson(mistakes === 0);
-          }
-        } else {
-          b.classList.add('wrong');
-          mistakes++;
-          soundBad();
-          setTimeout(()=>b.classList.remove('wrong'), 500);
-        }
-      };
-    });
-  }
-}
+      </header>
 
-function taskWhatMissing(container, task){
-  const words = task.words;
-  const missing = words[randInt(words.length)];
-  const display = words;
-  setCharacterMsg('Смотри внимательно. Что исчезло?', 'oli');
-
-  container.innerHTML = `
-    <div class="word-ru" style="margin-bottom:14px; font-size:16px;">Запомни эти предметы...</div>
-    <div class="count-visual" id="show" style="display:flex; justify-content:center; gap:20px; font-size:56px;">
-      ${display.map(w=>`<span>${w.emoji}</span>`).join('')}
-    </div>
-    <div class="feedback" id="feedback"></div>
-  `;
-
-  setTimeout(()=>{
-    const show = container.querySelector('#show');
-    if(!show) return;
-    show.innerHTML = display.map(w=>`<span style="opacity:${w.id===missing.id?'0':'1'}; transition:opacity .4s;">${w.emoji}</span>`).join('');
-    setTimeout(()=>{
-      const opts = shuffle(words);
-      container.innerHTML = `
-        <div class="word-ru" style="margin-bottom:14px; font-size:16px;">Что исчезло?</div>
-        <div class="options-grid" id="opts">
-          ${opts.map(w=>`<button class="opt-emoji" data-id="${esc(w.id)}" aria-label="${esc(w.en)}">${w.emoji}</button>`).join('')}
-        </div>
-        <div class="feedback" id="feedback"></div>
-      `;
-      let mistakes = 0;
-      container.querySelectorAll('.opt-emoji').forEach(btn=>{
-        btn.onclick = ()=>{
-          if(btn.classList.contains('disabled')) return;
-          if(btn.dataset.id === missing.id){
-            btn.classList.add('correct');
-            container.querySelectorAll('.opt-emoji').forEach(b=>{ if(b!==btn) b.classList.add('disabled'); });
-            showFeedback('🎉 Правильно!', true);
-            advanceLesson(mistakes === 0);
-          } else {
-            btn.classList.add('wrong');
-            setTimeout(()=>btn.classList.remove('wrong'), 500);
-            mistakes++;
-            soundBad();
-            showFeedback('Попробуй ещё раз', false);
-          }
-        };
-      });
-    }, 500);
-  }, 1800);
-}
-
-function taskBuildPhrase(container, task){
-  const targetWords = task.target.split(' ');
-  let allTiles = shuffle([...targetWords, ...(task.distractors||[])]);
-  let answer = [];
-  let mistakes = 0;
-
-  setCharacterMsg('Собери фразу из слов. Сначала послушай пример.', 'finn');
-  render();
-
-  function render(){
-    container.innerHTML = `
-      <div class="word-ru" style="font-size:16px; margin-bottom:4px;">Собери фразу:</div>
-      <div style="font-weight:800; color:var(--navy); font-size:18px;">${esc(task.ru)}</div>
-      <button class="speak-btn" id="speak-target" aria-label="Прослушать пример" style="margin-top:10px;">🔊</button>
-      <div class="phrase-slots" id="slots">
-        ${targetWords.map((_,i)=>{
-          const t = answer[i];
-          return `<div class="phrase-slot ${t?'filled':''}" data-i="${i}">${t?esc(t):''}</div>`;
-        }).join('')}
-      </div>
-      <div class="phrase-pool" id="pool">
-        ${allTiles.map((t,i)=>`<button class="phrase-word" data-i="${i}">${esc(t)}</button>`).join('')}
-      </div>
-      <div class="feedback" id="feedback"></div>
-    `;
-    container.querySelector('#speak-target').onclick = ()=> speak(task.target);
-    container.querySelectorAll('.phrase-slot').forEach(s=>{
-      s.onclick = ()=>{
-        const i = +s.dataset.i;
-        if(answer[i] !== undefined){
-          allTiles.push(answer[i]);
-          answer.splice(i,1);
-          render();
-        }
-      };
-    });
-    container.querySelectorAll('.phrase-word').forEach(b=>{
-      b.onclick = ()=>{
-        const i = +b.dataset.i;
-        const tile = allTiles[i];
-        if(tile === undefined) return;
-        allTiles.splice(i,1);
-        answer.push(tile);
-        beep(520,.05);
-        render();
-        if(answer.length === targetWords.length) checkPhrase();
-      };
-    });
-  }
-  function checkPhrase(){
-    if(answer.join(' ') === task.target){
-      const fb = container.querySelector('#feedback');
-      if(fb){ fb.className = 'feedback show ok'; fb.textContent = '🎉 Правильно!'; }
-      speak(task.target);
-      advanceLesson(mistakes === 0);
-    } else {
-      mistakes++;
-      const fb = container.querySelector('#feedback');
-      if(fb){ fb.className = 'feedback show bad'; fb.textContent = '😊 Почти! Попробуй ещё'; }
-      soundBad();
-      setTimeout(()=>{
-        allTiles.push(...answer);
-        answer = [];
-        render();
-      }, 700);
-    }
-  }
-  setTimeout(()=>speak(task.target), 300);
-}
-
-function taskCount(container, task){
-  const { emoji, count } = task;
-  const options = shuffle([count, count+1, Math.max(1,count-1), count+2].filter((v,i,a)=>a.indexOf(v)===i)).slice(0,4);
-  setCharacterMsg('Посчитай предметы и выбери число.', 'finn');
-
-  container.innerHTML = `
-    <div class="word-ru" style="margin-bottom:8px; font-size:16px;">How many? Сколько?</div>
-    <div class="count-visual" id="show">${emoji.repeat(count)}</div>
-    <div class="options-grid" id="opts" style="grid-template-columns:1fr 1fr;">
-      ${options.map(n=>`<button class="opt-word" data-n="${n}">${n}</button>`).join('')}
-    </div>
-    <div class="feedback" id="feedback"></div>
-  `;
-  let mistakes = 0;
-  container.querySelectorAll('.opt-word').forEach(b=>{
-    b.onclick = ()=>{
-      if(b.classList.contains('disabled')) return;
-      if(+b.dataset.n === count){
-        b.classList.add('correct');
-        container.querySelectorAll('.opt-word').forEach(x=>{ if(x!==b) x.classList.add('disabled'); });
-        showFeedback('🎉 Правильно!', true);
-        advanceLesson(mistakes === 0);
-      } else {
-        b.classList.add('wrong');
-        setTimeout(()=>b.classList.remove('wrong'), 500);
-        mistakes++;
-        soundBad();
-      }
-    };
-  });
-}
-
-function taskSpeakPractice(container, task){
-  setCharacterMsg('Послушай и повтори вслух. Не бойся ошибиться!', 'oli');
-  container.innerHTML = `
-    <div class="word-ru" style="font-size:15px;">Скажи вслух:</div>
-    <div class="speak-phrase">${esc(task.phrase)}</div>
-    <div class="speak-ru">${esc(task.ru)}</div>
-    <div class="feedback" id="feedback"></div>
-    <div class="speak-actions">
-      <button class="try" id="listen">🔊 Слушать</button>
-      <button class="done" id="done">✓ Получилось!</button>
-    </div>
-  `;
-  container.querySelector('#listen').onclick = ()=> speak(task.phrase);
-  container.querySelector('#done').onclick = ()=>{
-    showFeedback('🎉 Отлично!', true);
-    speak('Great job!');
-    advanceLesson(null);
-  };
-  setTimeout(()=>speak(task.phrase), 300);
-}
-
-function taskStory(container, task){
-  const story = task.story;
-  let sceneIdx = 0;
-
-  setCharacterMsg('Читаем историю вместе.', 'oli');
-  renderScene();
-
-  function renderScene(){
-    const scene = story.scenes[sceneIdx];
-    container.innerHTML = `
-      <div class="story-scene">
-        <div class="story-emoji">${scene.emoji}</div>
-        <div class="story-en">${esc(scene.en)}</div>
-        <div class="story-ru">${esc(scene.ru)}</div>
-      </div>
-      <div style="text-align:center; color:var(--text-soft); font-weight:700; font-size:14px;">Сцена ${sceneIdx+1} из ${story.scenes.length}</div>
-      <div class="story-nav">
-        <button id="speak-scene">🔊 Слушать</button>
-        <button class="primary" id="next-scene">${sceneIdx === story.scenes.length-1 ? 'К вопросам →' : 'Дальше →'}</button>
-      </div>
-    `;
-    container.querySelector('#speak-scene').onclick = ()=> speak(scene.en);
-    container.querySelector('#next-scene').onclick = ()=>{
-      sceneIdx++;
-      if(sceneIdx >= story.scenes.length){
-        if(story.questions && story.questions.length){
-          renderQuestion(0, 0);
-        } else {
-          advanceLesson(null);
-        }
-      } else {
-        renderScene();
-      }
-    };
-    setTimeout(()=>speak(scene.en), 300);
-  }
-
-  function renderQuestion(qIdx, correctCount){
-    if(qIdx >= story.questions.length){
-      advanceLesson(correctCount === story.questions.length);
-      return;
-    }
-    const q = story.questions[qIdx];
-    container.innerHTML = `
-      <div class="word-ru" style="font-size:15px;">Вопрос ${qIdx+1} из ${story.questions.length}</div>
-      <div style="font-family:'Baloo 2',sans-serif; font-size:22px; font-weight:700; margin:14px 0; color:var(--navy);">${esc(q.q)}</div>
-      <div class="options-grid" id="opts" style="grid-template-columns:1fr 1fr;">
-        ${shuffle(q.options).map(o=>`<button class="opt-word" data-opt="${esc(o)}">${esc(o)}</button>`).join('')}
-      </div>
-      <div class="feedback" id="feedback"></div>
-    `;
-    let answered = false;
-    container.querySelectorAll('.opt-word').forEach(b=>{
-      b.onclick = ()=>{
-        if(answered) return;
-        if(b.dataset.opt === q.answer){
-          answered = true;
-          b.classList.add('correct');
-          container.querySelectorAll('.opt-word').forEach(x=>{ if(x!==b) x.classList.add('disabled'); });
-          showFeedback('🎉 Правильно!', true);
-          soundOk();
-          setTimeout(()=>renderQuestion(qIdx+1, correctCount+1), 900);
-        } else {
-          b.classList.add('wrong');
-          setTimeout(()=>b.classList.remove('wrong'), 500);
-          soundBad();
-          showFeedback('Попробуй ещё раз', false);
-        }
-      };
-    });
-  }
-}
-
-/* ============================================================
-   FINISH LESSON
-   ============================================================ */
-function finishLesson(){
-  const s = lessonSession;
-  if(!s){ goMap(); return; }
-  const pct = s.scored > 0 ? s.correct / s.scored : 1;
-  let stars = 1;
-  if(pct >= 0.8) stars = 3;
-  else if(pct >= 0.5) stars = 2;
-
-  state.stars += stars;
-
-  const wid = s.world.id;
-  if(!state.progress[wid]) state.progress[wid] = {done:[]};
-  if(!state.progress[wid].done.includes(s.lessonIndex)){
-    state.progress[wid].done.push(s.lessonIndex);
-  }
-
-  const today = new Date().toISOString().slice(0,10);
-  if(!state.daily[today]) state.daily[today] = {minutes:0, lessons:0};
-  const mins = Math.max(1, Math.round((Date.now()-s.startTime)/60000));
-  state.daily[today].minutes += mins;
-  state.daily[today].lessons += 1;
-
-  let stickerEarned = false;
-  if(state.progress[wid].done.length >= 4 && !state.stickers.includes(wid)){
-    state.stickers.push(wid);
-    stickerEarned = true;
-  }
-
-  save();
-  soundWin();
-
-  const params = {stars, stickerEarned, worldId:wid, lessonIndex:s.lessonIndex, correct:s.correct, scored:s.scored};
-  lessonSession = null;
-  goTo('reward', params);
-  launchConfetti();
-}
-
-/* ============================================================
-   SCREEN: REWARD
-   ============================================================ */
-function renderReward(el, params){
-  params = params || {};
-  const stars = params.stars || 0;
-  const { stickerEarned, worldId, lessonIndex, correct = 0, scored = 0 } = params;
-  const starHTML = [1,2,3].map(i=>`<span class="${i<=stars?'':'off'}">⭐</span>`).join('');
-  const stickerWorld = stickerEarned ? WORLDS.find(w=>w.id===worldId) : null;
-
-  el.innerHTML = `
-    <div class="reward">
-      <div class="reward-emoji">${stars===3?'🏆':'🎉'}</div>
-      <h2 class="reward-title">${stars===3?'Превосходно!':stars===2?'Хорошая работа!':'Отличная попытка!'}</h2>
-      <div class="reward-sub">Правильных ответов: ${correct} из ${scored || 0}</div>
-      <div class="reward-stars">${starHTML}</div>
-      ${stickerWorld ? `<div class="reward-sticker">🎖️ Новая наклейка: ${stickerWorld.emoji} ${esc(stickerWorld.name)}</div>` : ''}
-      <div class="reward-actions">
-        <button class="primary-btn ghost" style="flex:1; margin:0;" onclick="goLesson('${worldId}',${lessonIndex})">🔁 Ещё раз</button>
-        <button class="primary-btn" style="flex:1; margin:0;" onclick="goWorld('${worldId}')">🏝 К миссиям</button>
-      </div>
-      <button class="primary-btn teal" style="margin-top:12px;" onclick="goMap()">🗺 На карту</button>
-    </div>
-  `;
-}
-
-function launchConfetti(){
-  const colors = ['#2563EB','#14B8A6','#FB7185','#FBBF24','#8B5CF6','#38BDF8'];
-  for(let i=0;i<50;i++){
-    const c = document.createElement('div');
-    c.className = 'confetti';
-    c.style.left = Math.random()*100 + 'vw';
-    c.style.background = colors[randInt(colors.length)];
-    c.style.animationDuration = (2 + Math.random()*1.5) + 's';
-    c.style.animationDelay = (Math.random()*0.4) + 's';
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(), 4200);
-  }
-}
-
-/* ============================================================
-   SCREEN: DICTIONARY
-   ============================================================ */
-let dictTopic = 'all';
-function renderDictionary(el){
-  const allWords = WORLDS.flatMap(w=>w.words);
-  const topics = [{id:'all', name:'Все', emoji:'📚'}, ...WORLDS.map(w=>({id:w.id, name:w.name, emoji:w.emoji}))];
-  const filtered = dictTopic === 'all' ? allWords : allWords.filter(w => WORLDS.find(x=>x.id===dictTopic)?.words.some(x=>x.id===w.id));
-
-  el.innerHTML = `
-    <h2 class="section-title">📖 Словарь</h2>
-    <div class="topic-pills">
-      ${topics.map(t=>`<button class="pill ${dictTopic===t.id?'active':''}" onclick="dictTopic='${t.id}';renderDictionary(document.querySelector('#app .screen'))">${t.emoji} ${esc(t.name)}</button>`).join('')}
-    </div>
-    <div class="word-grid">
-      ${filtered.map(w=>{
-        const st = wordStatus(w.id);
-        const labels = {new:'новое', learning:'тренирую', known:'знаю'};
-        return `
-          <button class="word-tile" onclick="speak('${esc(w.en).replace(/'/g,"\\'")}')">
-            <div class="word-tile-emoji">${w.emoji}</div>
-            <div class="word-tile-en">${esc(w.en)}</div>
-            <div class="word-tile-ru">${esc(w.ru)}</div>
-            <span class="word-tile-status ${st}">${labels[st]}</span>
-          </button>`;
-      }).join('')}
-    </div>
-  `;
-}
-
-/* ============================================================
-   SCREEN: ALBUM
-   ============================================================ */
-function renderAlbum(el){
-  el.innerHTML = `
-    <h2 class="section-title">🎖️ Альбом путешественника</h2>
-    <p style="color:var(--text-soft); margin-bottom:14px; font-weight:600;">Собирай наклейки за завершённые острова.</p>
-    <div class="sticker-grid">
-      ${WORLDS.map(w=>{
-        const earned = state.stickers.includes(w.id);
-        return `
-          <div class="sticker ${earned?'':'locked'}">
-            <div class="sticker-icon">${earned ? w.emoji : '❔'}</div>
-            <div class="sticker-name">${esc(w.name)}</div>
-          </div>`;
-      }).join('')}
-    </div>
-  `;
-}
-
-/* ============================================================
-   SCREEN: STORIES LIST
-   ============================================================ */
-function renderStories(el){
-  el.innerHTML = `
-    <h2 class="section-title">📚 Истории</h2>
-    <div class="story-list">
-      ${STORIES.map(s=>{
-        const world = WORLDS.find(w=>w.id===s.worldId);
-        return `
-          <button class="story-card" onclick="openStory('${s.id}')">
-            <div class="story-card-icon">${s.emoji}</div>
-            <div style="flex:1">
-              <h3>${esc(s.title)}</h3>
-              <p>${esc(s.titleRu)} · ${world.emoji} ${esc(world.name)}</p>
-            </div>
-          </button>`;
-      }).join('')}
-    </div>
-  `;
-}
-function openStory(storyId){
-  goTo('storyPlayer', {storyId});
-}
-
-/* ============================================================
-   SCREEN: STORY PLAYER (из меню «Истории»)
-   ============================================================ */
-function renderStoryPlayer(el, storyId){
-  const story = STORIES.find(s=>s.id===storyId);
-  if(!story){ goStories(); return; }
-  let sceneIdx = 0;
-
-  el.innerHTML = `
-    <button class="back-btn" onclick="goStories()">← Истории</button>
-    <div class="task-card" id="story-card"></div>
-  `;
-  renderScene();
-
-  function renderScene(){
-    const scene = story.scenes[sceneIdx];
-    const card = document.getElementById('story-card');
-    if(!card) return;
-    card.innerHTML = `
-      <div class="story-scene">
-        <div class="story-emoji">${scene.emoji}</div>
-        <div class="story-en">${esc(scene.en)}</div>
-        <div class="story-ru">${esc(scene.ru)}</div>
-      </div>
-      <div style="text-align:center; color:var(--text-soft); font-weight:700; margin:8px 0;">Сцена ${sceneIdx+1} из ${story.scenes.length}</div>
-      <div class="story-nav">
-        <button id="speak">🔊 Слушать</button>
-        <button class="primary" id="next">${sceneIdx === story.scenes.length-1 ? 'К вопросам →' : 'Дальше →'}</button>
-      </div>
-    `;
-    card.querySelector('#speak').onclick = ()=> speak(scene.en);
-    card.querySelector('#next').onclick = ()=>{
-      sceneIdx++;
-      if(sceneIdx >= story.scenes.length){
-        renderQuestion(0, 0);
-      } else {
-        renderScene();
-      }
-    };
-    setTimeout(()=>speak(scene.en), 300);
-  }
-
-  function renderQuestion(qIdx, correctCount){
-    const card = document.getElementById('story-card');
-    if(!card) return;
-    if(qIdx >= story.questions.length){
-      card.innerHTML = `
-        <div class="reward" style="box-shadow:none; padding:20px;">
-          <div class="reward-emoji">🎉</div>
-          <h2 class="reward-title">История прочитана!</h2>
-          <div class="reward-sub">Правильных ответов: ${correctCount} из ${story.questions.length}</div>
-          <div class="reward-actions" style="margin-top:20px;">
-            <button class="primary-btn" style="margin:0;" onclick="goStories()">📚 К историям</button>
+      <section class="view active" id="view-home">
+        <div class="hero-banner">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="sparkle">✦</span> ПРИВЕТ, ИССЛЕДОВАТЕЛЬ!</div>
+            <h1>Готов к новому<br><em>приключению?</em></h1>
+            <p>Помоги Фину, Оли и Бипу вернуть цвета и слова на волшебные острова.</p>
+            <button class="primary-btn" id="continueBtn">Продолжить путь <span>➜</span></button>
           </div>
-        </div>
-      `;
-      return;
-    }
-    const q = story.questions[qIdx];
-    card.innerHTML = `
-      <div style="color:var(--text-soft); font-weight:700; margin-bottom:8px;">Вопрос ${qIdx+1} из ${story.questions.length}</div>
-      <div style="font-family:'Baloo 2',sans-serif; font-size:22px; font-weight:700; margin:14px 0; color:var(--navy);">${esc(q.q)}</div>
-      <div class="options-grid" id="opts" style="grid-template-columns:1fr 1fr;">
-        ${shuffle(q.options).map(o=>`<button class="opt-word" data-opt="${esc(o)}">${esc(o)}</button>`).join('')}
-      </div>
-      <div class="feedback" id="feedback"></div>
-    `;
-    let answered = false;
-    card.querySelectorAll('.opt-word').forEach(b=>{
-      b.onclick = ()=>{
-        if(answered) return;
-        if(b.dataset.opt === q.answer){
-          answered = true;
-          b.classList.add('correct');
-          card.querySelectorAll('.opt-word').forEach(x=>{ if(x!==b) x.classList.add('disabled'); });
-          soundOk();
-          const fb = card.querySelector('#feedback');
-          if(fb){ fb.className = 'feedback show ok'; fb.textContent = '🎉 Правильно!'; }
-          setTimeout(()=>renderQuestion(qIdx+1, correctCount+1), 900);
-        } else {
-          b.classList.add('wrong');
-          setTimeout(()=>b.classList.remove('wrong'), 500);
-          soundBad();
-          const fb = card.querySelector('#feedback');
-          if(fb){ fb.className = 'feedback show bad'; fb.textContent = 'Попробуй ещё раз'; }
-        }
-      };
-    });
-  }
-}
-
-/* ============================================================
-   PARENT GATE + PANEL
-   ============================================================ */
-function openParentGate(){
-  const a = randInt(8)+3, b = randInt(8)+3;
-  const answer = a + b;
-  const root = document.getElementById('modal-root');
-  root.innerHTML = `
-    <div class="modal open" id="gate-modal">
-      <div class="modal-card">
-        <h2>🔒 Только для взрослых</h2>
-        <p style="color:var(--text-soft); font-weight:600;">Реши пример, чтобы открыть кабинет:</p>
-        <div class="gate-code">${a} + ${b} = ?</div>
-        <input class="gate-input" id="gate-input" type="number" inputmode="numeric" autocomplete="off">
-        <div class="gate-error" id="gate-error"></div>
-        <button class="close-btn" id="gate-submit">Открыть</button>
-        <button class="primary-btn ghost" style="margin-top:10px;" onclick="closeModal()">Отмена</button>
-      </div>
-    </div>
-  `;
-  const input = root.querySelector('#gate-input');
-  const submit = ()=>{
-    if(parseInt(input.value,10) === answer){
-      closeModal();
-      openParentPanel();
-    } else {
-      root.querySelector('#gate-error').textContent = 'Попробуй ещё раз';
-      input.value = '';
-      input.focus();
-    }
-  };
-  root.querySelector('#gate-submit').onclick = submit;
-  input.addEventListener('keydown', e=>{ if(e.key === 'Enter') submit(); });
-  setTimeout(()=>input.focus(), 100);
-}
-
-function closeModal(){
-  document.getElementById('modal-root').innerHTML = '';
-}
-
-function openParentPanel(){
-  const root = document.getElementById('modal-root');
-  const today = new Date().toISOString().slice(0,10);
-  const todayData = state.daily[today] || {minutes:0, lessons:0};
-
-  let weekMinutes = 0, weekDays = 0;
-  for(let i=0; i<7; i++){
-    const d = new Date(); d.setDate(d.getDate()-i);
-    const key = d.toISOString().slice(0,10);
-    const rec = state.daily[key];
-    if(rec && rec.minutes > 0){ weekMinutes += rec.minutes; weekDays++; }
-  }
-
-  const allWords = WORLDS.flatMap(w=>w.words);
-  let known=0, learning=0, nw=0;
-  allWords.forEach(w=>{
-    const st = wordStatus(w.id);
-    if(st === 'known') known++;
-    else if(st === 'learning') learning++;
-    else nw++;
-  });
-  const recWords = allWords.filter(w=>{
-    const st = wordStatus(w.id);
-    return st === 'learning' || st === 'new';
-  }).slice(0, 5);
-
-  root.innerHTML = `
-    <div class="modal open">
-      <div class="modal-card">
-        <h2>📊 Кабинет родителя</h2>
-        <div class="parent-row"><span>👋 Профиль</span><span>${esc(state.profile?.nickname || 'Искатель')} ${state.profile?.avatar || ''}</span></div>
-        <div class="parent-row"><span>⏱ Сегодня</span><span>${todayData.minutes} мин · ${todayData.lessons} урок(ов)</span></div>
-        <div class="parent-row"><span>📅 За неделю</span><span>${weekMinutes} мин · ${weekDays} дн.</span></div>
-        <div class="parent-row"><span>⭐ Всего звёзд</span><span>${state.stars}</span></div>
-        <div class="parent-row"><span>🎖 Наклеек</span><span>${state.stickers.length} / ${WORLDS.length}</span></div>
-
-        <div class="parent-section">
-          <h3>📖 Словарь</h3>
-          <div class="parent-row"><span>✅ Знаю</span><span>${known}</span></div>
-          <div class="parent-row"><span>📝 Тренирую</span><span>${learning}</span></div>
-          <div class="parent-row"><span>🆕 Новые</span><span>${nw}</span></div>
-          ${recWords.length ? `<p style="margin-top:10px; color:var(--text-soft); font-weight:600; font-size:14px;">💡 Повторить: ${recWords.map(w=>esc(w.en)).join(', ')}</p>` : ''}
+          <div class="hero-art" aria-label="Фин, Оли и Бип">
+            <div class="sun-glow"></div><div class="cloud cloud-one"></div><div class="cloud cloud-two"></div>
+            <div class="rainbow">🌈</div><div class="hero-character fox">🦊</div><div class="hero-character owl">🦉</div><div class="hero-character bot">🤖</div>
+            <div class="hero-island"></div><span class="hero-star star-a">✦</span><span class="hero-star star-b">✧</span>
+          </div>
+          <div class="hero-wave"></div>
         </div>
 
-        <div class="parent-section">
-          <h3>⚙️ Настройки</h3>
-          <div class="settings-row">
-            <label for="goal">Цель в день</label>
-            <select id="goal">
-              <option value="5" ${state.settings.dailyGoal===5?'selected':''}>5 мин</option>
-              <option value="10" ${state.settings.dailyGoal===10?'selected':''}>10 мин</option>
-              <option value="15" ${state.settings.dailyGoal===15?'selected':''}>15 мин</option>
-              <option value="20" ${state.settings.dailyGoal===20?'selected':''}>20 мин</option>
-            </select>
-          </div>
-          <div class="settings-row">
-            <label for="sound">Звук</label>
-            <div class="toggle">
-              <input type="checkbox" id="sound" ${state.settings.sound?'checked':''}>
-              <span onclick="document.getElementById('sound').click()"></span>
-            </div>
-          </div>
-          <div class="settings-row">
-            <label for="reminders">Напоминания</label>
-            <div class="toggle">
-              <input type="checkbox" id="reminders" ${state.settings.reminders?'checked':''}>
-              <span onclick="document.getElementById('reminders').click()"></span>
-            </div>
-          </div>
+        <div class="stats-row">
+          <div class="stat-card stat-blue"><div class="stat-icon">🌟</div><div><b id="statStars">0</b><span>Собрано звёзд</span></div><div class="stat-deco">✦</div></div>
+          <div class="stat-card stat-green"><div class="stat-icon">📘</div><div><b id="statWords">0 <small>/ 100</small></b><span>Слов изучено</span></div><div class="stat-deco">✧</div></div>
+          <div class="stat-card stat-orange"><div class="stat-icon">🚩</div><div><b id="statMissions">0 <small>/ 40</small></b><span>Миссий пройдено</span></div><div class="stat-deco">✦</div></div>
         </div>
 
-        <button class="primary-btn coral" style="margin-top:16px;" onclick="resetProgress()">🗑 Сбросить прогресс</button>
-        <button class="close-btn" onclick="closeModal()">Закрыть</button>
-      </div>
-    </div>
-  `;
-  root.querySelector('#goal').onchange = e => { state.settings.dailyGoal = +e.target.value; save(); };
-  root.querySelector('#sound').onchange = e => { state.settings.sound = e.target.checked; save(); };
-  root.querySelector('#reminders').onchange = e => { state.settings.reminders = e.target.checked; save(); };
-}
+        <div class="section-heading">
+          <div><div class="eyebrow muted-eyebrow">ТВОЯ КАРТА</div><h2>Выбирай остров!</h2><p>Каждый остров — новая тема и весёлые задания.</p></div>
+          <div class="map-legend"><span><i class="legend-dot done"></i> Пройден</span><span><i class="legend-dot current"></i> Доступен</span><span><i class="legend-dot locked"></i> Закрыт</span></div>
+        </div>
+        <div class="island-grid" id="islandGrid"></div>
+        <div class="friends-tip"><div class="tip-owl">🦉</div><div><b>Совет от Оли</b><p>Лучше заниматься понемногу каждый день. Даже 10 минут помогают словам запомниться!</p></div><span class="tip-spark">✦</span></div>
+      </section>
 
-function resetProgress(){
-  if(!confirm('Удалить весь прогресс? Это действие необратимо.')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  state = defaultState();
-  save();
-  closeModal();
-  goTo('welcome');
-}
+      <section class="view" id="view-vocabulary">
+        <div class="page-intro intro-lilac"><div><div class="eyebrow">КОЛЛЕКЦИЯ ЗНАНИЙ</div><h1>Мой словарик <span>📚</span></h1><p>Все 100 слов твоего путешествия. Нажми на карточку, чтобы послушать слово.</p></div><div class="intro-illustration">📖✨</div></div>
+        <div class="toolbar"><label class="search-box"><span>⌕</span><input id="wordSearch" type="search" placeholder="Найти слово..." autocomplete="off"></label><select id="wordCategory" aria-label="Тема слов"><option value="all">Все темы</option></select><div class="learned-count" id="vocabCount">0 / 100 знаю</div></div>
+        <div class="vocab-grid" id="vocabGrid"></div>
+      </section>
 
-/* ============================================================
-   INIT
-   ============================================================ */
-function init(){
-  state = loadState();
-  if('speechSynthesis' in window){
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.onvoiceschanged = ()=>{};
-  }
-  if(!state.profile){
-    goTo('welcome');
-  } else {
-    goTo('map');
-  }
-}
-document.addEventListener('keydown', e=>{
-  if(e.key === 'Escape') closeModal();
-});
-window.addEventListener('load', init);
-</script>
+      <section class="view" id="view-phrases">
+        <div class="page-intro intro-peach"><div><div class="eyebrow">ГОВОРИ ПО-АНГЛИЙСКИ</div><h1>Полезные фразы <span>💬</span></h1><p>Слушай, повторяй и используй английский в настоящих ситуациях.</p></div><div class="intro-illustration">🗣️💭</div></div>
+        <div class="phrase-grid" id="phraseGrid"></div>
+        <div class="section-heading compact dialogue-heading"><div><div class="eyebrow muted-eyebrow">ПОПРОБУЙ В РАЗГОВОРЕ</div><h2>Мини-диалоги</h2><p>Слушай реплики по очереди и разыгрывай сценку с другом.</p></div></div>
+        <div class="dialogue-grid" id="dialogueGrid"></div>
+      </section>
+
+      <section class="view" id="view-stories">
+        <div class="page-intro intro-mint"><div><div class="eyebrow">ВРЕМЯ ИСТОРИЙ</div><h1>Волшебные истории <span>📖</span></h1><p>Читай, слушай и отвечай на вопросы вместе с героями.</p></div><div class="intro-illustration">🦊🌳</div></div>
+        <div class="story-grid" id="storyGrid"></div>
+        <div id="storyReader" class="story-reader hidden"></div>
+      </section>
+
+      <section class="view" id="view-album">
+        <div class="page-intro intro-gold"><div><div class="eyebrow">ТВОИ ДОСТИЖЕНИЯ</div><h1>Альбом путешественника <span>🏅</span></h1><p>Здесь живут звёзды и наклейки, которые ты заработал в приключениях.</p></div><div class="intro-illustration">🎖️🌟</div></div>
+        <div class="album-summary" id="albumSummary"></div>
+        <div class="section-heading compact"><div><div class="eyebrow muted-eyebrow">КОЛЛЕКЦИЯ</div><h2>Твои наклейки</h2></div></div>
+        <div class="sticker-grid" id="stickerGrid"></div>
+      </section>
+
+      <section class="view" id="view-parent">
+        <div class="page-intro intro-parent"><div><div class="eyebrow">СЕМЕЙНЫЙ РАЗДЕЛ</div><h1>Для родителей <span>👨‍👩‍👧</span></h1><p>Спокойный обзор обучения без рейтингов и соревнований.</p></div><div class="intro-illustration">🧭📈</div></div>
+        <div class="parent-gate" id="parentGate"><div class="gate-icon">🔐</div><h2>Вход для взрослых</h2><p>Реши пример, чтобы открыть статистику.</p><div class="gate-equation" id="gateEquation">7 + 5 = ?</div><div class="gate-row"><input id="gateAnswer" inputmode="numeric" type="number" placeholder="Ответ"><button class="primary-btn" id="gateSubmit">Открыть</button></div><small class="gate-error" id="gateError"></small></div>
+        <div class="parent-content hidden" id="parentContent"></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="profileModal">
+    <div class="modal profile-modal"><button class="modal-close" data-close="profileModal" aria-label="Закрыть">×</button><div class="modal-mascot">🦊</div><div class="eyebrow">ДАВАЙ ПОЗНАКОМИМСЯ</div><h2>Как тебя зовут?</h2><p>Можно придумать любое имя — настоящее имя не обязательно.</p><input id="childNameInput" class="modal-input" maxlength="18" placeholder="Например, Саша"><div class="avatar-picker" id="avatarPicker"><button class="avatar-choice selected" data-avatar="🦊">🦊</button><button class="avatar-choice" data-avatar="🐼">🐼</button><button class="avatar-choice" data-avatar="🐸">🐸</button><button class="avatar-choice" data-avatar="🐯">🐯</button><button class="avatar-choice" data-avatar="🦄">🦄</button></div><button class="primary-btn wide" id="saveProfileBtn">Начать приключение! <span>✦</span></button></div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="islandModal"><div class="modal island-modal" id="islandModalContent"></div></div>
+  <div class="modal-backdrop hidden" id="lessonModal"><div class="lesson-window" id="lessonWindow"></div></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
