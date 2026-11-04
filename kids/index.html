@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌈 LinguaKids — учим английский весело</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --yellow:#FFD93D; --blue:#6BCBFF; --green:#6BCB77;
+    --purple:#A66CFF; --orange:#FF922C; --red:#FF6B6B;
+    --cream:#FFF8E7; --cyan:#00D2FF;
+    --text:#3D3D5C; --text-soft:#7C7C9A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:'Nunito',sans-serif; color:var(--text);
+    background:var(--cream); min-height:100vh; overflow-x:hidden;
+    background-image:
+      radial-gradient(circle at 8% 12%, rgba(255,217,61,.22) 0, transparent 38%),
+      radial-gradient(circle at 92% 88%, rgba(107,203,255,.22) 0, transparent 38%),
+      radial-gradient(circle at 85% 10%, rgba(166,108,255,.14) 0, transparent 35%);
+  }
+  button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+
+  /* ---------- HEADER ---------- */
+  .topbar{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 18px; background:#fff;
+    box-shadow:0 4px 20px rgba(61,61,92,.08);
+    position:sticky; top:0; z-index:50;
+    border-bottom:4px solid var(--yellow);
+  }
+  .logo{
+    display:flex; align-items:center; gap:8px;
+    font-family:'Baloo 2',sans-serif; font-weight:800;
+    font-size:22px; cursor:pointer; color:var(--purple);
+  }
+  .logo span{background:linear-gradient(90deg,var(--purple),var(--cyan));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+  .stats{display:flex; gap:8px;}
+  .stat{
+    display:flex; align-items:center; gap:5px;
+    background:var(--cream); border-radius:50px;
+    padding:6px 12px; font-weight:800; font-size:15px;
+    border:2px solid rgba(61,61,92,.08);
+  }
+
+  /* ---------- SCREENS ---------- */
+  .screen{display:none; max-width:940px; margin:0 auto; padding:22px 16px 60px;}
+  .screen.active{display:block; animation:fadeIn .35s ease-out;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;}}
+
+  /* ---------- HOME ---------- */
+  .hero{
+    display:flex; align-items:center; gap:16px;
+    background:#fff; border-radius:28px; padding:20px;
+    box-shadow:0 8px 0 rgba(61,61,92,.06), 0 14px 30px rgba(61,61,92,.06);
+    margin-bottom:26px; border:3px solid rgba(255,217,61,.5);
+  }
+  .mascot{
+    font-size:56px; line-height:1; flex-shrink:0;
+    animation:bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-8px) rotate(3deg);}}
+  .hero h1{font-family:'Baloo 2',sans-serif; font-size:26px; color:var(--purple); line-height:1.1;}
+  .hero p{color:var(--text-soft); font-weight:600; margin-top:4px; font-size:15px;}
+
+  .section-title{
+    font-family:'Baloo 2',sans-serif; font-size:22px;
+    margin:0 0 14px 4px; color:var(--text);
+  }
+
+  .worlds-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+    gap:16px;
+  }
+  .world-card{
+    background:#fff; border-radius:26px; padding:20px 14px 16px;
+    text-align:center; border:none; position:relative;
+    box-shadow:0 8px 0 rgba(61,61,92,.06), 0 12px 26px rgba(61,61,92,.06);
+    transition:transform .18s ease, box-shadow .18s ease;
+    overflow:hidden;
+  }
+  .world-card::before{
+    content:''; position:absolute; inset:0 0 auto 0; height:8px;
+    background:var(--wc, var(--yellow));
+  }
+  .world-card:hover{transform:translateY(-5px);}
+  .world-card:active{transform:translateY(2px); box-shadow:0 3px 0 rgba(61,61,92,.06);}
+  .world-emoji{font-size:44px; line-height:1; margin:6px 0 8px;}
+  .world-name{font-family:'Baloo 2',sans-serif; font-size:19px; font-weight:700;}
+  .world-desc{font-size:12.5px; color:var(--text-soft); font-weight:600; margin-top:2px;}
+  .world-progress{
+    height:8px; background:rgba(61,61,92,.08);
+    border-radius:50px; margin-top:12px; overflow:hidden;
+  }
+  .world-progress > i{
+    display:block; height:100%; border-radius:50px;
+    background:var(--wc, var(--green)); transition:width .4s ease;
+  }
+
+  /* ---------- WORLD HEADER ---------- */
+  .back-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    background:#fff; padding:10px 18px; border-radius:50px;
+    font-weight:800; font-size:15px; color:var(--text-soft);
+    box-shadow:0 4px 0 rgba(61,61,92,.08); margin-bottom:18px;
+    transition:transform .15s;
+  }
+  .back-btn:active{transform:translateY(2px);}
+
+  .world-header{
+    text-align:center; background:#fff; border-radius:28px;
+    padding:26px 18px; margin-bottom:22px;
+    box-shadow:0 8px 0 rgba(61,61,92,.06), 0 14px 30px rgba(61,61,92,.06);
+    border:3px solid var(--wborder, rgba(255,217,61,.5));
+  }
+  .world-header .guide{font-size:60px; line-height:1; animation:bob 2.6s ease-in-out infinite;}
+  .world-header h2{font-family:'Baloo 2',sans-serif; font-size:28px; margin-top:6px; color:var(--purple);}
+  .world-header p{color:var(--text-soft); font-weight:600; margin-top:4px;}
+
+  .modes-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:16px;
+  }
+  .mode-card{
+    background:#fff; border-radius:24px; padding:22px 16px; text-align:center;
+    box-shadow:0 8px 0 rgba(61,61,92,.06), 0 12px 26px rgba(61,61,92,.06);
+    transition:transform .18s ease;
+  }
+  .mode-card:hover{transform:translateY(-4px);}
+  .mode-card:active{transform:translateY(2px);}
+  .mode-icon{font-size:44px; line-height:1; margin-bottom:8px;}
+  .mode-name{font-family:'Baloo 2',sans-serif; font-size:19px; font-weight:700;}
+  .mode-desc{font-size:13px; color:var(--text-soft); font-weight:600; margin-top:4px;}
+
+  /* ---------- GAME COMMON ---------- */
+  .game-top{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:18px; gap:10px;
+  }
+  .progress-pill{
+    background:#fff; border-radius:50px; padding:8px 16px;
+    font-weight:800; font-size:14px; color:var(--text-soft);
+    box-shadow:0 3px 0 rgba(61,61,92,.07);
+  }
+  .progress-pill b{color:var(--purple);}
+
+  .card-stage{
+    background:#fff; border-radius:32px; padding:32px 22px;
+    box-shadow:0 10px 0 rgba(61,61,92,.06), 0 18px 40px rgba(61,61,92,.08);
+    text-align:center;
+  }
+  .big-emoji{font-size:96px; line-height:1; animation:popIn .35s ease-out;}
+  @keyframes popIn{from{transform:scale(.5); opacity:0;} to{transform:scale(1); opacity:1;}}
+
+  .speak-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:56px; height:56px; border-radius:50%; background:var(--cyan);
+    color:#fff; font-size:24px; box-shadow:0 5px 0 #0099bb;
+    transition:transform .12s; margin:12px 0;
+  }
+  .speak-btn:active{transform:translateY(3px); box-shadow:0 2px 0 #0099bb;}
+
+  .word-en{
+    font-family:'Baloo 2',sans-serif; font-size:44px;
+    font-weight:800; color:var(--purple); margin:4px 0;
+  }
+  .word-ru{font-size:18px; color:var(--text-soft); font-weight:700;}
+
+  .primary-btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--green); color:#fff; font-weight:800; font-size:18px;
+    padding:14px 32px; border-radius:50px; box-shadow:0 6px 0 #4da85a;
+    transition:transform .12s; margin-top:22px;
+  }
+  .primary-btn:active{transform:translateY(3px); box-shadow:0 3px 0 #4da85a;}
+  .primary-btn.orange{background:var(--orange); box-shadow:0 6px 0 #c96e15;}
+  .primary-btn.orange:active{box-shadow:0 3px 0 #c96e15;}
+
+  /* ---------- QUIZ ---------- */
+  .quiz-emoji{font-size:80px; line-height:1; margin-bottom:8px; animation:popIn .3s ease-out;}
+  .quiz-hint{color:var(--text-soft); font-weight:700; margin-bottom:20px;}
+  .options{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .option-btn{
+    background:var(--cream); border-radius:20px; padding:18px 12px;
+    font-family:'Baloo 2',sans-serif; font-size:22px; font-weight:700;
+    color:var(--text); border:3px solid rgba(61,61,92,.08);
+    transition:transform .12s, background .2s, border-color .2s;
+  }
+  .option-btn:hover{background:#fff;}
+  .option-btn:active{transform:scale(.97);}
+  .option-btn.correct{background:var(--green); color:#fff; border-color:#4da85a;}
+  .option-btn.wrong{background:var(--red); color:#fff; border-color:#d94f4f; animation:shake .4s;}
+  @keyframes shake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-8px);}40%,80%{transform:translateX(8px);}}
+
+  /* ---------- SPELL ---------- */
+  .spell-slots{display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin:18px 0;}
+  .slot{
+    width:44px; height:52px; border-radius:14px; background:var(--cream);
+    border:3px dashed rgba(61,61,92,.18);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Baloo 2',sans-serif; font-size:26px; font-weight:800;
+    color:var(--purple);
+  }
+  .slot.filled{background:#fff; border-style:solid; border-color:var(--purple);}
+  .letters-pool{display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:8px;}
+  .letter-tile{
+    width:48px; height:52px; border-radius:14px; background:var(--yellow);
+    color:#7a5b00; font-family:'Baloo 2',sans-serif; font-size:26px; font-weight:800;
+    box-shadow:0 4px 0 #d9b520; transition:transform .12s;
+  }
+  .letter-tile:active{transform:translateY(3px); box-shadow:0 1px 0 #d9b520;}
+  .spell-msg{
+    font-family:'Baloo 2',sans-serif; font-size:20px; font-weight:700;
+    min-height:28px; margin-top:14px;
+  }
+  .spell-msg.ok{color:var(--green);}
+  .spell-msg.bad{color:var(--red);}
+
+  /* ---------- REWARD ---------- */
+  .reward-card{
+    background:#fff; border-radius:32px; padding:40px 24px; text-align:center;
+    box-shadow:0 10px 0 rgba(61,61,92,.06), 0 18px 40px rgba(61,61,92,.08);
+    position:relative; overflow:hidden;
+  }
+  .reward-emoji{font-size:90px; line-height:1; animation:bob 1.6s ease-in-out infinite;}
+  .reward-title{font-family:'Baloo 2',sans-serif; font-size:32px; color:var(--purple); margin-top:8px;}
+  .reward-sub{color:var(--text-soft); font-weight:700; margin-top:6px;}
+  .reward-stars{font-size:44px; margin:18px 0; letter-spacing:6px;}
+  .reward-coins{font-size:18px; font-weight:800; color:var(--orange);}
+  .reward-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:26px;}
+
+  /* ---------- CONFETTI ---------- */
+  .confetti{
+    position:fixed; width:10px; height:16px; top:-20px; z-index:999;
+    border-radius:3px; pointer-events:none;
+    animation:fall linear forwards;
+  }
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg); opacity:.6;}}
+
+  /* ---------- PARENT PANEL ---------- */
+  .modal{
+    position:fixed; inset:0; background:rgba(61,61,92,.5);
+    display:none; align-items:center; justify-content:center; z-index:200; padding:16px;
+  }
+  .modal.open{display:flex;}
+  .modal-card{
+    background:#fff; border-radius:28px; padding:26px 22px; max-width:460px; width:100%;
+    max-height:85vh; overflow-y:auto; animation:popIn .3s ease-out;
+  }
+  .modal-card h2{font-family:'Baloo 2',sans-serif; color:var(--purple); font-size:24px; margin-bottom:14px;}
+  .parent-row{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 0; border-bottom:2px dashed rgba(61,61,92,.08); font-weight:700;
+  }
+  .parent-row:last-child{border:none;}
+  .parent-row span:last-child{color:var(--text-soft); font-weight:800;}
+  .close-modal{
+    margin-top:16px; width:100%; background:var(--blue); color:#fff;
+    padding:12px; border-radius:50px; font-weight:800; font-size:16px;
+    box-shadow:0 4px 0 #4aa8d6;
+  }
+  .close-modal:active{transform:translateY(2px); box-shadow:0 2px 0 #4aa8d6;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:480px){
+    .hero h1{font-size:22px;}
+    .mascot{font-size:46px;}
+    .word-en{font-size:36px;}
+    .big-emoji{font-size:76px;}
+    .quiz-emoji{font-size:64px;}
+    .options{grid-template-columns:1fr;}
+    .option-btn{font-size:20px; padding:16px;}
+    .slot{width:38px; height:46px; font-size:22px;}
+    .letter-tile{width:42px; height:46px; font-size:22px;}
+    .worlds-grid{grid-template-columns:repeat(2,1fr); gap:12px;}
+    .world-emoji{font-size:36px;}
+    .world-name{font-size:16px;}
+    .world-desc{font-size:11px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo" onclick="goHome()">🌈 <span>LinguaKids</span></div>
+  <div class="stats">
+    <div class="stat">⭐ <span id="stat-stars">0</span></div>
+    <div class="stat">🪙 <span id="stat-coins">0</span></div>
+    <div class="stat" onclick="openParentPanel()" style="cursor:pointer" title="Для родителей">📊</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ================= HOME ================= -->
+  <section id="screen-home" class="screen active">
+    <div class="hero">
+      <div class="mascot">🐱</div>
+      <div>
+        <h1>Привет! Я Луна!</h1>
+        <p>Давай учить английский вместе — через игры и приключения!</p>
+      </div>
+    </div>
+    <h2 class="section-title">🌍 Выбери мир приключений</h2>
+    <div class="worlds-grid" id="worlds-grid"></div>
+  </section>
+
+  <!-- ================= WORLD ================= -->
+  <section id="screen-world" class="screen">
+    <button class="back-btn" onclick="goHome()">← Назад</button>
+    <div class="world-header" id="world-header">
+      <div class="guide" id="world-guide">🦊</div>
+      <h2 id="world-title">Мир</h2>
+      <p id="world-desc"></p>
+    </div>
+    <div class="modes-grid">
+      <button class="mode-card" onclick="startLearn()">
+        <div class="mode-icon">📚</div>
+        <div class="mode-name">Учим слова</div>
+        <div class="mode-desc">Смотри карточки и слушай</div>
+      </button>
+      <button class="mode-card" onclick="startQuiz()">
+        <div class="mode-icon">🎯</div>
+        <div class="mode-name">Найди слово</div>
+        <div class="mode-desc">Послушай и выбери ответ</div>
+      </button>
+      <button class="mode-card" onclick="startSpell()">
+        <div class="mode-icon">🔤</div>
+        <div class="mode-name">Собери слово</div>
+        <div class="mode-desc">Сложи слово из букв</div>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= LEARN ================= -->
+  <section id="screen-learn" class="screen">
+    <div class="game-top">
+      <button class="back-btn" onclick="goWorld()">← Назад</button>
+      <div class="progress-pill"><b id="learn-pos">1</b> / <span id="learn-total">8</span></div>
+    </div>
+    <div class="card-stage">
+      <div class="big-emoji" id="learn-emoji">🐱</div>
+      <button class="speak-btn" onclick="speakCurrentLearn()">🔊</button>
+      <div class="word-en" id="learn-en">cat</div>
+      <div class="word-ru" id="learn-ru">кошка</div>
+      <button class="primary-btn" id="learn-next" onclick="nextLearn()">Дальше →</button>
+    </div>
+  </section>
+
+  <!-- ================= QUIZ ================= -->
+  <section id="screen-quiz" class="screen">
+    <div class="game-top">
+      <button class="back-btn" onclick="goWorld()">← Назад</button>
+      <div class="progress-pill">Вопрос <b id="quiz-pos">1</b> / <span id="quiz-total">8</span></div>
+    </div>
+    <div class="card-stage">
+      <div class="quiz-emoji" id="quiz-emoji">🐱</div>
+      <button class="speak-btn" onclick="speakQuizWord()">🔊</button>
+      <div class="quiz-hint">Какое это слово?</div>
+      <div class="options" id="quiz-options"></div>
+      <button class="primary-btn" id="quiz-next" style="display:none" onclick="nextQuiz()">Дальше →</button>
+    </div>
+  </section>
+
+  <!-- ================= SPELL ================= -->
+  <section id="screen-spell" class="screen">
+    <div class="game-top">
+      <button class="back-btn" onclick="goWorld()">← Назад</button>
+      <div class="progress-pill">Слово <b id="spell-pos">1</b> / <span id="spell-total">8</span></div>
+    </div>
+    <div class="card-stage">
+      <div class="quiz-emoji" id="spell-emoji">🐱</div>
+      <button class="speak-btn" onclick="speakSpellWord()">🔊</button>
+      <div class="quiz-hint" id="spell-hint">кошка</div>
+      <div class="spell-slots" id="spell-slots"></div>
+      <div class="letters-pool" id="spell-pool"></div>
+      <div class="spell-msg" id="spell-msg"></div>
+      <button class="primary-btn" id="spell-next" style="display:none" onclick="nextSpell()">Дальше →</button>
+    </div>
+  </section>
+
+  <!-- ================= REWARD ================= -->
+  <section id="screen-reward" class="screen">
+    <div class="reward-card">
+      <div class="reward-emoji" id="reward-emoji">🎉</div>
+      <div class="reward-title" id="reward-title">Молодец!</div>
+      <div class="reward-sub" id="reward-sub">Ты справился отлично!</div>
+      <div class="reward-stars" id="reward-stars">⭐</div>
+      <div class="reward-coins" id="reward-coins">+0 монеток</div>
+      <div class="reward-actions">
+        <button class="primary-btn orange" onclick="repeatMode()">🔁 Ещё раз</button>
+        <button class="primary-btn" onclick="goWorld()">🏠 К мирам</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= PARENT PANEL ================= -->
+<div class="modal" id="parent-modal" onclick="if(event.target===this)closeParentPanel()">
+  <div class="modal-card">
+    <h2>📊 Кабинет родителя</h2>
+    <div id="parent-content"></div>
+    <button class="close-modal" onclick="closeParentPanel()">Закрыть</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ДАННЫЕ
+   ============================================================ */
+const WORLDS = [
+  {
+    id:'animals', name:'Животные', emoji:'🐾', guide:'🦊',
+    desc:'Лисёнок Руби зовёт в лесное приключение',
+    color:'#6BCB77',
+    words:[
+      {en:'cat', ru:'кошка', emoji:'🐱'},
+      {en:'dog', ru:'собака', emoji:'🐶'},
+      {en:'bird', ru:'птица', emoji:'🐦'},
+      {en:'fish', ru:'рыба', emoji:'🐟'},
+      {en:'lion', ru:'лев', emoji:'🦁'},
+      {en:'elephant', ru:'слон', emoji:'🐘'},
+      {en:'monkey', ru:'обезьяна', emoji:'🐵'},
+      {en:'rabbit', ru:'кролик', emoji:'🐰'}
+    ]
+  },
+  {
+    id:'colors', name:'Цвета', emoji:'🎨', guide:'🦋',
+    desc:'Бабочка Виола раскрасит мир',
+    color:'#FF922C',
+    words:[
+      {en:'red', ru:'красный', emoji:'🔴'},
+      {en:'blue', ru:'синий', emoji:'🔵'},
+      {en:'green', ru:'зелёный', emoji:'🟢'},
+      {en:'yellow', ru:'жёлтый', emoji:'🟡'},
+      {en:'orange', ru:'оранжевый', emoji:'🟠'},
+      {en:'purple', ru:'фиолетовый', emoji:'🟣'},
+      {en:'black', ru:'чёрный', emoji:'⚫'},
+      {en:'white', ru:'белый', emoji:'⚪'}
+    ]
+  },
+  {
+    id:'food', name:'Еда', emoji:'🍎', guide:'🐻',
+    desc:'Медведь Бао накрывает на стол',
+    color:'#FF6B6B',
+    words:[
+      {en:'apple', ru:'яблоко', emoji:'🍎'},
+      {en:'banana', ru:'банан', emoji:'🍌'},
+      {en:'bread', ru:'хлеб', emoji:'🍞'},
+      {en:'milk', ru:'молоко', emoji:'🥛'},
+      {en:'egg', ru:'яйцо', emoji:'🥚'},
+      {en:'cake', ru:'торт', emoji:'🍰'},
+      {en:'pizza', ru:'пицца', emoji:'🍕'},
+      {en:'water', ru:'вода', emoji:'💧'}
+    ]
+  },
+  {
+    id:'body', name:'Тело', emoji:'👋', guide:'🐱',
+    desc:'Кошка Луна учит части тела',
+    color:'#A66CFF',
+    words:[
+      {en:'hand', ru:'рука', emoji:'✋'},
+      {en:'eye', ru:'глаз', emoji:'👁️'},
+      {en:'nose', ru:'нос', emoji:'👃'},
+      {en:'ear', ru:'ухо', emoji:'👂'},
+      {en:'mouth', ru:'рот', emoji:'👄'},
+      {en:'foot', ru:'нога', emoji:'🦶'},
+      {en:'hair', ru:'волосы', emoji:'💇'},
+      {en:'tooth', ru:'зуб', emoji:'🦷'}
+    ]
+  },
+  {
+    id:'family', name:'Семья', emoji:'👨‍👩‍👧', guide:'🐰',
+    desc:'Кролик Флафф расскажет о семье',
+    color:'#6BCBFF',
+    words:[
+      {en:'mother', ru:'мама', emoji:'👩'},
+      {en:'father', ru:'папа', emoji:'👨'},
+      {en:'sister', ru:'сестра', emoji:'👧'},
+      {en:'brother', ru:'брат', emoji:'👦'},
+      {en:'baby', ru:'малыш', emoji:'👶'},
+      {en:'grandmother', ru:'бабушка', emoji:'👵'},
+      {en:'grandfather', ru:'дедушка', emoji:'👴'},
+      {en:'family', ru:'семья', emoji:'👨‍👩‍👧'}
+    ]
+  },
+  {
+    id:'numbers', name:'Числа', emoji:'🔢', guide:'🦜',
+    desc:'Попугай Пик считает до восьми',
+    color:'#FFD93D',
+    words:[
+      {en:'one', ru:'один', emoji:'1️⃣'},
+      {en:'two', ru:'два', emoji:'2️⃣'},
+      {en:'three', ru:'три', emoji:'3️⃣'},
+      {en:'four', ru:'четыре', emoji:'4️⃣'},
+      {en:'five', ru:'пять', emoji:'5️⃣'},
+      {en:'six', ru:'шесть', emoji:'6️⃣'},
+      {en:'seven', ru:'семь', emoji:'7️⃣'},
+      {en:'eight', ru:'восемь', emoji:'8️⃣'}
+    ]
+  }
+];
+
+/* ============================================================
+   СОХРАНЕНИЕ
+   ============================================================ */
+const STORAGE_KEY = 'linguakids_save_v1';
+let SAVE = loadSave();
+
+function loadSave(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return { stars:0, coins:0, worlds:{} };
+}
+function persist(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(SAVE)); }catch(e){}
+}
+function worldProgress(id){
+  const w = SAVE.worlds[id] || {};
+  let done = 0;
+  if(w.learn) done++;
+  if(w.quiz) done++;
+  if(w.spell) done++;
+  return done;
+}
+function updateStats(){
+  document.getElementById('stat-stars').textContent = SAVE.stars;
+  document.getElementById('stat-coins').textContent = SAVE.coins;
+}
+
+/* ============================================================
+   УТИЛИТЫ
+   ============================================================ */
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+let audioCtx = null;
+function beep(freq, dur, type){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + dur);
+  }catch(e){}
+}
+function soundGood(){ beep(660,.12); setTimeout(()=>beep(880,.16),110); }
+function soundBad(){ beep(220,.2,'triangle'); }
+function soundWin(){ [523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.18),i*110)); }
+
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US';
+    u.rate = 0.85;
+    u.pitch = 1.15;
+    const v = window.speechSynthesis.getVoices().find(v=>/en[-_]US/i.test(v.lang));
+    if(v) u.voice = v;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if(el) el.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ============================================================
+   НАВИГАЦИЯ
+   ============================================================ */
+let state = {
+  world:null, mode:null,
+  learnIndex:0,
+  quizIndex:0, quizQuestions:[], quizCorrect:0,
+  spellIndex:0, spellWords:[], spellCorrect:0,
+  spellTarget:null, spellPool:[], spellAnswer:[], spellLocked:false
+};
+
+function goHome(){
+  stopSpeech();
+  renderHome();
+  showScreen('screen-home');
+}
+
+function goWorld(){
+  stopSpeech();
+  if(!state.world) return goHome();
+  renderWorldScreen();
+  showScreen('screen-world');
+}
+
+function stopSpeech(){
+  if('speechSynthesis' in window){
+    try{ window.speechSynthesis.cancel(); }catch(e){}
+  }
+}
+
+/* ============================================================
+   ДОМАШНИЙ ЭКРАН
+   ============================================================ */
+function renderHome(){
+  const grid = document.getElementById('worlds-grid');
+  grid.innerHTML = '';
+  WORLDS.forEach(w=>{
+    const done = worldProgress(w.id);
+    const pct = Math.round(done/3*100);
+    const btn = document.createElement('button');
+    btn.className = 'world-card';
+    btn.style.setProperty('--wc', w.color);
+    btn.onclick = ()=>openWorld(w.id);
+    btn.innerHTML = `
+      <div class="world-emoji">${w.emoji}</div>
+      <div class="world-name">${w.name}</div>
+      <div class="world-desc">${w.desc}</div>
+      <div class="world-progress"><i style="width:${pct}%"></i></div>
+    `;
+    grid.appendChild(btn);
+  });
+  updateStats();
+}
+
+function openWorld(id){
+  state.world = WORLDS.find(w=>w.id===id);
+  renderWorldScreen();
+  showScreen('screen-world');
+}
+
+function renderWorldScreen(){
+  const w = state.world;
+  const header = document.getElementById('world-header');
+  header.style.setProperty('--wborder', w.color + '88');
+  document.getElementById('world-guide').textContent = w.guide;
+  document.getElementById('world-title').textContent = w.name;
+  document.getElementById('world-desc').textContent = w.desc;
+}
+
+/* ============================================================
+   РЕЖИМ "УЧИМ СЛОВА"
+   ============================================================ */
+function startLearn(){
+  state.mode = 'learn';
+  state.learnIndex = 0;
+  renderLearn();
+  showScreen('screen-learn');
+}
+function renderLearn(){
+  const words = state.world.words;
+  const w = words[state.learnIndex];
+  document.getElementById('learn-emoji').textContent = w.emoji;
+  document.getElementById('learn-en').textContent = w.en;
+  document.getElementById('learn-ru').textContent = w.ru;
+  document.getElementById('learn-pos').textContent = state.learnIndex + 1;
+  document.getElementById('learn-total').textContent = words.length;
+  const btn = document.getElementById('learn-next');
+  btn.textContent = state.learnIndex === words.length - 1 ? 'Готово! 🎉' : 'Дальше →';
+  speak(w.en);
+}
+function speakCurrentLearn(){
+  speak(state.world.words[state.learnIndex].en);
+}
+function nextLearn(){
+  state.learnIndex++;
+  if(state.learnIndex >= state.world.words.length){
+    finishLearn();
+  } else {
+    renderLearn();
+  }
+}
+function finishLearn(){
+  markWorld('learn');
+  showReward({
+    stars: 1,
+    coins: 10,
+    emoji: '📚',
+    title: 'Слова изучены!',
+    sub: 'Ты посмотрел все карточки этого мира'
+  });
+}
+
+/* ============================================================
+   РЕЖИМ "НАЙДИ СЛОВО" (викторина)
+   ============================================================ */
+function startQuiz(){
+  state.mode = 'quiz';
+  const words = state.world.words;
+  state.quizQuestions = shuffle(words).map(word=>{
+    const distractors = shuffle(words.filter(x=>x.en !== word.en)).slice(0,3);
+    const options = shuffle([word, ...distractors]);
+    return { word, options };
+  });
+  state.quizIndex = 0;
+  state.quizCorrect = 0;
+  renderQuiz();
+  showScreen('screen-quiz');
+}
+function renderQuiz(){
+  const q = state.quizQuestions[state.quizIndex];
+  document.getElementById('quiz-emoji').textContent = q.word.emoji;
+  document.getElementById('quiz-pos').textContent = state.quizIndex + 1;
+  document.getElementById('quiz-total').textContent = state.quizQuestions.length;
+
+  const box = document.getElementById('quiz-options');
+  box.innerHTML = '';
+  q.options.forEach(opt=>{
+    const b = document.createElement('button');
+    b.className = 'option-btn';
+    b.textContent = opt.en;
+    b.onclick = ()=>answerQuiz(opt, b);
+    box.appendChild(b);
+  });
+
+  document.getElementById('quiz-next').style.display = 'none';
+  setTimeout(()=>speak(q.word.en), 300);
+}
+function speakQuizWord(){
+  speak(state.quizQuestions[state.quizIndex].word.en);
+}
+function answerQuiz(opt, btn){
+  if(btn.disabled) return;
+  const q = state.quizQuestions[state.quizIndex];
+  const all = document.querySelectorAll('#quiz-options .option-btn');
+  all.forEach(b=>b.disabled = true);
+
+  if(opt.en === q.word.en){
+    btn.classList.add('correct');
+    state.quizCorrect++;
+    soundGood();
+    speak(q.word.en);
+    addCoins(5);
+  } else {
+    btn.classList.add('wrong');
+    soundBad();
+    all.forEach(b=>{
+      if(b.textContent === q.word.en) b.classList.add('correct');
+    });
+  }
+  document.getElementById('quiz-next').style.display = 'inline-flex';
+}
+function nextQuiz(){
+  state.quizIndex++;
+  if(state.quizIndex >= state.quizQuestions.length){
+    finishQuiz();
+  } else {
+    renderQuiz();
+  }
+}
+function finishQuiz(){
+  const total = state.quizQuestions.length;
+  const correct = state.quizCorrect;
+  let stars = 1;
+  if(correct >= Math.ceil(total*0.75)) stars = 3;
+  else if(correct >= Math.ceil(total*0.5)) stars = 2;
+
+  markWorld('quiz');
+  const bonusCoins = correct * 5;
+  addCoins(bonusCoins);
+  showReward({
+    stars,
+    coins: bonusCoins,
+    emoji: stars === 3 ? '🏆' : '🎯',
+    title: stars === 3 ? 'Превосходно!' : 'Хорошая работа!',
+    sub: `Правильных ответов: ${correct} из ${total}`
+  });
+}
+
+/* ============================================================
+   РЕЖИМ "СОБЕРИ СЛОВО"
+   ============================================================ */
+function startSpell(){
+  state.mode = 'spell';
+  const usable = state.world.words.filter(w=>/^[a-z]+$/.test(w.en) && w.en.length <= 9);
+  state.spellWords = shuffle(usable).slice(0, 8);
+  state.spellIndex = 0;
+  state.spellCorrect = 0;
+  loadSpellWord();
+  showScreen('screen-spell');
+}
+function loadSpellWord(){
+  const w = state.spellWords[state.spellIndex];
+  state.spellTarget = w;
+  state.spellAnswer = [];
+  state.spellLocked = false;
+
+  let pool = w.en.split('').map((letter, id)=>({letter, id}));
+  // Перемешаем так, чтобы порядок отличался от оригинального (если возможно)
+  for(let attempt=0; attempt<10; attempt++){
+    pool = shuffle(pool);
+    const joined = pool.map(t=>t.letter).join('');
+    if(joined !== w.en || w.en.length <= 1) break;
+  }
+  state.spellPool = pool;
+
+  document.getElementById('spell-emoji').textContent = w.emoji;
+  document.getElementById('spell-hint').textContent = w.ru;
+  document.getElementById('spell-pos').textContent = state.spellIndex + 1;
+  document.getElementById('spell-total').textContent = state.spellWords.length;
+  document.getElementById('spell-msg').textContent = '';
+  document.getElementById('spell-msg').className = 'spell-msg';
+  document.getElementById('spell-next').style.display = 'none';
+
+  renderSpellUI();
+  setTimeout(()=>speak(w.en), 300);
+}
+function speakSpellWord(){ if(state.spellTarget) speak(state.spellTarget.en); }
+
+function renderSpellUI(){
+  const w = state.spellTarget;
+
+  // Слоты
+  const slots = document.getElementById('spell-slots');
+  slots.innerHTML = '';
+  for(let i=0;i<w.en.length;i++){
+    const div = document.createElement('div');
+    div.className = 'slot';
+    const tile = state.spellAnswer[i];
+    if(tile){
+      div.classList.add('filled');
+      div.textContent = tile.letter;
+      div.onclick = ()=>removeFromAnswer(i);
+    }
+    slots.appendChild(div);
+  }
+
+  // Плитки с буквами
+  const pool = document.getElementById('spell-pool');
+  pool.innerHTML = '';
+  state.spellPool.forEach(tile=>{
+    const b = document.createElement('button');
+    b.className = 'letter-tile';
+    b.textContent = tile.letter;
+    b.onclick = ()=>placeLetter(tile.id);
+    pool.appendChild(b);
+  });
+}
+
+function placeLetter(tileId){
+  if(state.spellLocked) return;
+  if(state.spellAnswer.length >= state.spellTarget.en.length) return;
+  const idx = state.spellPool.findIndex(t=>t.id === tileId);
+  if(idx === -1) return;
+  const [tile] = state.spellPool.splice(idx,1);
+  state.spellAnswer.push(tile);
+  beep(520,.06);
+  renderSpellUI();
+  if(state.spellAnswer.length === state.spellTarget.en.length){
+    checkSpell();
+  }
+}
+function removeFromAnswer(slotIndex){
+  if(state.spellLocked) return;
+  const tile = state.spellAnswer[slotIndex];
+  if(!tile) return;
+  state.spellAnswer.splice(slotIndex,1);
+  state.spellPool.push(tile);
+  renderSpellUI();
+}
+function checkSpell(){
+  const attempt = state.spellAnswer.map(t=>t.letter).join('');
+  const msg = document.getElementById('spell-msg');
+  if(attempt === state.spellTarget.en){
+    state.spellLocked = true;
+    state.spellCorrect++;
+    addCoins(5);
+    soundGood();
+    speak(state.spellTarget.en);
+    msg.textContent = '🎉 Правильно!';
+    msg.className = 'spell-msg ok';
+    document.getElementById('spell-next').style.display = 'inline-flex';
+  } else {
+    soundBad();
+    msg.textContent = '😊 Почти! Попробуй ещё';
+    msg.className = 'spell-msg bad';
+    const slots = document.getElementById('spell-slots');
+    slots.style.animation = 'none';
+    void slots.offsetWidth;
+    slots.style.animation = 'shake .4s';
+    setTimeout(()=>{
+      if(state.spellLocked) return;
+      state.spellPool = [...state.spellPool, ...state.spellAnswer];
+      state.spellAnswer = [];
+      msg.textContent = '';
+      msg.className = 'spell-msg';
+      renderSpellUI();
+    }, 700);
+  }
+}
+function nextSpell(){
+  state.spellIndex++;
+  if(state.spellIndex >= state.spellWords.length){
+    finishSpell();
+  } else {
+    loadSpellWord();
+  }
+}
+function finishSpell(){
+  const total = state.spellWords.length;
+  const correct = state.spellCorrect;
+  let stars = 1;
+  if(correct >= Math.ceil(total*0.75)) stars = 3;
+  else if(correct >= Math.ceil(total*0.5)) stars = 2;
+
+  markWorld('spell');
+  showReward({
+    stars,
+    coins: 0,
+    emoji: stars === 3 ? '🌟' : '🔤',
+    title: stars === 3 ? 'Супер-писатель!' : 'Отличная попытка!',
+    sub: `Собрано слов: ${correct} из ${total}`
+  });
+}
+
+/* ============================================================
+   НАГРАДЫ
+   ============================================================ */
+function markWorld(mode){
+  const id = state.world.id;
+  if(!SAVE.worlds[id]) SAVE.worlds[id] = {};
+  SAVE.worlds[id][mode] = true;
+  persist();
+}
+function addCoins(n){
+  SAVE.coins += n;
+  updateStats();
+  persist();
+}
+function showReward({stars, coins, emoji, title, sub}){
+  stopSpeech();
+  SAVE.stars += stars;
+  persist();
+  updateStats();
+
+  document.getElementById('reward-emoji').textContent = emoji;
+  document.getElementById('reward-title').textContent = title;
+  document.getElementById('reward-sub').textContent = sub;
+  document.getElementById('reward-stars').textContent = '⭐'.repeat(stars);
+  document.getElementById('reward-coins').textContent = coins > 0 ? `+${coins} монеток 🪙` : 'Молодец!';
+
+  showScreen('screen-reward');
+  soundWin();
+  launchConfetti();
+}
+function repeatMode(){
+  const m = state.mode;
+  if(m === 'learn') startLearn();
+  else if(m === 'quiz') startQuiz();
+  else if(m === 'spell') startSpell();
+  else goWorld();
+}
+function launchConfetti(){
+  const colors = ['#FFD93D','#6BCBFF','#6BCB77','#A66CFF','#FF922C','#FF6B6B','#00D2FF'];
+  for(let i=0;i<40;i++){
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random()*100 + 'vw';
+    c.style.background = colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDuration = (2 + Math.random()*1.5) + 's';
+    c.style.animationDelay = (Math.random()*0.5) + 's';
+    c.style.transform = `rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 4200);
+  }
+}
+
+/* ============================================================
+   КАБИНЕТ РОДИТЕЛЯ
+   ============================================================ */
+function openParentPanel(){
+  const box = document.getElementById('parent-content');
+  let html = `
+    <div class="parent-row"><span>⭐ Всего звёзд</span><span>${SAVE.stars}</span></div>
+    <div class="parent-row"><span>🪙 Всего монеток</span><span>${SAVE.coins}</span></div>
+    <div class="parent-row"><span>🌍 Миров открыто</span><span>${WORLDS.length}</span></div>
+  `;
+  WORLDS.forEach(w=>{
+    const p = SAVE.worlds[w.id] || {};
+    const done = [];
+    if(p.learn) done.push('📚');
+    if(p.quiz) done.push('🎯');
+    if(p.spell) done.push('🔤');
+    html += `<div class="parent-row"><span>${w.emoji} ${w.name}</span><span>${done.length ? done.join(' ') : '—'}</span></div>`;
+  });
+  html += `<div class="parent-row" style="margin-top:12px"><span>💡 Совет</span><span style="font-size:13px">10–15 мин в день</span></div>`;
+  box.innerHTML = html;
+  document.getElementById('parent-modal').classList.add('open');
+}
+function closeParentPanel(){
+  document.getElementById('parent-modal').classList.remove('open');
+}
+
+/* ============================================================
+   ИНИЦИАЛИЗАЦИЯ
+   ============================================================ */
+window.addEventListener('load', ()=>{
+  // Прогреваем голоса
+  if('speechSynthesis' in window){
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = ()=>{};
+  }
+  renderHome();
+  updateStats();
+});
+
+// Дополнительно: закрытие модалки по Esc
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape') closeParentPanel();
+});
+</script>
+</body>
+</html>
